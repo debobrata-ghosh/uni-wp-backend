@@ -1,0 +1,91 @@
+/* Editor Styles for Full-Width Block Editor */
+
+/* Fix horizontal scrollbar in block editor */
+body.block-editor-page .interface-interface-skeleton__content,
+body.block-editor-page .editor-styles-wrapper,
+.block-editor-writing-flow,
+.editor-styles-wrapper {
+    overflow-x: hidden !important;
+}
+
+/* Make the block editor canvas full width */
+.editor-styles-wrapper .wp-block {
+    max-width: 100% !important;
+}
+
+.block-editor-writing-flow {
+    max-width: 100% !important;
+}
+
+.interface-interface-skeleton__content {
+    margin: 0 !important;
+}
+
+/* Additional editor improvements */
+.editor-styles-wrapper {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+.block-editor-block-list__layout {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+/* Ensure ACF blocks also use full width */
+.editor-styles-wrapper .acf-block-preview {
+    max-width: 100% !important;
+}
+
+/* Fix any container constraints */
+.wp-block {
+    max-width: 100% !important;
+}
+
+/* Wide and full width alignment support */
+.wp-block[data-align="wide"] {
+    max-width: 100% !important;
+}
+
+.wp-block[data-align="full"] {
+    max-width: 100% !important;
+}
+
+/* Editor container improvements */
+.edit-post-visual-editor__content-area {
+    max-width: 100% !important;
+}
+
+.block-editor-block-list__layout .wp-block {
+    max-width: 100% !important;
+}
+
+/* Ensure proper spacing */
+.block-editor-block-list__layout {
+    padding: 0 !important;
+}
+
+/* Fix for the editor canvas */
+.block-editor-writing-flow__click-redirect {
+    max-width: 100% !important;
+}
+
+/* Prevent blocks from causing horizontal overflow */
+.wp-block-acf-hero .hero-block,
+.wp-block[data-align="full"],
+.alignfull {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Additional overflow prevention for editor canvas */
+.edit-post-visual-editor,
+.edit-post-visual-editor__content-area {
+    overflow-x: hidden !important;
+}
+
+/* Ensure iframe preview doesn't overflow */
+.block-editor-block-preview__container {
+    overflow-x: hidden !important;
+}

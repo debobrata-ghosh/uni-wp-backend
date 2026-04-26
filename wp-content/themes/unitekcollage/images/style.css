@@ -1,0 +1,1039 @@
+.unitek-college-blog-template,
+.unitek-college-blog-template * {
+  box-sizing: border-box;
+}
+.unitek-college-blog-template {
+  background: var(--base-ui-two-dadee0, #dadee0);
+  height: 3472px;
+  position: relative;
+  overflow: hidden;
+}
+.while-this-blog-may-occasionally-contain-information-that-relates-to-unitek-college-s-programs-or-courses-the-majority-of-information-provided-within-this-blog-is-for-general-informational-purposes-only-and-is-not-intended-to-represent-the-specific-details-of-any-educational-offerings-or-opinions-of-unitek-college-please-note-that-wage-data-provided-by-the-bureau-of-labor-statistics-bls-or-other-third-party-sources-may-not-be-an-accurate-reflection-of-all-areas-of-the-country-may-not-account-for-the-employees-years-of-experience-and-may-not-reflect-the-wages-or-outlook-of-entry-level-employees-such-as-graduates-of-our-program-accessed-on-5-20-2025 {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: center;
+  font-family: var(--body-light-14-font-family, "Outfit-Light", sans-serif);
+  font-size: var(--body-light-14-font-size, 14px);
+  line-height: var(--body-light-14-line-height, 22px);
+  font-weight: var(--body-light-14-font-weight, 300);
+  position: absolute;
+  left: 382px;
+  top: 2439px;
+  width: 964px;
+  height: 148px;
+}
+.category-nav {
+  position: absolute;
+  inset: 0;
+}
+.rectangle-502 {
+  background: var(--base-ui-light-ffffff, #ffffff);
+  border-radius: 8px;
+  width: 190px;
+  height: 55px;
+  position: absolute;
+  left: 260px;
+  top: 780px;
+}
+.frame-499 {
+  display: flex;
+  flex-direction: row;
+  gap: 65px;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  left: 292px;
+  top: 792px;
+}
+.all-categories {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: center;
+  font-family: var(--body-medium-20-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-20-font-size, 20px);
+  line-height: var(--body-medium-20-line-height, 28px);
+  font-weight: var(--body-medium-20-font-weight, 500);
+  position: relative;
+}
+.nursing {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: center;
+  font-family: var(--body-medium-20-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-20-font-size, 20px);
+  line-height: var(--body-medium-20-line-height, 28px);
+  font-weight: var(--body-medium-20-font-weight, 500);
+  position: relative;
+}
+.healthcare {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: center;
+  font-family: var(--body-medium-20-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-20-font-size, 20px);
+  line-height: var(--body-medium-20-line-height, 28px);
+  font-weight: var(--body-medium-20-font-weight, 500);
+  position: relative;
+}
+.medical-assisting {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: center;
+  font-family: var(--body-medium-20-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-20-font-size, 20px);
+  line-height: var(--body-medium-20-line-height, 28px);
+  font-weight: var(--body-medium-20-font-weight, 500);
+  position: relative;
+}
+.medical-office-administration {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: center;
+  font-family: var(--body-medium-20-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-20-font-size, 20px);
+  line-height: var(--body-medium-20-line-height, 28px);
+  font-weight: var(--body-medium-20-font-weight, 500);
+  position: relative;
+}
+.frame-498 {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.manage-search {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.search {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: center;
+  font-family: var(--body-medium-20-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-20-font-size, 20px);
+  line-height: var(--body-medium-20-line-height, 28px);
+  font-weight: var(--body-medium-20-font-weight, 500);
+  position: relative;
+}
+.global-nav {
+  width: 1728px;
+  height: 120px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.global-nav2 {
+  position: absolute;
+  inset: 0;
+}
+.lower-bar {
+  width: 1728px;
+  height: 80px;
+  position: static;
+}
+.rectangle-428 {
+  background: var(--base-ui-light-ffffff, #ffffff);
+  width: 100%;
+  height: 66.67%;
+  position: absolute;
+  right: 0%;
+  left: 0%;
+  bottom: 0%;
+  top: 33.33%;
+  box-shadow: var(--nav-ds-box-shadow, 0px 4px 8px 0px rgba(48, 48, 48, 0.08));
+}
+.sm-button-icon {
+  background: var(--secondary-two-58a430, #58a430);
+  border-radius: 100px;
+  padding: 14px 24px 14px 32px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 11.57%;
+  height: 46.67%;
+  position: absolute;
+  right: 15.1%;
+  left: 73.32%;
+  bottom: 10%;
+  top: 43.33%;
+  box-shadow: var(
+    --button-ds-box-shadow,
+    0px 4px 8px 0px rgba(40, 50, 60, 0.16)
+  );
+  overflow: hidden;
+}
+.get-started {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: center;
+  font-family: var(--body-medium-18-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-18-font-size, 18px);
+  line-height: var(--body-medium-18-line-height, 26px);
+  font-weight: var(--body-medium-18-font-weight, 500);
+  position: relative;
+}
+.arrow-forward {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.frame-511 {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  left: 260px;
+  top: 55px;
+}
+.uc-two-color {
+  flex-shrink: 0;
+  width: 152.82px;
+  height: 50px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 152.82/50;
+}
+.frame-427 {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.programs {
+  color: var(--base-ui-dark-141a1e, #141a1e);
+  text-align: center;
+  font-family: var(--body-medium-16-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-16-font-size, 16px);
+  line-height: var(--body-medium-16-line-height, 24px);
+  font-weight: var(--body-medium-16-font-weight, 500);
+  position: relative;
+}
+.campuses {
+  color: var(--base-ui-dark-141a1e, #141a1e);
+  text-align: center;
+  font-family: var(--body-medium-16-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-16-font-size, 16px);
+  line-height: var(--body-medium-16-line-height, 24px);
+  font-weight: var(--body-medium-16-font-weight, 500);
+  position: relative;
+}
+.admissions-financial-aid {
+  color: var(--base-ui-dark-141a1e, #141a1e);
+  text-align: center;
+  font-family: var(--body-medium-16-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-16-font-size, 16px);
+  line-height: var(--body-medium-16-line-height, 24px);
+  font-weight: var(--body-medium-16-font-weight, 500);
+  position: relative;
+}
+.student-career-services {
+  color: var(--base-ui-dark-141a1e, #141a1e);
+  text-align: center;
+  font-family: var(--body-medium-16-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-16-font-size, 16px);
+  line-height: var(--body-medium-16-line-height, 24px);
+  font-weight: var(--body-medium-16-font-weight, 500);
+  position: relative;
+}
+.about-us {
+  color: var(--base-ui-dark-141a1e, #141a1e);
+  text-align: center;
+  font-family: var(--body-medium-16-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-16-font-size, 16px);
+  line-height: var(--body-medium-16-line-height, 24px);
+  font-weight: var(--body-medium-16-font-weight, 500);
+  position: relative;
+}
+.global-upper {
+  position: absolute;
+  inset: 0;
+}
+.rectangle-427 {
+  background: var(--base-ui-four-28323c, #28323c);
+  width: 100%;
+  height: 33.33%;
+  position: absolute;
+  right: 0%;
+  left: 0%;
+  bottom: 66.67%;
+  top: 0%;
+}
+.search-call {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-end;
+  width: 6.66%;
+  height: 33.33%;
+  position: absolute;
+  right: 15.05%;
+  left: 78.3%;
+  bottom: 66.67%;
+  top: 0%;
+}
+.bar {
+  background: var(--base-ui-three-68747c, #68747c);
+  flex-shrink: 0;
+  width: 1px;
+  height: 40px;
+  position: relative;
+}
+.search2 {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.call {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.get-info {
+  background: var(--base-ui-three-68747c, #68747c);
+  padding: 4px 24px 4px 24px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 7.41%;
+  height: 33.33%;
+  position: absolute;
+  right: 21.7%;
+  left: 70.89%;
+  bottom: 66.67%;
+  top: 0%;
+}
+.info {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.get-info2 {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: center;
+  font-family: var(--body-medium-16-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-16-font-size, 16px);
+  line-height: var(--body-medium-16-line-height, 24px);
+  font-weight: var(--body-medium-16-font-weight, 500);
+  position: relative;
+}
+.about-us-active-bar {
+  background: var(--base-ui-four-28323c, #28323c);
+  width: 65px;
+  height: 4px;
+  position: absolute;
+  left: 1091px;
+  top: 108px;
+}
+.feature-b {
+  position: absolute;
+  inset: 0;
+}
+.rectangle-478 {
+  background: var(--medium-gray-0090f0, #acb4bc);
+  border-radius: 24px;
+  width: 1368px;
+  height: 520px;
+  position: absolute;
+  left: 180px;
+  top: 200px;
+}
+.rectangle-479 {
+  background: var(--base-ui-light-ffffff, #ffffff);
+  border-radius: 12px 0px 0px 12px;
+  width: 684px;
+  height: 520px;
+  position: absolute;
+  left: 180px;
+  top: 200px;
+}
+.frame-497 {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 540px;
+  position: absolute;
+  left: 260px;
+  top: 264px;
+}
+.frame-496 {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: left;
+  font-family: var(
+    --headline-regular-48-font-family,
+    "Outfit-Regular",
+    sans-serif
+  );
+  font-size: var(--headline-regular-48-font-size, 48px);
+  line-height: var(--headline-regular-48-line-height, 56px);
+  font-weight: var(--headline-regular-48-font-weight, 400);
+  position: relative;
+  align-self: stretch;
+  height: 228px;
+}
+.lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor2 {
+  color: var(--primary-two-007acc, #007acc);
+  text-align: left;
+  font-family: var(
+    --headline-regular-24-font-family,
+    "Outfit-Regular",
+    sans-serif
+  );
+  font-size: var(--headline-regular-24-font-size, 24px);
+  line-height: var(--headline-regular-24-line-height, 32px);
+  font-weight: var(--headline-regular-24-font-weight, 400);
+  position: relative;
+  width: 480px;
+  height: 64px;
+}
+.link-icon-r {
+  border-radius: 8px;
+  padding: 14px 0px 14px 0px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 166px;
+  height: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.get-started-today {
+  color: var(--secondary-1-58a428, #58a428);
+  text-align: center;
+  font-family: var(--action-16-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--action-16-font-size, 16px);
+  line-height: var(--action-16-line-height, 20px);
+  font-weight: var(--action-16-font-weight, 500);
+  position: relative;
+}
+.arrow-forward2 {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.image {
+  color: var(--base-ui-three-68747c, #68747c);
+  text-align: center;
+  font-family: "AvenirNext-DemiBold", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  position: absolute;
+  left: 1092px;
+  top: 445px;
+  width: 168px;
+}
+.story-card {
+  width: 376px;
+  height: 408px;
+  position: absolute;
+  left: 260px;
+  top: 895px;
+}
+.image2 {
+  background: var(--medium-gray-0090f0, #acb4bc);
+  border-radius: 16px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  right: 0%;
+  left: 0%;
+  bottom: 0%;
+  top: 0%;
+  box-shadow: var(
+    --card-ds-16-box-shadow,
+    0px 2px 16px 0px rgba(40, 50, 60, 0.16)
+  );
+}
+.overlay {
+  background: var(--base-ui-light-ffffff, #ffffff);
+  border-radius: 0px 0px 16px 16px;
+  width: 100%;
+  height: 38.24%;
+  position: absolute;
+  right: 0%;
+  left: 0%;
+  bottom: 0%;
+  top: 61.76%;
+}
+.frame-528 {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 87.23%;
+  height: 30.39%;
+  position: absolute;
+  right: 6.38%;
+  left: 6.38%;
+  bottom: 3.92%;
+  top: 65.69%;
+}
+.frame-527 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.frame-526 {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.month-1-2026 {
+  color: var(--primary-two-007acc, #007acc);
+  text-align: left;
+  font-family: var(--body-medium-14-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-14-font-size, 14px);
+  line-height: var(--body-medium-14-line-height, 22px);
+  font-weight: var(--body-medium-14-font-weight, 500);
+  position: relative;
+  width: 88px;
+  height: 20px;
+}
+.line-155 {
+  margin-top: -1px;
+  border-style: solid;
+  border-color: var(--base-ui-three-68747c, #68747c);
+  border-width: 1px 0 0 0;
+  flex-shrink: 0;
+  width: 20px;
+  height: 0px;
+  position: relative;
+  transform-origin: 0 0;
+  transform: rotate(90deg) scale(1, 1);
+}
+.j-anderson {
+  color: var(--base-ui-three-68747c, #68747c);
+  text-align: left;
+  font-family: var(--body-light-14-font-family, "Outfit-Light", sans-serif);
+  font-size: var(--body-light-14-font-size, 14px);
+  line-height: var(--body-light-14-line-height, 22px);
+  font-weight: var(--body-light-14-font-weight, 300);
+  position: relative;
+  width: 74px;
+  height: 20px;
+}
+.asynchronous-vs-synchronous-learning-what-s-the-difference-and-which-is {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: left;
+  font-family: var(--body-light-18-font-family, "Outfit-Light", sans-serif);
+  font-size: var(--body-light-18-font-size, 18px);
+  line-height: var(--body-light-18-line-height, 26px);
+  font-weight: var(--body-light-18-font-weight, 300);
+  position: relative;
+  align-self: stretch;
+  height: 56px;
+}
+.link-icon-r2 {
+  border-radius: 8px;
+  padding: 14px 0px 14px 0px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 115px;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.read-more {
+  color: var(--secondary-two-58a430, #58a430);
+  text-align: center;
+  font-family: var(--action-14-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--action-14-font-size, 14px);
+  line-height: var(--action-14-line-height, 20px);
+  font-weight: var(--action-14-font-weight, 500);
+  position: relative;
+}
+.arrow-forward3 {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.tag {
+  background: var(--base-ui-light-ffffff, #ffffff);
+  border-radius: 8px;
+  padding: 10px 18px 10px 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  width: 21.28%;
+  height: 9.8%;
+  position: absolute;
+  right: 76.6%;
+  left: 2.13%;
+  bottom: 88.24%;
+  top: 1.96%;
+}
+.label {
+  color: var(--base-ui-four-28323c, #28323c);
+  text-align: left;
+  font-family: var(--action-14-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--action-14-font-size, 14px);
+  line-height: var(--action-14-line-height, 20px);
+  font-weight: var(--action-14-font-weight, 500);
+  position: relative;
+}
+.story-card2 {
+  width: 376px;
+  height: 408px;
+  position: absolute;
+  left: 260px;
+  top: 1363px;
+}
+.arrow-forward4 {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.story-card3 {
+  width: 376px;
+  height: 408px;
+  position: absolute;
+  left: 260px;
+  top: 1831px;
+}
+.arrow-forward5 {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.story-card4 {
+  width: 376px;
+  height: 408px;
+  position: absolute;
+  left: 676px;
+  top: 895px;
+}
+.arrow-forward6 {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.story-card5 {
+  width: 376px;
+  height: 408px;
+  position: absolute;
+  left: 676px;
+  top: 1363px;
+}
+.arrow-forward7 {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.story-card6 {
+  width: 376px;
+  height: 408px;
+  position: absolute;
+  left: 676px;
+  top: 1831px;
+}
+.arrow-forward8 {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.story-card7 {
+  width: 376px;
+  height: 408px;
+  position: absolute;
+  left: 1092px;
+  top: 895px;
+}
+.arrow-forward9 {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.story-card8 {
+  width: 376px;
+  height: 408px;
+  position: absolute;
+  left: 1092px;
+  top: 1363px;
+}
+.arrow-forward10 {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.story-card9 {
+  width: 376px;
+  height: 408px;
+  position: absolute;
+  left: 1092px;
+  top: 1831px;
+}
+.arrow-forward11 {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.link-icon-r3 {
+  border-radius: 8px;
+  padding: 14px 0px 14px 0px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 166px;
+  height: 40px;
+  position: absolute;
+  left: 781px;
+  top: 2319px;
+  overflow: hidden;
+}
+.get-started-today2 {
+  color: var(--secondary-one-288410, #288410);
+  text-align: center;
+  font-family: var(--body-medium-16-font-family, "Outfit-Medium", sans-serif);
+  font-size: var(--body-medium-16-font-size, 16px);
+  line-height: var(--body-medium-16-line-height, 24px);
+  font-weight: var(--body-medium-16-font-weight, 500);
+  position: relative;
+}
+.arrow-forward12 {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.footer {
+  position: absolute;
+  inset: 0;
+}
+.rectangle-47 {
+  background: var(--base-ui-four-28323c, #28323c);
+  width: 1728px;
+  height: 675px;
+  position: absolute;
+  left: 0px;
+  top: 2797px;
+}
+.frame-531 {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 1208px;
+  position: absolute;
+  left: 260px;
+  top: 2877px;
+}
+.frame-530 {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.uc-lndscp-two-color-reverse {
+  flex-shrink: 0;
+  width: 288.51px;
+  height: 40px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 288.51/40;
+}
+.frame-529 {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+.unitek {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 272px;
+  position: relative;
+}
+.unitek-college {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: left;
+  font-family: var(
+    --title-regular-18-font-family,
+    "AvenirNext-Regular",
+    sans-serif
+  );
+  font-size: var(--title-regular-18-font-size, 18px);
+  line-height: var(--title-regular-18-line-height, 26px);
+  font-weight: var(--title-regular-18-font-weight, 400);
+  position: relative;
+  align-self: stretch;
+}
+.line-5 {
+  margin-top: -1px;
+  border-style: solid;
+  border-color: var(--base-ui-three-68747c, #68747c);
+  border-width: 1px 0 0 0;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 0px;
+  position: relative;
+}
+.about-us-testimonials-accreditation-programs-admissions-financial-aid-college-locations-careers {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: left;
+  font-family: var(
+    --body-demi-12-font-family,
+    "AvenirNext-DemiBold",
+    sans-serif
+  );
+  font-size: var(--body-demi-12-font-size, 12px);
+  line-height: var(--body-demi-12-line-height, 18px);
+  font-weight: var(--body-demi-12-font-weight, 400);
+  position: relative;
+}
+.resources {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 272px;
+  position: relative;
+}
+.resources2 {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: left;
+  font-family: var(
+    --title-regular-18-font-family,
+    "AvenirNext-Regular",
+    sans-serif
+  );
+  font-size: var(--title-regular-18-font-size, 18px);
+  line-height: var(--title-regular-18-line-height, 26px);
+  font-weight: var(--title-regular-18-font-weight, 400);
+  position: relative;
+  align-self: stretch;
+}
+.student-services-career-services-college-catalog {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: left;
+  font-family: var(
+    --body-demi-12-font-family,
+    "AvenirNext-DemiBold",
+    sans-serif
+  );
+  font-size: var(--body-demi-12-font-size, 12px);
+  line-height: var(--body-demi-12-line-height, 18px);
+  font-weight: var(--body-demi-12-font-weight, 400);
+  position: relative;
+}
+.disclosures {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 272px;
+  position: relative;
+}
+.disclosures2 {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: left;
+  font-family: var(
+    --title-regular-18-font-family,
+    "AvenirNext-Regular",
+    sans-serif
+  );
+  font-size: var(--title-regular-18-font-size, 18px);
+  line-height: var(--title-regular-18-line-height, 26px);
+  font-weight: var(--title-regular-18-font-weight, 400);
+  position: relative;
+  align-self: stretch;
+}
+.all-disclosures-ca-disclosures-higher-education-emergency-relief-fund-campus-security-title-ix-compliance-legal-disclaimer-privacy-policy {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: left;
+  font-family: var(
+    --body-demi-12-font-family,
+    "AvenirNext-DemiBold",
+    sans-serif
+  );
+  font-size: var(--body-demi-12-font-size, 12px);
+  line-height: var(--body-demi-12-line-height, 18px);
+  font-weight: var(--body-demi-12-font-weight, 400);
+  position: relative;
+}
+.tools {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 272px;
+  position: relative;
+}
+.tools2 {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: left;
+  font-family: var(
+    --title-regular-18-font-family,
+    "AvenirNext-Regular",
+    sans-serif
+  );
+  font-size: var(--title-regular-18-font-size, 18px);
+  line-height: var(--title-regular-18-line-height, 26px);
+  font-weight: var(--title-regular-18-font-weight, 400);
+  position: relative;
+  align-self: stretch;
+}
+.apply-for-transcript-evaluation-transcript-request-application-online-portal-sitemap-student-re-entry-form {
+  color: var(--base-ui-light-ffffff, #ffffff);
+  text-align: left;
+  font-family: var(
+    --body-demi-12-font-family,
+    "AvenirNext-DemiBold",
+    sans-serif
+  );
+  font-size: var(--body-demi-12-font-size, 12px);
+  line-height: var(--body-demi-12-line-height, 18px);
+  font-weight: var(--body-demi-12-font-weight, 400);
+  position: relative;
+}
+.social-lockup {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.social-icons {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  overflow: visible;
+}
+.social-icons2 {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  overflow: visible;
+}
+.social-icons3 {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  overflow: visible;
+}
+.social-icons4 {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+._1920-wave {
+  width: 1920px;
+  height: 120px;
+  position: absolute;
+  left: -96px;
+  top: 2677px;
+  overflow: visible;
+  aspect-ratio: 1920/120;
+}

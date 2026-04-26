@@ -1,0 +1,54 @@
+/**
+ * Hero Block - Editor-Only Styles
+ * Styles for WordPress Block Editor
+ */
+
+/* Editor overflow fix */
+.block-editor-block-preview__content .hero-block {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.block-editor-block-list__layout .hero-block,
+.editor-styles-wrapper .hero-block,
+.wp-block-acf-hero .hero-block {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Fix for editor - prevent overflow */
+.block-editor-block-list__layout .hero-block.alignfull,
+.editor-styles-wrapper .hero-block.alignfull,
+.wp-block-acf-hero .hero-block.alignfull {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Editor Preview Styles */
+.wp-block-acf-hero .hero-block {
+    border: 2px dashed #ccc;
+    position: relative;
+}
+
+.wp-block-acf-hero .hero-block::before {
+    content: "🎯 Hero Section - Main banner with headline and image";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 8px 12px;
+    font-size: 11px;
+    border-radius: 4px;
+    z-index: 10;
+    font-weight: 500;
+    max-width: 250px;
+    text-align: center;
+    line-height: 1.3;
+}
+
