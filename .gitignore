@@ -1,7 +1,28 @@
-# --- WordPress core (recommended: don't version core) ---
-/wp-admin/
-/wp-includes/
-/wp-content/languages/
+#
+# Repo policy: track ONLY custom themes + plugins.
+# Everything else (WP core, uploads, backups, configs) stays out of git.
+#
+
+# Ignore everything by default
+/*
+
+# Keep git + GitHub workflow/config files
+!/.gitignore
+!/.github/
+!/.github/**
+
+# Keep documentation if you want it in repo
+!/README.md
+!/docs/
+!/docs/**
+
+# Allow ONLY these WordPress folders to be tracked
+!/wp-content/
+/wp-content/*
+!/wp-content/themes/
+!/wp-content/themes/**
+!/wp-content/plugins/
+!/wp-content/plugins/**
 
 # --- Uploads / caches / generated ---
 /wp-content/uploads/
