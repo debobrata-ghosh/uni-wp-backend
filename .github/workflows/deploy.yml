@@ -53,7 +53,8 @@ jobs:
       - name: Rsync plugins
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -avzr --delete
+          # Keep server-managed plugins (e.g., ACF PRO) that are not committed to git.
+          switches: -avzr --delete --exclude=advanced-custom-fields/ --exclude=advanced-custom-fields-pro/
           path: wp-content/plugins/
           remote_path: ${{ secrets.AWS_WP_PATH }}/wp-content/plugins/
           remote_host: ${{ secrets.AWS_HOST }}
