@@ -1,11 +1,19 @@
 <?php
 // inc/blocks-loader.php
 
-add_action('acf/init', 'mytheme_load_acf_blocks');
+// Register on both hooks so blocks load reliably in wp-admin/editor.
+// (If ACF is inactive, the function guards below will prevent fatal errors.)
+add_action( 'acf/init', 'mytheme_load_acf_blocks' );
+add_action( 'init', 'mytheme_load_acf_blocks', 20 );
 function mytheme_load_acf_blocks() {
     $blocks_dir = get_template_directory() . '/template-parts/blocks/';
 
     if ( ! is_dir( $blocks_dir ) ) {
+        return;
+    }
+
+    // If ACF isn't active, none of the block or field registration functions exist.
+    if ( ! function_exists( 'acf_register_block_type' ) && ! function_exists( 'acf_add_local_field_group' ) ) {
         return;
     }
 
@@ -22,10 +30,10 @@ function mytheme_load_acf_blocks() {
         $register_file = $block_dir . '/register.php';
         $fields_file   = $block_dir . '/fields.php';
 
-        if ( file_exists( $register_file ) ) {
+        if ( function_exists( 'acf_register_block_type' ) && file_exists( $register_file ) ) {
             include $register_file;
         }
-        if ( file_exists( $fields_file ) ) {
+        if ( function_exists( 'acf_add_local_field_group' ) && file_exists( $fields_file ) ) {
             include $fields_file;
         }
     }

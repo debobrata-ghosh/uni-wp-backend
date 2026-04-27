@@ -16,9 +16,17 @@
 
 <?php
 // Get theme settings
-$top_bar_enabled = get_field('top_bar_enabled', 'option');
-$top_bar_text = get_field('top_bar_text', 'option') ?: 'Get info';
-$header_phone = get_field('header_phone', 'option');
+$acf_get_option = static function ( string $key, $default = null ) {
+	if ( function_exists( 'get_field' ) ) {
+		$val = get_field( $key, 'option' );
+		return ( $val === null || $val === '' ) ? $default : $val;
+	}
+	return $default;
+};
+
+$top_bar_enabled = (bool) $acf_get_option( 'top_bar_enabled', false );
+$top_bar_text    = (string) $acf_get_option( 'top_bar_text', 'Get info' );
+$header_phone    = $acf_get_option( 'header_phone', '' );
 ?>
 
 <?php if ($top_bar_enabled): ?>
@@ -69,8 +77,8 @@ $header_phone = get_field('header_phone', 'option');
         <!-- Logo -->
         <div class="header-logo">
             <?php
-            $header_logo = get_field('header_logo', 'option');
-            $mobile_logo = get_field('mobile_logo', 'option');
+            $header_logo = $acf_get_option( 'header_logo', null );
+            $mobile_logo = $acf_get_option( 'mobile_logo', null );
             
             // Determine which logo to use for mobile
             $mobile_logo_src = $mobile_logo ? $mobile_logo : $header_logo;
