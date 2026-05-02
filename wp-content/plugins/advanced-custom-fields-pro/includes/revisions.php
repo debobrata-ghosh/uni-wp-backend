@@ -5,13 +5,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'acf_revisions' ) ) :
+	#[AllowDynamicProperties]
 	class acf_revisions {
 
-		/**
-		 * An array to cache post IDs for revisions.
-		 * @var array
-		 */
-		public $cache = array();
+		// vars
+		var $cache = array();
 
 		/**
 		 * Constructs the acf_revisions class.

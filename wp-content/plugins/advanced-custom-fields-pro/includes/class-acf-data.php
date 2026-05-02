@@ -5,43 +5,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'ACF_Data' ) ) :
+	#[AllowDynamicProperties]
 	class ACF_Data {
 
-		/**
-		 * Unique identifier.
-		 * @var string
-		 */
-		public $cid = '';
+		/** @var string Unique identifier. */
+		var $cid = '';
 
-		/**
-		 * Storage for data.
-		 * @var array
-		 */
-		public $data = array();
+		/** @var array Storage for data. */
+		var $data = array();
 
-		/**
-		 * Storage for data aliases.
-		 * @var array
-		 */
-		public $aliases = array();
+		/** @var array Storage for data aliases. */
+		var $aliases = array();
 
-		/**
-		 * Enables unique data per site.
-		 * @var boolean
-		 */
-		public $multisite = false;
-
-		/**
-		 * Storage for multisite data.
-		 * @var array
-		 */
-		public $site_data = array();
-
-		/**
-		 * Storage for multisite aliases.
-		 * @var array
-		 */
-		public $site_aliases = array();
+		/** @var boolean Enables unique data per site. */
+		var $multisite = false;
 
 		/**
 		 * __construct

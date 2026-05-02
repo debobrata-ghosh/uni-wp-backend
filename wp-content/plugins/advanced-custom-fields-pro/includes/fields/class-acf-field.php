@@ -1,6 +1,7 @@
 <?php
 
 if ( ! class_exists( 'acf_field' ) ) :
+	#[AllowDynamicProperties]
 	class acf_field {
 
 		// field information properties.
@@ -20,12 +21,6 @@ if ( ! class_exists( 'acf_field' ) ) :
 			'escaping_html' => false, // Set true when a field handles its own HTML escaping in format_value
 			'required'      => true,
 		);
-
-		// Additional properties used by field types
-		public $default_values = array();
-		public $have_rows      = '';
-		public $width          = '';
-		public $height         = '';
 
 		/**
 		 * Initializes the `acf_field` class. To initialize a field type that is

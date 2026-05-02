@@ -5,22 +5,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'acf_admin_tools' ) ) :
+	#[AllowDynamicProperties]
 	class acf_admin_tools {
 
 
-		/**
-		 * Contains an array of admin tool instances.
-		 *
-		 * @var array
-		 */
-		public $tools = array();
+		/** @var array Contains an array of admin tool instances */
+		var $tools = array();
 
-		/**
-		 * The active tool.
-		 *
-		 * @var string
-		 */
-		public $active = '';
+
+		/** @var string The active tool */
+		var $active = '';
+
 
 		/**
 		 * __construct
