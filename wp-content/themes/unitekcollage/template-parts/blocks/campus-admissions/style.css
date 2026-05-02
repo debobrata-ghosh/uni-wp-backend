@@ -1,0 +1,230 @@
+/* Editor overflow fix for campus admissions block */
+.block-editor-block-list__layout .campus-admissions-block,
+.editor-styles-wrapper .campus-admissions-block,
+.wp-block-acf-campus-admissions .campus-admissions-block {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.campus-admissions-block {
+    background-color: #F0F1F2;
+    padding: 80px 150px;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.campus-admissions-content {
+    max-width: 1728px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Align content with 1728px container on large screens */
+@media (min-width: 1729px) {
+    .campus-admissions-block {
+        padding-left: calc((100vw - 1728px) / 2 + 150px);
+        padding-right: calc((100vw - 1728px) / 2 + 150px);
+    }
+}
+
+/* Prevent overflow on medium-large desktop screens */
+@media (min-width: 1281px) and (max-width: 1728px) {
+    .campus-admissions-block {
+        padding-left: min(150px, 10vw);
+        padding-right: min(150px, 10vw);
+    }
+}
+
+.campus-admissions-heading {
+    font-size: 40px;
+    font-weight: 400;
+    color: #28323C;
+    margin: 0 0 24px 0;
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.campus-admissions-description {
+    font-size: 16px;
+    font-weight: 300;
+    color: #28323C;
+    margin: 0 0 40px 0;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.campus-admissions-requirements {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+}
+
+.campus-admissions-requirement-card {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0px 2px 8px 0px rgba(40, 50, 60, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    box-sizing: border-box;
+}
+
+.campus-admissions-requirement-card:hover {
+    box-shadow: 0px 4px 12px 0px rgba(40, 50, 60, 0.15);
+    transform: translateY(-2px);
+}
+
+.campus-admissions-requirement-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #58A430;
+    margin: 0 0 12px 0;
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.campus-admissions-requirement-description {
+    font-size: 16px;
+    font-weight: 300;
+    color: #28323C;
+    margin: 0;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Block Alignment Support */
+.campus-admissions-block.alignwide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.campus-admissions-block.alignfull {
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+/* Fix for editor - prevent overflow */
+.block-editor-block-list__layout .campus-admissions-block.alignfull,
+.editor-styles-wrapper .campus-admissions-block.alignfull,
+.wp-block-acf-campus-admissions .campus-admissions-block.alignfull {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Responsive Design */
+@media (min-width: 1024px) and (max-width: 1280px) {
+    .campus-admissions-block {
+        padding: 80px min(60px, 5vw);
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .campus-admissions-block {
+        padding: 80px min(50px, 6vw);
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .campus-admissions-requirements {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .campus-admissions-block {
+        padding: 60px 16px;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .campus-admissions-heading {
+        font-size: 32px;
+        line-height: 1.25;
+        margin-bottom: 20px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .campus-admissions-description {
+        margin-bottom: 32px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .campus-admissions-requirements {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .campus-admissions-block {
+        padding: 40px 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .campus-admissions-heading {
+        font-size: clamp(24px, 6vw, 32px);
+    }
+    
+    .campus-admissions-requirements {
+        gap: 16px;
+    }
+    
+    .campus-admissions-requirement-card {
+        padding: 20px;
+    }
+}
+
+/* Extra small devices - prevent any overflow */
+@media (max-width: 320px) {
+    .campus-admissions-block {
+        padding: 32px 12px;
+    }
+    
+    .campus-admissions-requirements {
+        gap: 12px;
+    }
+}
+
+/* Editor Preview Styles */
+.wp-block-acf-campus-admissions .campus-admissions-block {
+    border: 2px dashed #ccc;
+    position: relative;
+}
+
+.wp-block-acf-campus-admissions .campus-admissions-block::after {
+    content: "📋 Admissions Requirements - Requirement cards grid";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 8px 12px;
+    font-size: 11px;
+    border-radius: 4px;
+    z-index: 10;
+    font-weight: 500;
+    max-width: 280px;
+    text-align: center;
+    line-height: 1.3;
+}

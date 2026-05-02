@@ -66,6 +66,23 @@ body {
     font-size: 16px;
 }
 
+.wp-block-list{
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+.wp-block-unitek-college-full-width-container p {
+    padding-bottom: 20px;
+}
+
+.wp-block-unitek-college-full-width-container a {
+    color: #4a8f28;
+    text-decoration: none;
+    
+}
+.wp-block-unitek-college-full-width-container a:hover {
+    color: #074975;
+    text-decoration: underline;
+}
 /* ===================================
    2. WORDPRESS CORE STYLES
    =================================== */
@@ -313,7 +330,8 @@ main > .container {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    max-height: 200px;
+    position: relative;
+    box-sizing: border-box;
 }
 
 
@@ -851,7 +869,7 @@ h1, h2, h3, h4, h5, h6 {
    =================================== */
 
 /* Hide all submenus by default - Desktop only */
-@media (min-width: 769px) {
+@media (min-width: 871px) {
     .nav-list .sub-menu {
         display: none;
         opacity: 0;
@@ -863,7 +881,7 @@ h1, h2, h3, h4, h5, h6 {
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
         z-index: 1000;
-        min-width: 200px;
+        min-width: 220px; /* Increased min-width to accommodate longer text like "Financia Aid Overview" */
         top: 100%;
         left: 0;
         transform: translateY(50px); /* visually creates spacing without dead zone */
@@ -881,8 +899,11 @@ h1, h2, h3, h4, h5, h6 {
         text-decoration: none;
         font-size: 14px;
         display: block;
-        padding: 8px 0;
+        padding: 8px 20px;
         transition: color 0.2s ease;
+        white-space: nowrap; /* Prevent text wrapping to multiple lines */
+        overflow: hidden; /* Hide overflow text if needed */
+        text-overflow: ellipsis; /* Show ellipsis if text is too long */
     }
     
     .nav-list .sub-menu a:hover {
@@ -893,14 +914,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Regular Submenu Styles - Desktop only */
-@media (min-width: 769px) {
+@media (min-width: 871px) {
     /* Only show submenu styles for items that have children */
     .header-menu .menu-item-has-children .sub-menu {
         position: absolute;
         top: 100%;
         left: 0;
         background: #FFFFFF;
-        min-width: 200px;
+        min-width: 220px; /* Increased min-width to accommodate longer text like "Financia Aid Overview" */
         padding: 8px 0;
         margin-top: 8px;
         display: none; /* Hidden by default */
@@ -937,6 +958,7 @@ h1, h2, h3, h4, h5, h6 {
         font-weight: 400;
         transition: color 0.2s ease;
         line-height: 1.5;
+        white-space: nowrap; /* Prevent text wrapping to multiple lines */
     }
     
     .header-menu .menu-item-has-children .sub-menu a:hover {
@@ -946,11 +968,146 @@ h1, h2, h3, h4, h5, h6 {
     .header-menu .menu-item-has-children .sub-menu a::after {
         display: none;
     }
+    
+    /* 3rd Level Submenu Styles - Support both nav-list and header-menu */
+    .nav-list .sub-menu .sub-menu,
+    .header-menu .sub-menu .sub-menu {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        margin-left: 4px; /* Small gap to prevent accidental hover loss */
+        background: #FFFFFF;
+        min-width: 200px;
+        padding: 8px 0;
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-5px);
+        transition: opacity 0.15s ease, visibility 0.15s ease, transform 0.15s ease; /* Faster transition */
+        z-index: 1001;
+        list-style: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        /* border-radius: 6px; */
+    }
+    
+    /* Ensure 2nd level menu items with children are positioned relatively */
+    .nav-list .sub-menu .menu-item-has-children,
+    .header-menu .sub-menu .menu-item-has-children {
+        position: relative;
+    }
+    
+    /* Add right arrow icon to 2nd level menu items that have children (3rd level) */
+    .nav-list .sub-menu > .menu-item-has-children > a,
+    .header-menu .sub-menu > .menu-item-has-children > a {
+        padding-right: 32px; /* Extra padding on right for arrow */
+        position: relative; /* For absolute positioning of arrow */
+        white-space: nowrap; /* Prevent text wrapping to multiple lines */
+        overflow: hidden; /* Hide overflow text if needed */
+        text-overflow: ellipsis; /* Show ellipsis if text is too long */
+    }
+    
+    .nav-list .sub-menu > .menu-item-has-children > a::before,
+    .header-menu .sub-menu > .menu-item-has-children > a::before {
+        content: '→';
+        display: inline-block;
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6B7280;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1;
+        transition: color 0.2s ease, transform 0.2s ease;
+        pointer-events: none; /* Prevent arrow from interfering with hover */
+    }
+    
+    /* Change arrow color on hover */
+    .nav-list .sub-menu > .menu-item-has-children > a:hover::before,
+    .header-menu .sub-menu > .menu-item-has-children > a:hover::before {
+        color: #0072CE;
+    }
+    
+    /* Create invisible bridge between 2nd level item and 3rd level menu */
+    /* This prevents hover loss when moving mouse to 3rd level */
+    .nav-list .sub-menu > .menu-item-has-children::after,
+    .header-menu .sub-menu > .menu-item-has-children::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -4px; /* Extend to cover the gap */
+        width: 4px;
+        height: 100%;
+        background: transparent;
+        z-index: 1000; /* Below 3rd level menu but above 2nd level */
+    }
+    
+    .nav-list .sub-menu .sub-menu li,
+    .header-menu .sub-menu .sub-menu li {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        list-style: none;
+    }
+    
+    .nav-list .sub-menu .sub-menu a,
+    .header-menu .sub-menu .sub-menu a {
+        display: block;
+        padding: 8px 16px;
+        color: #374151;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 400;
+        transition: color 0.2s ease;
+        line-height: 1.5;
+    }
+    
+    .nav-list .sub-menu .sub-menu a:hover,
+    .header-menu .sub-menu .sub-menu a:hover {
+        color: #0072CE;
+    }
+    
+    /* Show 3rd level submenu ONLY when hovering directly over the 2nd level parent item */
+    /* This prevents 3rd level from showing when hovering over 1st level items */
+    .nav-list .sub-menu > .menu-item-has-children:hover > .sub-menu,
+    .nav-list .sub-menu > .menu-item-has-children:focus-within > .sub-menu,
+    .header-menu .sub-menu > .menu-item-has-children:hover > .sub-menu,
+    .header-menu .sub-menu > .menu-item-has-children:focus-within > .sub-menu {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(0) !important;
+    }
+    
+    /* Keep 3rd level submenu visible when hovering over it */
+    .nav-list .sub-menu .sub-menu:hover,
+    .header-menu .sub-menu .sub-menu:hover {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(0) !important;
+    }
+    
+    /* Ensure 2nd level menu stays open when hovering over 3rd level items */
+    /* But only when hovering over the specific 2nd level item, not the 1st level */
+    .nav-list .sub-menu > .menu-item-has-children:hover .sub-menu,
+    .nav-list .sub-menu > .menu-item-has-children .sub-menu:hover,
+    .header-menu .sub-menu > .menu-item-has-children:hover .sub-menu,
+    .header-menu .sub-menu > .menu-item-has-children .sub-menu:hover {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(0) !important;
+    }
+    
+    /* 3rd level is hidden by default (display: none in base styles above) */
+    /* It will only show when hovering directly over 2nd level item with children */
+    /* No need for hide rules - the default state is hidden */
 }
 
 
 /* Show submenu on hover and focus for accessibility - Desktop only */
-@media (min-width: 769px) {
+@media (min-width: 871px) {
     /* Show submenu on hover with smooth animation */
     .nav-list .menu-item-has-children:hover > .sub-menu,
     .nav-list .menu-item-has-children:focus-within > .sub-menu {
@@ -960,27 +1117,62 @@ h1, h2, h3, h4, h5, h6 {
         transform: translateY(0); /* smooth animation upwards */
     }
     
-    /* Keep submenu visible when hovering over the submenu itself */
-    .nav-list .sub-menu:hover {
+    /* Keep 2nd level submenu visible when hovering over the submenu itself */
+    /* Use direct child selector to only affect 2nd level, not 3rd level */
+    .nav-list > .menu-item-has-children > .sub-menu:hover {
         display: block;
         opacity: 1;
         visibility: visible;
         transform: translateY(0); /* keep in final position */
     }
     
-    /* Ensure submenu stays visible when hovering over parent or submenu */
-    .nav-list .menu-item-has-children:hover .sub-menu,
-    .nav-list .menu-item-has-children .sub-menu:hover {
+    /* Ensure 2nd level submenu stays visible when hovering over 1st level parent */
+    /* Use direct child selector to only affect 2nd level, not 3rd level */
+    .nav-list > .menu-item-has-children:hover > .sub-menu,
+    .nav-list > .menu-item-has-children > .sub-menu:hover {
         display: block;
         opacity: 1;
         visibility: visible;
         transform: translateY(0); /* smooth animation upwards */
     }
     
+    /* Show 3rd level ONLY when hovering directly over the 2nd level item with children */
+    /* Use direct child selector to prevent showing when hovering over 1st level */
+    .nav-list .sub-menu > .menu-item-has-children:hover > .sub-menu,
+    .nav-list .sub-menu > .menu-item-has-children:focus-within > .sub-menu {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(0) !important;
+    }
+    
+    /* Keep 3rd level visible when hovering over it OR the parent 2nd level item */
+    .nav-list .sub-menu .sub-menu:hover,
+    .nav-list .sub-menu > .menu-item-has-children:hover .sub-menu,
+    .nav-list .sub-menu > .menu-item-has-children .sub-menu:hover,
+    /* Keep visible when hovering over parent 2nd level item even if mouse moves to 3rd level */
+    .nav-list .sub-menu > .menu-item-has-children:hover > .sub-menu,
+    .nav-list .sub-menu > .menu-item-has-children:focus-within > .sub-menu {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(0) !important;
+    }
+    
+    
+    /* Explicitly hide 3rd level when hovering over 1st level item ONLY */
+    /* This rule has lower specificity than the show rule above, so it won't override when hovering over 2nd level */
+    /* The key is: hide rule targets 1st level hover, show rule targets 2nd level hover */
+    .nav-list > .menu-item-has-children:hover .sub-menu > li:not(:hover) .sub-menu {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+    
 }
 
 /* Ensure parent menu items are positioned relatively for absolute submenu positioning - Desktop only */
-@media (min-width: 769px) {
+@media (min-width: 871px) {
     .nav-list .menu-item-has-children {
         position: relative;
     }
@@ -1035,7 +1227,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Hide mega menu modal on mobile */
-@media (max-width: 1024px) {
+@media (max-width: 870px) {
     .mega-menu-modal {
         display: none !important;
     }
@@ -1432,38 +1624,61 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Mega Menu Footer */
 .mega-menu-footer {
-    background-color: #374151;
+    background-color: #28323C;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 32px;
-    border-radius: 0 0 12px 12px;
+    padding: 18px 32px;
+    border-radius: 8px;
+    min-height: 62px;
 }
 
 .mega-menu-footer-text {
     color: #FFFFFF;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.444em;
     margin: 0;
+    font-family: 'Outfit', sans-serif;
 }
 
 .mega-menu-cta {
-    background-color: #10B981;
-    color: #FFFFFF;
+    background-color: transparent;
+    color: #C4E830 !important;
     border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
+    padding: 0;
+    border-radius: 0;
     font-size: 16px;
     font-weight: 500;
+    line-height: 1.25em;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: background-color 0.2s ease;
+    transition: color 0.2s ease;
     text-decoration: none;
+    font-family: 'Outfit', sans-serif;
+    white-space: nowrap;
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+    z-index: 1;
+}
+
+.mega-menu-cta svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    stroke: currentColor;
+    fill: none;
 }
 
 .mega-menu-cta:hover {
-    background-color: #059669;
+    color: #B4E850;
+}
+
+.mega-menu-cta:hover svg {
+    stroke: currentColor;
 }
 
 /* Mega Menu Trigger */
@@ -1472,7 +1687,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Desktop styles - hide mobile submenu */
-@media (min-width: 1025px) {
+@media (min-width: 871px) {
     .mega-mobile-submenu {
         display: none !important;
     }
@@ -1556,6 +1771,8 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 1728px;
     margin: 0 auto;
     padding: 0 150px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .news-headline {
@@ -1564,12 +1781,18 @@ h1, h2, h3, h4, h5, h6 {
     text-align: left;
     color: #0f0f10;
     margin-bottom: 48px;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .news-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 32px;
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .news-card {
@@ -1580,6 +1803,9 @@ h1, h2, h3, h4, h5, h6 {
     min-height: 400px;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .news-card:hover {
@@ -1587,7 +1813,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .news-image {
-    height: 200px;
+    height: 300px;
     width: 100%;
     background: #e0e0e0;
     display: block;
@@ -1595,8 +1821,8 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 0;
     position: relative;
     box-sizing: border-box;
-    max-height: 200px;
-    min-height: 200px;
+    max-height: 300px;
+    min-height: 300px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -1606,6 +1832,8 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
 }
 
 .news-image img {
@@ -1619,6 +1847,9 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .news-content {
@@ -1633,13 +1864,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .news-title {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 400;
     color: #1976D2;
     margin-bottom: 12px;
     line-height: 1.4;
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
+    padding-top: 10px;
 }
 
 .news-date {
@@ -1663,7 +1895,7 @@ h1, h2, h3, h4, h5, h6 {
    =================================== */
 .search-overlay {
     position: fixed;
-    top: 80px;
+    top: 40px;
     left: 0;
     width: 100%;
     height: 176px;
@@ -1967,6 +2199,54 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: underline;
 }
 
+/* Tablet Responsive (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .search-overlay {
+        height: auto;
+        min-height: 176px;
+        padding: 20px 0;
+    }
+    
+    .search-overlay-container {
+        padding: 0 40px;
+        max-width: 100%;
+    }
+    
+    .search-overlay-content {
+        max-width: 100%;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+    
+    .search-logo {
+        top: 0px;
+        left: 40px;
+    }
+    
+    .search-logo-icon {
+        width: 120px;
+        height: 40px;
+    }
+    
+    .search-prompt {
+        margin-bottom: 20px;
+    }
+    
+    .search-prompt-text {
+        font-size: 28px;
+        line-height: 1.3em;
+    }
+    
+    .search-form-overlay {
+        max-width: 100%;
+    }
+    
+    .search-close-btn {
+        top: 0px;
+        right: 40px;
+    }
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .search-overlay {
@@ -2231,7 +2511,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-@media (min-width: 769px) and (max-width: 1199px) {
+@media (min-width: 871px) and (max-width: 1199px) {
 
     .header-cta {   
         display: none;
@@ -2328,9 +2608,111 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===================================
-   MOBILE - 768px and below
+   TABLET - 871px to 1024px
    =================================== */
-@media (max-width: 768px) {
+@media (min-width: 871px) and (max-width: 1024px) {
+    /* Tablet styles here */
+    .container,
+    header .container,
+    footer .container,
+    section > .container,
+    section .container,
+    main > .container,
+    .news .container {
+        padding: 0 50px;
+    }
+    
+    .top-bar-container {
+        padding: 0 50px;
+    }
+    
+    .header-container {
+        padding: 0 50px;
+    }
+    
+    .footer-container {
+        padding: 0 50px;
+    }
+    
+    
+    /* 3rd Level Submenu Styles for Tablet - Hide by default */
+    .nav-list .sub-menu .sub-menu,
+    .header-menu .sub-menu .sub-menu {
+        position: static !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transform: none !important;
+        background: transparent !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        list-style: none !important;
+        display: block !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    /* 3rd level menu items - indented and light blue */
+    .nav-list .sub-menu .sub-menu li,
+    .header-menu .sub-menu .sub-menu li {
+        border-bottom: none;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    /* 3rd level menu links - light blue color, extra indentation, smaller font */
+    .nav-list .sub-menu .sub-menu a,
+    .header-menu .sub-menu .sub-menu a {
+        display: block !important;
+        padding: 2px 0 2px 40px !important; /* Minimal top/bottom padding, increased left padding */
+        margin: 0 !important; /* No margin for compact spacing */
+        width: 100%;
+        font-size: 14px !important; /* Reduced font size for better hierarchy */
+        font-weight: 300 !important;
+        line-height: 1.4em !important; /* Tighter line height */
+        color: #50D8FF !important; /* Light blue color matching the image */
+        text-decoration: none !important;
+        transition: color 0.2s ease !important;
+        position: relative !important;
+        white-space: normal; /* Allow text to wrap if needed */
+    }
+    
+    /* 3rd level menu links hover state */
+    .nav-list .sub-menu .sub-menu a:hover,
+    .header-menu .sub-menu .sub-menu a:hover {
+        background-color: transparent !important;
+        color: #FFFFFF !important; /* White on hover */
+    }
+    
+    /* Remove any icons from 3rd level links */
+    .nav-list .sub-menu .sub-menu a::before,
+    .nav-list .sub-menu .sub-menu a::after,
+    .header-menu .sub-menu .sub-menu a::before,
+    .header-menu .sub-menu .sub-menu a::after {
+        display: none !important;
+    }
+    
+    /* Show 3rd level submenu when parent 2nd level item is active (toggled via arrow) */
+    .nav-list .sub-menu > .menu-item-has-children.active .sub-menu,
+    .header-menu .sub-menu > .menu-item-has-children.active .sub-menu {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        max-height: 500px !important;
+        padding: 0 !important;
+        margin-top: 8px !important; /* Reduced top margin for tighter spacing */
+        overflow: visible !important;
+    }
+}
+
+/* ===================================
+   MOBILE - 870px and below
+   =================================== */
+@media (max-width: 870px) {
+    
     /* Container Padding */
     .container,
     header .container,
@@ -2646,6 +3028,56 @@ h1, h2, h3, h4, h5, h6 {
     .header-menu .sub-menu a:hover {
         background-color: transparent;
         color: #FFFFFF;
+    }
+    
+    /* 3rd Level Submenu Styles for Mobile/Tablet - Match 2nd image design */
+    /* Show 3rd level submenu when parent 2nd level item is active */
+    .header-menu .sub-menu > .menu-item-has-children.active .sub-menu {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        max-height: none !important;
+        padding: 0 !important;
+        margin-top: 16px !important;
+        position: static !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    
+    /* 3rd level menu items - indented and light blue */
+    .header-menu .sub-menu .sub-menu li {
+        border-bottom: none;
+        margin: 0 0 16px 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    /* 3rd level menu links - light blue color, more indented */
+    .header-menu .sub-menu .sub-menu a {
+        display: block !important;
+        padding: 0 0 0 36px !important; /* More indentation than 2nd level */
+        margin: 0 !important;
+        width: 100%;
+        font-size: 16px !important;
+        font-weight: 300 !important;
+        line-height: 1.5em !important;
+        color: #50D8FF !important; /* Light blue color matching the image */
+        text-decoration: none !important;
+        transition: color 0.2s ease !important;
+        position: relative !important;
+        white-space: normal; /* Allow text to wrap if needed */
+    }
+    
+    /* 3rd level menu links hover state */
+    .header-menu .sub-menu .sub-menu a:hover {
+        background-color: transparent !important;
+        color: #FFFFFF !important; /* White on hover */
+    }
+    
+    /* Remove any icons from 3rd level links */
+    .header-menu .sub-menu .sub-menu a::before,
+    .header-menu .sub-menu .sub-menu a::after {
+        display: none !important;
     }
     
     
@@ -2991,7 +3423,7 @@ h1, h2, h3, h4, h5, h6 {
     
     .nav-list .sub-menu a:hover {
         background-color: transparent;
-        color: #0072CE;
+        /* color: #0072CE; */
     }
     
     /* Remove any focus outlines and borders on submenu links */
@@ -3010,6 +3442,79 @@ h1, h2, h3, h4, h5, h6 {
     .nav-list .sub-menu li::before,
     .nav-list .sub-menu li::after {
         display: none !important;
+    }
+    
+    
+    /* 3rd Level Submenu Styles for Mobile/Tablet - Hide by default */
+    .nav-list .sub-menu .sub-menu,
+    .header-menu .sub-menu .sub-menu {
+        position: static !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transform: none !important;
+        background: transparent !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        list-style: none !important;
+        display: block !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    /* 3rd level menu items - indented and light blue */
+    .nav-list .sub-menu .sub-menu li,
+    .header-menu .sub-menu .sub-menu li {
+        border-bottom: none;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    /* 3rd level menu links - light blue color, extra indentation, smaller font */
+    .nav-list .sub-menu .sub-menu a,
+    .header-menu .sub-menu .sub-menu a {
+        display: block !important;
+        padding: 2px 0 2px 55px !important; /* Minimal top/bottom padding, increased left padding */
+        margin: 0 !important; /* No margin for compact spacing */
+        width: 100%;
+        font-size: 14px !important; /* Reduced font size for better hierarchy */
+        font-weight: 300 !important;
+        line-height: 1.4em !important; /* Tighter line height */
+        color: #50D8FF !important; /* Light blue color matching the image */
+        text-decoration: none !important;
+        transition: color 0.2s ease !important;
+        position: relative !important;
+        white-space: normal; /* Allow text to wrap if needed */
+    }
+    
+    /* 3rd level menu links hover state */
+    .nav-list .sub-menu .sub-menu a:hover,
+    .header-menu .sub-menu .sub-menu a:hover {
+        background-color: transparent !important;
+        color: #FFFFFF !important; /* White on hover */
+    }
+    
+    /* Remove any icons from 3rd level links */
+    .nav-list .sub-menu .sub-menu a::before,
+    .nav-list .sub-menu .sub-menu a::after,
+    .header-menu .sub-menu .sub-menu a::before,
+    .header-menu .sub-menu .sub-menu a::after {
+        display: none !important;
+    }
+    
+    /* Show 3rd level submenu when parent 2nd level item is active (toggled via arrow) */
+    .nav-list .sub-menu > .menu-item-has-children.active .sub-menu,
+    .header-menu .sub-menu > .menu-item-has-children.active .sub-menu {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        max-height: 500px !important;
+        padding: 0 !important;
+        margin-top: 8px !important; /* Reduced top margin for tighter spacing */
+        overflow: visible !important;
     }
     
     .header-actions {
@@ -3056,7 +3561,7 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .news .container {
-        padding: 0 20px;
+        padding: 0 16px;
     }
     
     .news {
@@ -3066,11 +3571,13 @@ h1, h2, h3, h4, h5, h6 {
     .news-headline {
         font-size: 24px;
         margin-bottom: 32px;
+        padding-left: 0;
     }
     
     .news-card {
-        max-width: 376px;
-        margin: 0 auto;
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
         min-height: auto;
     }
     
@@ -3094,6 +3601,10 @@ h1, h2, h3, h4, h5, h6 {
         max-width: 200px;
     }
 }
+
+
+
+
 
 /* ===================================
    SMALL MOBILE - 480px and below
@@ -3132,11 +3643,11 @@ h1, h2, h3, h4, h5, h6 {
     .advantage-headline,
     .support-headline,
     .accreditations-headline,
-    .contact-headline,
-    .news-headline {
+    .contact-headline {
         font-size: 28px;
     }
     
+    /* News Section - Same styles for all screens below 480px */
     .news {
         padding: 48px 0;
     }
@@ -3148,6 +3659,7 @@ h1, h2, h3, h4, h5, h6 {
     .news-headline {
         font-size: 20px;
         margin-bottom: 24px;
+        /* padding-left: 15px; */
     }
     
     .news-grid {
@@ -3155,8 +3667,9 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .news-card {
-        /* max-width: 100%; */
         width: 100%;
+        max-width: 100%;
+        margin: 0;
     }
     
     .news-image {
@@ -3183,6 +3696,68 @@ h1, h2, h3, h4, h5, h6 {
     
     .read-more-link {
         font-size: 13px;
+    }
+    
+    .program-nav {
+        flex-direction: column;
+        gap: 2px;
+    }
+}
+
+/* ===================================
+   TABLET PORTRAIT / LARGE MOBILE - 481px to 768px
+   =================================== */
+@media (min-width: 481px) and (max-width: 768px) {
+    .news {
+        padding: 56px 0;
+    }
+    
+    .news .container {
+        padding: 0 16px;
+    }
+    
+    .news-headline {
+        font-size: 22px;
+        margin-bottom: 28px;
+        padding-left: 0;
+    }
+    
+    .news-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .news-card {
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+        min-height: auto;
+    }
+    
+    .news-image {
+        height: 220px;
+        min-height: 220px;
+        max-height: 220px;
+    }
+    
+    .news-content {
+        padding: 18px;
+    }
+    
+    .news-title {
+        font-size: 16px;
+    }
+    
+    .news-date {
+        font-size: 14px;
+    }
+    
+    .news-snippet {
+        font-size: 14px;
+    }
+    
+    .read-more-link {
+        font-size: 14px;
     }
     
     .program-nav {
@@ -3438,7 +4013,7 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.25em;
     text-decoration: none;
     transition: all 0.2s ease;
-    padding: 14px 0px;
+    padding: 50px 0px;
     border-radius: 8px;
 }
 
@@ -4216,6 +4791,25 @@ h1, h2, h3, h4, h5, h6 {
     .blog-disclaimer__text {
         margin-bottom: 12px;
     }
+    
+    /* Responsive image styles for mobile */
+    .wp-image-84333 {
+        float: none !important;
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 auto 1em;
+        display: block;
+    }
+    
+    .alignright {
+        float: none !important;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+.wp-image-84333 {
+    float: none;
 }
 
 /* Blog Specific - Small Mobile (480px and below) */
@@ -4737,6 +5331,8 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 1728px;
     margin: 0 auto;
     padding: 0 150px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .Related-Posts-headline {
@@ -5342,4 +5938,263 @@ h1, h2, h3, h4, h5, h6 {
     .Related-Posts-card .article-card__footer {
         font-size: 13px;
     }
+}
+
+/* Container for the whole block */
+.disability-services-contact-info {
+    
+    font-size: 16px;
+    line-height: 1.5;
+    color: #000;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* Each column */
+.disability-services-contact-col {
+    display: flex;
+    align-items: center;
+    gap: 8px;                     /* space between "Phone:" / "Email:" and the value */
+}
+
+/* Bold labels */
+.disability-services-contact-col strong {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* Links styling - blue, underlined on hover only */
+.disability-services-contact-col a {
+    color: #4a8f28;
+    text-decoration: none;
+}
+
+.disability-services-contact-col a:hover,
+.disability-services-contact-col a:focus {
+    text-decoration: underline;
+}
+
+/* Desktop layout - side by side and centered */
+@media (min-width: 1025px) {
+    .disability-services-contact-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 80px;                   /* space between Phone and Email */
+    }
+    
+    .disability-services-contact-col {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+}
+
+/* Mobile & Tablet layout - stacked and left-aligned */
+@media (max-width: 768px) {
+    .disability-services-contact-info {
+        display: block;              /* forces vertical stacking */
+        text-align: left;            /* left-aligned */
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .disability-services-contact-col {
+        margin-bottom: 12px;         /* space between Phone and Email lines */
+    }
+    
+    .disability-services-contact-col:last-child {
+        margin-bottom: 0;
+    }
+}
+/* new changes for career page end */
+.career-service-boxes{
+        background: #f1f2f2;
+    padding: 20px
+}
+.career-service-boxes-title{
+    border-bottom: 1px solid #424142;
+    padding-bottom: 5px;
+}
+.career-service-icons i , .career-service-icons a{
+color: #074975;
+}
+.career-service-icons i {
+    padding-right: 10px;
+}
+.career-service-right-box{
+    border-left: 3px solid #004876;
+    padding-left: 50px;
+}
+.career-service-list-color li a{
+    color: #074975;
+}
+
+.student-transcripts {
+    display: block;
+    border: 1px solid #ebebeb;
+}
+.student-transcripts-inner{
+    clear: both;
+    line-height: 1.65em;
+}
+.transcript-steps-inner{
+    display: flex;
+    align-items: stretch;
+    align-content: stretch;
+    border: 3px solid;
+    border-color: #074a75;
+}
+.transcripts-bold{
+    display: flex;
+    flex: none;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 5em;
+    line-height: 100%;
+    font-weight: bold;
+    color: #074a75;
+    padding: 10px;
+    border-right: 3px solid #074a75;
+}
+.transcripts-bold-inner{
+    display: flex;
+    flex: 1;
+    align-items: center;
+    background: #FC8300;
+    padding: 20px;
+    color: #393939;
+    font-weight: 600;
+}
+.request-transcripts-btn{padding-top: 40px;padding-bottom: 40px;}
+.provo-transcripts-inner{    border: 1px solid;
+    padding: 20px;}
+.field-italic-marked{
+    font-style: italic;
+}
+.student-application-main{
+    display: none;
+}
+
+@media screen and (min-width: 767px) {
+    .custom-container-full-size {
+        max-width: 1728px;
+        padding: 40px 150px;
+        margin: 0px auto;
+    }
+}
+@media (max-width: 768px) {
+    .custom-container-full-size {
+        padding: 20px;
+    }
+}
+.av_textblock_section a{color:#000}
+.program-navigation-bar-nav li:hover{
+    background: #fff;
+}
+.program-navigation-bar-nav li{
+    padding: 10px;
+}
+.program-navigation-bar-nav li:target{
+        background-color: #f0f0f0;
+    border-left: 4px solid #007BFF;
+    transition: all 0.3s ease;
+}
+.main-color-table tr:nth-child(odd){
+background:#f8f8f8
+}
+.main-color-table tr:nth-child(even){
+background:#ffffff
+}
+/* new changes for career page end */
+
+/* sitemap root list */
+.html-sitemap ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+/* first level items */
+.html-sitemap > ul > li {
+  margin: 4px 0;
+}
+
+/* child pages (one level deeper) */
+.html-sitemap ul ul li {
+  margin: 2px 0;
+  padding-left: 20px;   /* indentation for inner pages */
+  font-size: 0.95em;
+}
+
+/* even deeper levels if needed */
+.html-sitemap ul ul ul li {
+  padding-left: 40px;
+}
+.html-sitemap ul {
+  list-style-type: disc;        /* Shows bullet points */
+  list-style-position: outside; /* Keeps bullets outside the content */
+  padding-left: 20px;         /* Adds space for bullets */
+}
+.html-sitemap ul ul,
+.html-sitemap ul ul ul {
+  list-style: disc outside;
+}
+.html-sitemap ul {
+  list-style: disc outside;
+  padding-left: 20px; /* Ensures bullets are visible */
+}
+
+/* sitemap root list */
+.html-sitemap ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+/* first level items */
+.html-sitemap > ul > li {
+  margin: 4px 0;
+}
+
+/* child pages (one level deeper) */
+.html-sitemap ul ul li {
+  margin: 2px 0;
+  padding-left: 20px;   /* indentation for inner pages */
+  font-size: 0.95em;
+}
+
+/* even deeper levels if needed */
+.html-sitemap ul ul ul li {
+  padding-left: 40px;
+}
+.html-sitemap ul {
+  list-style-type: disc;        /* Shows bullet points */
+  list-style-position: outside; /* Keeps bullets outside the content */
+  padding-left: 20px;         /* Adds space for bullets */
+}
+.html-sitemap ul ul,
+.html-sitemap ul ul ul {
+  list-style: disc outside;
+}
+.html-sitemap ul {
+  list-style: disc outside;
+  padding-left: 20px; /* Ensures bullets are visible */
+} 
+@media only screen and (min-width: 1024px) {
+.va-benifits-custom{
+        padding-left: 93px;
+}
+}
+.custom_va-benifits-custom-new{
+    margin-left: 0px;
+}
+.custom_va-custom-custom-new{
+    margin-right: 0px;
+}
+@media (max-width: 600px) {
+.available-programs-mobile .wp-block-group {
+    justify-content: center;
+}
 }

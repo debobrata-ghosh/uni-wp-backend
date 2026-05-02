@@ -2,7 +2,9 @@
 // Get ACF field values
 $heading = get_field('get_started_heading');
 $description = get_field('get_started_description');
+$content_type = get_field('get_started_content_type');
 $image = get_field('get_started_image');
+$wysiwyg_content = get_field('get_started_wysiwyg');
 $cf7_form_id = get_field('get_started_cf7_form');
 
 // Validate required fields but do not block rendering/preview
@@ -153,14 +155,38 @@ $program_options = array(
             <?php endif; ?>
         </div>
         
-        <!-- Right Column - Image -->
+        <!-- Right Column - Image or WYSIWYG Content -->
         <div class="get-started-today-image">
-            <?php if ($image && !empty($image['url'])): ?>
-                <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt'] ?? 'Get Started Today'); ?>">
-            <?php else: ?>
-                <div class="get-started-today-image-placeholder">
-                    [ Image ]
+            <?php if ($content_type === 'wysiwyg' && $wysiwyg_content): ?>
+                <!-- Display WYSIWYG Content -->
+                <div class="get-started-today-wysiwyg-content">
+                    <?php 
+                    // Allow iframes and other HTML tags in WYSIWYG content
+                    $allowed_html = wp_kses_allowed_html('post');
+                    $allowed_html['iframe'] = array(
+                        'src'             => true,
+                        'height'          => true,
+                        'width'           => true,
+                        'frameborder'     => true,
+                        'allowfullscreen' => true,
+                        'style'           => true,
+                        'class'           => true,
+                        'id'              => true,
+                        'loading'         => true,
+                        'title'           => true,
+                    );
+                    echo wp_kses($wysiwyg_content, $allowed_html); 
+                    ?>
                 </div>
+            <?php elseif ($content_type === 'image' || !$content_type): ?>
+                <!-- Display Image -->
+                <?php if ($image && !empty($image['url'])): ?>
+                    <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt'] ?? 'Get Started Today'); ?>">
+                <?php else: ?>
+                    <div class="get-started-today-image-placeholder">
+                        [ Image ]
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>

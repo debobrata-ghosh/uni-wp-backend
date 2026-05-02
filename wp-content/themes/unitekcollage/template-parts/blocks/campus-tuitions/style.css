@@ -1,0 +1,93 @@
+/* Campus Tuitions Block Styles */
+.campus-tuitions-block {
+    display: flex;
+    align-items: flex-start;
+    background: #fff;
+    border-top: 3px solid #e5e5e5;
+}
+.campus-tuitions-block .sidebar {
+    background: #003b63;
+    padding: 40px 20px;
+    flex: 0 0 30%;
+    color: #fff;
+}
+.campus-tuitions-block .sidebar h2 {
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+.campus-tuitions-block .tabs-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.campus-tuitions-block .tab-item {
+    cursor: pointer;
+    padding: 15px 10px;
+    margin-bottom: 1px;
+    transition: all 0.3s;
+}
+.campus-tuitions-block .tab-item.active {
+    background: #fff;
+    color: #003b63;
+}
+.campus-tuitions-block .tab-item:not(.active) {
+    background: transparent;
+    color: #fff;
+}
+.campus-tuitions-block .tab-content {
+    flex: 1;
+    padding: 40px 50px;
+}
+.campus-tuitions-block .tab-panel {
+    display: none;
+}
+.campus-tuitions-block .tab-panel[data-index="0"] {
+    display: block;
+}
+.campus-tuitions-block .pathways-item {
+    border-bottom: 1px solid #d9d9d9;
+    padding: 15px 0;
+}
+.campus-tuitions-block .pathways-trigger {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+    color: #0071bb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+.campus-tuitions-block .pathways-trigger .arrow {
+    transition: transform 0.3s;
+}
+.campus-tuitions-block .pathways-panel {
+    display: none;
+    margin-top: 10px;
+}
+.campus-tuitions-block .pathways-panel.active {
+    display: block;
+}
+.campus-tuitions-block .pathways-panel div {
+    color: #444;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .campus-tuitions-block {
+        flex-direction: column;
+    }
+    .campus-tuitions-block .sidebar {
+        flex: 1;
+        width: 100%;
+    }
+    .campus-tuitions-block .tab-content {
+        padding: 20px;
+    }
+}
+

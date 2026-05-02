@@ -325,6 +325,12 @@
     }
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Tablet styles here */
+    .home-overview-content {
+        padding: 0 50px; /* 50px padding on both sides for tablet view */
+    }
+}
 
 @media (max-width: 768px) {
     .home-overview-block {

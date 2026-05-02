@@ -1,21 +1,65 @@
 /**
  * Hero Get Started Block - Frontend Styles
  * Multi-step form with campus and program selection
+ * 
+ * @package UnitekCollege
+ * @version 1.0.0
  */
 
-/* Hero Get Started Block Styles - Matching Figma Design */
+/* ===================================
+   1. BASE BLOCK STYLES
+   =================================== */
+
 .hero-get-started-block {
     width: 60%;
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #28323C; /* Base UI-Four from Figma */
     border-radius: 8px; /* 8px from Figma */
-    padding: 20px 20px;
+    padding: 20px;
     margin: -55px auto 0 auto;
     max-width: 1200px;
     box-sizing: border-box;
     position: relative;
     z-index: 10;
     box-shadow: 0px 4px 24px 0px rgba(40, 50, 60, 0.24); /* Card DS 24 from Figma */
+    overflow-x: hidden;
+    overflow-y: visible;
+}
+
+/* Extra Large Desktop (1401px and above) */
+@media (min-width: 1401px) {
+    .hero-get-started-block {
+        width: 60%;
+        max-width: 1200px;
+        padding: 20px 24px;
+    }
+    
+    .hero-get-started-content {
+        gap: 18px;
+        max-width: 100%;
+    }
+    
+    .hero-get-started-text {
+        font-size: 32px;
+        flex-shrink: 1;
+        min-width: 0;
+        max-width: 200px;
+    }
+    
+    .hero-get-started-form {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .hgs-row,
+    .hgs-step-row {
+        gap: 16px;
+        min-width: 0;
+    }
+    
+    .hgs-actions .hero-get-started-button {
+        min-width: 168px;
+    }
 }
 
 .hero-get-started-block.alignwide {
@@ -30,6 +74,10 @@
     margin-right: calc(50% - 50vw);
 }
 
+/* ===================================
+   2. CONTENT STRUCTURE
+   =================================== */
+
 .hero-get-started-content {
     display: flex;
     align-items: center;
@@ -39,10 +87,13 @@
     margin: 0 auto;
     width: 100%;
     min-height: 56px;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .hero-get-started-text {
-    flex-shrink: 0;
+    flex-shrink: 1;
     font-family: 'Outfit', sans-serif;
     font-size: 32px; /* Headline Regular 32 from Figma */
     font-weight: 400; /* Regular weight from Figma */
@@ -52,8 +103,12 @@
     padding: 0;
     display: flex;
     align-items: center;
-    min-width: fit-content;
+    min-width: 0;
+    max-width: 100%;
     height: 56px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .hero-get-started-form {
@@ -62,9 +117,16 @@
     gap: 16px;
     flex: 1;
     max-width: 700px;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
-/* Input and Select Styles - Matching Figma Design */
+/* ===================================
+   3. FORM ELEMENTS
+   =================================== */
+
+/* Inputs and Selects - Base Styles */
 .hero-get-started-select,
 .hgs-input, 
 .hgs-select {
@@ -82,32 +144,32 @@
     box-sizing: border-box;
 }
 
-/* When select/input has a value selected or filled, change background to transparent/dark and text to white */
-.hgs-select:has(option:checked:not([disabled]):not([value=""])) {
-    background-color: transparent; /* Transparent to show dark form background */
-    color: #ffffff; /* White text when value selected */
-    font-weight: 500; /* Body Medium 18 from Figma */
-}
-
-/* Populated input - transparent background with white text */
+/* Populated Input States */
 .hgs-input:not(:placeholder-shown):not([value=""]) {
     background-color: transparent; /* Transparent to show dark form background */
     color: #ffffff !important; /* Base UI-Light from Figma */
     font-weight: 500 !important; /* Body Medium 18 from Figma */
 }
 
-.hgs-select option {
-    color: #ffffff; /* White text for options */
-    background-color: #28323C; /* Dark background */
-    font-weight: 500;
+/* Select States */
+.hgs-select:has(option:checked:not([disabled]):not([value=""])) {
+    background-color: transparent; /* Transparent to show dark form background */
+    color: #ffffff; /* White text when value selected */
+    font-weight: 500; /* Body Medium 18 from Figma */
 }
 
-/* When select has a selected value, make text white */
 .hgs-select:has(option:checked:not([disabled])) {
     color: #ffffff;
     font-weight: 500;
 }
 
+.hgs-select:focus,
+.hgs-select:active {
+    color: #ffffff; /* White when focused/active */
+    font-weight: 500;
+}
+
+/* Select Dropdown Arrow */
 .hero-get-started-select,
 .hgs-select {
     cursor: pointer;
@@ -125,6 +187,7 @@
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
 }
 
+/* Placeholders */
 .hero-get-started-select::placeholder,
 .hgs-select::placeholder,
 .hgs-input::placeholder {
@@ -132,19 +195,7 @@
     opacity: 1;
 }
 
-.hero-get-started-select option:disabled,
-.hgs-select option:disabled {
-    color: #68747C; /* Base UI-Three from Figma */
-}
-
-.hero-get-started-select:focus,
-.hgs-select:focus,
-.hgs-input:focus {
-    outline: none;
-    border-color: #3182ce;
-    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
-}
-
+/* Select Options */
 .hero-get-started-select option,
 .hgs-select option {
     padding: 12px;
@@ -155,14 +206,24 @@
     font-weight: 500; /* Medium weight when selected */
 }
 
-/* Selected option text color */
-.hgs-select:focus,
-.hgs-select:active {
-    color: #ffffff; /* White when focused/active */
-    font-weight: 500;
+.hero-get-started-select option:disabled,
+.hgs-select option:disabled {
+    color: #68747C; /* Base UI-Three from Figma */
 }
 
-/* Button Styles - Matching Figma Design */
+/* Focus States */
+.hero-get-started-select:focus,
+.hgs-select:focus,
+.hgs-input:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+/* ===================================
+   4. BUTTONS
+   =================================== */
+
 .hero-get-started-button {
     padding: 14px 24px; /* Padding from Figma */
     border: none;
@@ -182,7 +243,9 @@
     justify-content: center;
     min-height: 56px;
     min-width: 168px; /* Button width from Figma */
+    max-width: 100%;
     box-sizing: border-box;
+    overflow: visible;
 }
 
 .hero-get-started-button.active {
@@ -196,30 +259,62 @@
     transform: translateY(-1px);
 }
 
-/* Multi-step Layout */
+/* ===================================
+   5. MULTI-STEP FORM COMPONENTS
+   =================================== */
+
+/* Steps Container */
 .hgs-steps { 
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto auto;
     gap: 10px; 
-    width: 100%; 
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .hgs-row { 
     display: flex; 
     align-items: center; 
     gap: 16px; 
-    width: 100%; 
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
+.hgs-step-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.hgs-step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+/* Actions */
 .hgs-actions { 
     display: flex; 
     gap: 12px; 
     flex-shrink: 0; 
     grid-column: 2;
     grid-row: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: visible;
 }
 
+/* Progress Bar */
 .hgs-progress { 
     display: flex; 
     align-items: center; 
@@ -260,7 +355,7 @@
     margin-left: 12px;
 }
 
-/* Step Styles */
+/* Step States */
 .hgs-step { 
     display: none !important; 
     gap: 16px; 
@@ -279,7 +374,7 @@
     height: 56px;
 }
 
-/* Step 6 specific layout (email + consent + submit) */
+/* Step 6 Specific Layout (email + consent + submit) */
 .hgs-step[data-step="6"] {
     flex-direction: column;
     align-items: flex-start;
@@ -292,20 +387,19 @@
     height: auto;
 }
 
-.hgs-step-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+.hgs-step[data-step="6"] .hgs-input {
+    flex: 1;
+}
+
+.hgs-step[data-step="6"] .hgs-consent {
     width: 100%;
 }
 
-.hgs-step-content {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
+.hgs-step[data-step="6"] .hero-get-started-button {
+    flex-shrink: 0;
 }
 
+/* Consent Checkbox */
 .hgs-consent {
     display: flex;
     align-items: flex-start;
@@ -334,18 +428,7 @@
     cursor: pointer;
 }
 
-.hgs-step[data-step="6"] .hgs-input {
-    flex: 1;
-}
-
-.hgs-step[data-step="6"] .hgs-consent {
-    width: 100%;
-}
-
-.hgs-step[data-step="6"] .hero-get-started-button {
-    flex-shrink: 0;
-}
-
+/* Back Button */
 .hgs-back {
     background: transparent;
     color: #DADEE0; /* Base UI-Two from Figma */
@@ -368,7 +451,10 @@
     color: #ffffff; /* Lighten on hover */
 }
 
-/* Confirmation Message Styles - Matching Figma Design */
+/* ===================================
+   6. CONFIRMATION MESSAGE
+   =================================== */
+
 .confirmation-message {
     background-color: #28323C; /* Base UI-Four from Figma */
     border-radius: 8px; /* 8px from Figma */
@@ -445,7 +531,6 @@
     text-decoration: none;
 }
 
-/* Arrow icon for contact link */
 .contact-link::after {
     content: '→';
     display: inline-block;
@@ -456,19 +541,99 @@
     font-size: 20px;
 }
 
-/* Hidden Elements */
+/* ===================================
+   7. UTILITY CLASSES
+   =================================== */
+
 .hgs-controls,
 .hgs-hidden { 
     display: none !important; 
 }
 
-/* Desktop: Hide mobile submit button */
 #hgs-submit-mobile {
     display: none !important;
 }
 
+/* ===================================
+   8. RESPONSIVE DESIGN
+   =================================== */
+
+
+
+
+/* Desktop (1025px - 1280px) */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .hero-get-started-block {
+        width: 70%;
+        padding: 20px 40px;
+    }
+}
+
+/* Desktop (1281px - 1400px) */
+@media (min-width: 1281px) and (max-width: 1400px) {
+    .hero-get-started-block {
+        width: 75%;
+        max-width: 1300px;
+        padding: 20px 32px;
+        overflow-x: hidden;
+    }
+    
+    .hero-get-started-content {
+        gap: 20px;
+        overflow-x: hidden;
+        max-width: 100%;
+    }
+    
+    .hero-get-started-text {
+        font-size: 32px;
+        flex-shrink: 0;
+        min-width: fit-content;
+        max-width: none;
+        white-space: nowrap;
+    }
+    
+    .hero-get-started-form {
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+    }
+    
+    .hgs-steps {
+        min-width: 0;
+        overflow-x: hidden;
+    }
+    
+    .hgs-row,
+    .hgs-step-row {
+        gap: 16px;
+        min-width: 0;
+    }
+    
+    .hgs-actions {
+        flex-shrink: 0;
+        min-width: 0;
+    }
+    
+    .hgs-actions .hero-get-started-button {
+        min-width: 168px;
+        padding: 14px 24px;
+    }
+    
+    .hero-get-started-select,
+    .hgs-select,
+    .hgs-input {
+        min-width: 0;
+        flex: 1;
+    }
+}
+
+/* Desktop (1200px and below) */
+@media (max-width: 1200px) {
+    /* Additional desktop adjustments */
+}
+
+/* Large Desktop (1200px - 1350px) */
 @media (min-width: 1200px) and (max-width: 1350px) {
-    /* Main container */
     .hero-get-started-block {
         width: 85%;
         max-width: 1100px;
@@ -476,30 +641,25 @@
         padding: 20px;
     }
     
-    /* Content wrapper */
     .hero-get-started-content {
         gap: 18px;
         max-width: 1100px;
     }
     
-    /* Headline text */
     .hero-get-started-text {
         font-size: 30px;
         min-width: fit-content;
     }
     
-    /* Form wrapper */
     .hero-get-started-form {
         max-width: 680px;
         gap: 16px;
     }
     
-    /* Steps layout */
     .hgs-steps {
         gap: 10px;
     }
     
-    /* Input and select fields */
     .hero-get-started-select,
     .hgs-select,
     .hgs-input {
@@ -508,14 +668,12 @@
         min-height: 56px;
     }
     
-    /* Button */
     .hero-get-started-button {
         padding: 14px 24px;
         font-size: 18px;
         min-width: 165px;
     }
     
-    /* Progress bar section */
     .hgs-progress {
         width: 78%;
         gap: 12px;
@@ -530,13 +688,11 @@
         margin-left: 12px;
     }
     
-    /* Back button */
     .hgs-back {
         font-size: 12px;
         margin-right: 12px;
     }
     
-    /* Step rows */
     .hgs-row {
         gap: 16px;
     }
@@ -545,7 +701,6 @@
         gap: 16px;
     }
     
-    /* Consent section */
     .hgs-consent {
         font-size: 12px;
         gap: 8px;
@@ -561,7 +716,6 @@
         min-width: 24px;
     }
     
-    /* Confirmation message */
     .confirmation-message {
         max-width: 1000px;
     }
@@ -584,18 +738,152 @@
     }
 }
 
-
-
-@media (min-width: 769px) and (max-width: 1199px) {
-    .hero-get-started-block{
+/* Desktop (1024px - 1199px) */
+@media (min-width: 1024px) and (max-width: 1199px) {
+    .hero-get-started-block {
         width: 90%;
         max-width: 980px;
         margin: -60px auto 0 auto;
         padding: 20px;
+        overflow-x: hidden;
+    }
+    
+    .hero-get-started-content {
+        gap: 16px;
+        overflow-x: hidden;
+    }
+    
+    .hero-get-started-text {
+        font-size: 28px;
+        white-space: nowrap;
+        flex-shrink: 1;
+        min-width: 0;
+    }
+    
+    .hero-get-started-form {
+        min-width: 0;
+        flex-shrink: 1;
     }
 }
 
+/* Tablet (1024px and below) */
+@media (max-width: 1024px) {
+    /* Tablet-specific overrides */
+}
 
+/* Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hero-get-started-block {
+        width: 90%;
+        max-width: 980px;
+        margin: -60px auto 0 auto;
+        padding: 20px 12px;
+        overflow-x: hidden;
+    }
+
+    .hero-get-started-content {
+        gap: 12px;
+        overflow-x: hidden;
+    }
+
+    .hero-get-started-text {
+        font-size: 24px;
+        height: auto;
+        min-width: 0;
+        flex-shrink: 1;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .hero-get-started-form {
+        max-width: none;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .hgs-steps {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .hgs-progress {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .hgs-actions {
+        flex-shrink: 0;
+        min-width: 0;
+    }
+
+    .hgs-actions .hero-get-started-button {
+        min-width: 140px;
+        padding: 14px 20px;
+        font-size: 16px;
+    }
+    
+    .hgs-row {
+        gap: 12px;
+        min-width: 0;
+    }
+    
+    /* Ensure all selects have the same width to prevent cutoff */
+    .hero-get-started-select,
+    .hgs-select,
+    .hgs-input {
+        min-width: 0;
+        flex: 1 1 0; /* Equal flex properties for consistent sizing */
+        max-width: none; /* Remove max-width restriction to prevent text cutoff */
+        box-sizing: border-box;
+    }
+    
+    /* Make campus and program selects the same size - ensure equal width */
+    #hgs-campus,
+    #hgs-program,
+    .hgs-select#hgs-program,
+    select#hgs-program,
+    select.hgs-select#hgs-program {
+        flex: 1 1 0 !important; /* Force equal flex properties */
+        flex-basis: 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding-right: 55px !important; /* Consistent padding for dropdown arrow */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Ensure both selects are equal width when in the same row */
+    .hgs-row #hgs-campus,
+    .hgs-row #hgs-program,
+    .hgs-row .hgs-select#hgs-program,
+    .hgs-row select#hgs-program {
+        flex: 1 1 0 !important;
+        flex-basis: 0 !important;
+        flex-grow: 1 !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding-right: 55px !important;
+    }
+    
+    /* Ensure all hgs-select elements have consistent styling */
+    .hgs-select {
+        padding-right: 55px !important; /* More space for dropdown arrow to prevent text cutoff */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        box-sizing: border-box;
+    }
+}
 
 /* Desktop: Show desktop submit button */
 @media (min-width: 769px) {
@@ -608,54 +896,8 @@
     }
 }
 
-/* 1280px and below */
-@media (max-width: 1280px) {
-    .hero-get-started-block {
-        width: 70%;
-        padding: 20px 40px;
-    }
-}
 
-/* Tablet (769px–1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .hero-get-started-block {
-        width: 90%;
-        max-width: 980px;
-        margin: -60px auto 0 auto;
-        padding: 20px;
-    }
-
-    .hero-get-started-content {
-        gap: 16px;
-    }
-
-    .hero-get-started-text {
-        font-size: 28px;
-        height: auto;
-        min-width: auto;
-    }
-
-    .hero-get-started-form {
-        max-width: 640px;
-    }
-
-    .hgs-steps {
-        grid-template-columns: 1fr auto;
-        grid-template-rows: auto auto;
-        gap: 12px;
-    }
-
-    .hgs-progress {
-        width: 100%;
-        margin-top: 0;
-    }
-
-    .hgs-actions .hero-get-started-button {
-        min-width: 160px;
-    }
-}
-
-/* Responsive Design */
+/* Mobile (768px and below) */
 @media (max-width: 768px) {
     .hero-get-started-block {
         width: 100%;
@@ -765,6 +1007,7 @@
     }
 }
 
+/* Small Mobile (480px and below) */
 @media (max-width: 480px) {
     .hero-get-started-block {
         padding: 20px 16px;
@@ -792,8 +1035,8 @@
     }
 }
 
+/* Extra Small Mobile (max-width: 380px) */
 @media (max-width: 380px) {
-    /* Main container */
     .hero-get-started-block {
         padding: 16px 12px;
         border-radius: 6px;
@@ -801,12 +1044,10 @@
         max-width: calc(100% - 24px);
     }
     
-    /* Content wrapper */
     .hero-get-started-content {
         gap: 16px;
     }
     
-    /* Headline text */
     .hero-get-started-text {
         font-size: 22px;
         line-height: 1.3em;
@@ -814,17 +1055,14 @@
         height: auto;
     }
     
-    /* Form wrapper */
     .hero-get-started-form {
         gap: 12px;
     }
     
-    /* Steps layout */
     .hgs-steps {
         gap: 12px;
     }
     
-    /* All inputs and selects */
     .hero-get-started-select,
     .hgs-select,
     .hgs-input {
@@ -834,7 +1072,6 @@
         width: 100%;
     }
     
-    /* Select dropdown arrow positioning */
     .hero-get-started-select,
     .hgs-select {
         background-position: right 12px center;
@@ -842,7 +1079,6 @@
         padding-right: 36px;
     }
     
-    /* Button styles */
     .hero-get-started-button {
         padding: 12px 20px;
         font-size: 16px;
@@ -851,7 +1087,6 @@
         width: 100%;
     }
     
-    /* Progress bar section */
     .hgs-progress {
         gap: 8px;
         width: 100%;
@@ -866,14 +1101,12 @@
         margin-left: 8px;
     }
     
-    /* Back button */
     .hgs-back {
         font-size: 11px;
         gap: 3px;
         margin-right: 8px;
     }
     
-    /* Step 6 - Email input step */
     .hgs-step[data-step="6"] {
         gap: 12px;
     }
@@ -882,7 +1115,6 @@
         gap: 12px;
     }
     
-    /* Consent checkbox and text */
     .hgs-consent {
         gap: 6px;
         font-size: 11px;
@@ -900,12 +1132,10 @@
         min-width: 20px;
     }
     
-    /* Actions area */
     .hgs-actions {
         gap: 8px;
     }
     
-    /* Confirmation message */
     .confirmation-message {
         margin-top: 16px;
         padding: 0;
@@ -942,5 +1172,82 @@
         padding: 12px 0;
         gap: 6px;
     }
+}
+
+/* ===================================
+   CONTACT FORM 7 HIDDEN FORM STYLES
+   =================================== */
+
+/* Hide CF7 form wrapper but keep it functional */
+.cf7-hidden-wrapper {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Hide all CF7 form field wrappers and visible elements */
+.cf7-hidden-wrapper .wpcf7 form .wpcf7-form-control-wrap,
+.cf7-hidden-wrapper .wpcf7-form-control-wrap {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* Hide CF7 form labels, inputs, and other visible elements */
+.cf7-hidden-wrapper .wpcf7 form label,
+.cf7-hidden-wrapper .wpcf7 form input:not([type="hidden"]):not([id*="cf7-"]),
+.cf7-hidden-wrapper .wpcf7 form textarea:not([name*="_wpcf7_ak_hp"]),
+.cf7-hidden-wrapper .wpcf7 form select:not([id*="cf7-"]),
+.cf7-hidden-wrapper .wpcf7 form button:not([type="submit"]),
+.cf7-hidden-wrapper .wpcf7 form .wpcf7-submit {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* Keep hidden fields and specific CF7 fields functional */
+.cf7-hidden-wrapper .wpcf7 form input[type="hidden"],
+.cf7-hidden-wrapper .wpcf7 form input[id*="cf7-"],
+.cf7-hidden-wrapper .wpcf7 form input[name*="_wpcf7"],
+.cf7-hidden-wrapper .wpcf7 form select[id*="cf7-"],
+.cf7-hidden-wrapper .wpcf7 form textarea[id*="cf7-"],
+.cf7-hidden-wrapper .wpcf7 form .wpcf7-acceptance input[type="checkbox"][id*="cf7-"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* Hide CF7 response output when not needed (will show on success/error) */
+.cf7-hidden-wrapper .wpcf7-response-output {
+    display: none !important;
+}
+
+/* Hide CF7 spinner and validation notices (will show on submission) */
+.cf7-hidden-wrapper .wpcf7-spinner,
+.cf7-hidden-wrapper .wpcf7-not-valid-tip {
+    display: none !important;
 }
 

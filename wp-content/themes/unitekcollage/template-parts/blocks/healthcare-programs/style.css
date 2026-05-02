@@ -1,4 +1,13 @@
+/**
+ * Healthcare Programs Block - Frontend Styles
+ * 
+ * @package UnitekCollege
+ * @version 1.0.0
+ */
 
+/* ===================================
+   1. CSS VARIABLES
+   =================================== */
 
 :root {
     --primary-blue: #28323c;
@@ -16,13 +25,17 @@
     --shadow-card-24: 0 4px 24px rgba(0,0,0,0.24);
 }
 
-/* Accessibility focus outline */
+/* ===================================
+   2. BASE & GLOBAL STYLES
+   =================================== */
+
+/* Accessibility */
 *:focus-visible {
     outline: 2px solid var(--accent-blue);
     outline-offset: 2px;
 }
 
-/* Editor overflow fix for healthcare programs block */
+/* Editor overflow fix */
 .block-editor-block-list__layout .healthcare-programs-block,
 .editor-styles-wrapper .healthcare-programs-block,
 .wp-block-acf-healthcare-programs .healthcare-programs-block {
@@ -30,14 +43,39 @@
     overflow-x: hidden;
 }
 
-/* Healthcare Programs Block Styles */
+/* Main block container */
 .healthcare-programs-block {
     width: 100%;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     box-sizing: border-box;
 }
 
-/* Hero Section */
+/* Block Alignment Support */
+.healthcare-programs-block.alignwide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.healthcare-programs-block.alignfull {
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+/* Fix for editor - prevent overflow */
+.block-editor-block-list__layout .healthcare-programs-block.alignfull,
+.editor-styles-wrapper .healthcare-programs-block.alignfull,
+.wp-block-acf-healthcare-programs .healthcare-programs-block.alignfull {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* ===================================
+   3. HERO SECTION
+   =================================== */
+
 .healthcare-hero {
     background-color: var(--primary-blue);
     color: white;
@@ -93,6 +131,10 @@
     font-size: 0.9rem;
 }
 
+/* ===================================
+   4. TABS SECTION
+   =================================== */
+
 .healthcare-tabs {
     display: flex;
     gap: 3px;
@@ -126,8 +168,6 @@
     border-radius: 8px 8px 0px 0px;
 }
 
-/* Icon removed as per design */
-
 .healthcare-tab.active {
     background-color: #ffffff;
     color: #007ACC;
@@ -142,7 +182,10 @@
     color: #ffffff;
 }
 
-/* Program Details Section */
+/* ===================================
+   5. PROGRAM DETAILS SECTION
+   =================================== */
+
 .healthcare-program-details {
     background-color: var(--surface);
     padding: 60px 0 0 0;
@@ -163,6 +206,7 @@
 .healthcare-program-headline {
     width: 208px;
     flex-shrink: 0;
+    position: relative;
 }
 
 .healthcare-program-headline h2 {
@@ -187,10 +231,6 @@
     position: absolute;
     right: -20px;
     top: 0;
-}
-
-.healthcare-program-headline {
-    position: relative;
 }
 
 .healthcare-program-description-wrapper {
@@ -288,7 +328,10 @@
     text-decoration: underline;
 }
 
-/* Testimonial Section */
+/* ===================================
+   6. TESTIMONIAL SECTION
+   =================================== */
+
 .healthcare-testimonial {
     background-color: #ffffff;
     padding: 80px 0;
@@ -413,6 +456,7 @@
     text-decoration: underline;
 }
 
+/* Video Placeholder */
 .healthcare-video-placeholder {
     background-color: #ACB4BC;
     border-radius: 24px;
@@ -422,6 +466,8 @@
     justify-content: center;
     width: 509px;
     height: 520px;
+    min-width: 297px;
+    min-height: 331px;
     flex-shrink: 0;
     position: relative;
     overflow: hidden;
@@ -474,7 +520,10 @@
     margin-left: 4px;
 }
 
-/* Story Card Section */
+/* ===================================
+   7. STORY CARD SECTION
+   =================================== */
+
 .story-card-section {
     width: 100%;
     background: #28323c;
@@ -584,29 +633,10 @@
     z-index: 1;
 }
 
-/* Block Alignment Support */
-.healthcare-programs-block.alignwide {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-}
+/* ===================================
+   8. VIDEO MODAL
+   =================================== */
 
-.healthcare-programs-block.alignfull {
-    max-width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-}
-
-/* Fix for editor - prevent overflow */
-.block-editor-block-list__layout .healthcare-programs-block.alignfull,
-.editor-styles-wrapper .healthcare-programs-block.alignfull,
-.wp-block-acf-healthcare-programs .healthcare-programs-block.alignfull {
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-}
-
-/* Video Modal Styles */
 .healthcare-video-modal {
     display: none;
     position: fixed;
@@ -699,113 +729,182 @@
     justify-content: center;
 }
 
-/* Responsive Design */
-@media (max-width: 1280px) {
-    .healthcare-hero-content,
+/* ===================================
+   9. RESPONSIVE DESIGN
+   =================================== */
+/* Block alignment for large desktop: 1281px–1600px */
+@media (min-width: 1281px) and (max-width: 1600px) {
+
+    /* Program content: keep same container alignment as header
+       (max-width 1728px, padding 0 150px) and only adjust gap */
     .healthcare-program-content {
-        padding: 0 40px;
+        max-width: 1728px;
+        margin: 0 auto;
+        padding: 0 150px;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        /* Program inner columns scale with available width */
+        gap: clamp(20px, calc((100vw - 80px) * 40 / 1030), 40px);
+    }
+    .story-card-heading{
+        font-size: 51px;
+       
+    }   
+    .healthcare-program-headline {
+        width: clamp(160px, calc((100vw - 80px) * 208 / 1030), 208px);
+        flex-shrink: 0;
+    }
+
+    .healthcare-program-description-wrapper {
+        width: clamp(350px, calc((100vw - 80px) * 510 / 1030), 510px);
+        flex-shrink: 1;
+        min-width: 0;
+    }
+
+    .healthcare-stats {
+        width: clamp(200px, calc((100vw - 80px) * 272 / 1030), 272px);
+        flex-shrink: 0;
+    }
+
+    /* Story card section + wrapper aligned with header container:
+       outer container matches header (max-width 1728px, padding 0 150px),
+       inner wrapper keeps proportional width/height using vw */
+    .story-card-section {
+        max-width: 1728px;
+        margin: 0 auto;
+        padding: 0 150px;
+        box-sizing: border-box;
+    }
+
+    .story-card-wrapper {
+        max-width: 1428px;     /* header inner width: 1728 - 2*150 */
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        /* Reduced overall size but still scales with viewport */
+        height: calc(28vw);
+    }
+
+    /* Testimonial content alignment + responsive widths */
+    .healthcare-testimonial-content {
+        /* Match story-card-wrapper width and global container */
+        max-width: 1428px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Card and video share the same height and scale with viewport,
+       while staying within the testimonial container */
+    .healthcare-testimonial-card {
+        /* Slightly narrower card so video block can be larger */
+        width: clamp(450px, calc(55vw), 900px);
+        height: calc(32.5vw);
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Video placeholder matches card height for a unified row */
+    .healthcare-video-placeholder {
+        /* Wider video to balance against the reduced card width */
+        width: clamp(320px, calc(25vw), 550px);
+        height: calc(32.5vw);  /* match .healthcare-testimonial-card height */
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Story card content using vw + clamp for padding
+       Reduced width/height but kept similar aspect ratio */
+    .story-card-content {
+        width: calc(30vw);
+        max-width: calc(30vw);
+        min-width: calc(25.5vw);
+        height: calc(26.6vw);
+        max-height: calc(26.6vw);
+        min-height: calc(22.25vw);
+        left: 0;
+        margin-left: 16px;
+        padding: clamp(20px, calc(7.65vw - 58px), 64px)
+                 clamp(20px, calc(6.96vw - 51px), 60px);
     }
 }
 
-@media (min-width: 1200px) and (max-width: 1350px) {
-    .healthcare-hero-content,
-    .healthcare-program-content,
-    .healthcare-testimonial-content,
+/* Block alignment to match header container at 1025px–1280px */
+@media (min-width: 1025px) and (max-width: 1280px) {
+
     .story-card-wrapper {
-        padding: 0 80px;
-        max-width: 100%;
-    }
-    
-    /* Hero section responsive */
-    .healthcare-hero {
+        max-width: 1728px;   /* same container width as header */
+        margin: 0 auto;      /* center in viewport */
+        padding: 0 40px;     /* same side padding as .header-container */
         width: 100%;
-        overflow-x: hidden;
+        box-sizing: border-box;
+        background-color: white;
+        border-radius: 10px;
     }
-    
-    .healthcare-all-programs {
-        right: 80px; /* Adjusted from 138px */
-    }
-    
-    /* Program details responsive */
-    .healthcare-program-details {
-        width: 100%;
-        overflow-x: hidden;
-    }
-    
+ 
+    /* Program section – align with header container */
     .healthcare-program-content {
+        max-width: 1728px;
+        margin: 0 auto;
+        padding: 0 40px; /* same as .header-container in main theme */
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
         gap: 30px;
     }
     
-    .healthcare-program-headline {
-        width: auto;
-        max-width: 200px;
-    }
-    
-    .healthcare-program-description-wrapper {
-        width: auto;
-        max-width: 450px;
-        flex: 1;
-    }
-    
-    .healthcare-stats {
-        width: auto;
-        max-width: 250px;
-    }
-    
-    /* Testimonial section responsive */
-    .healthcare-testimonial {
-        width: 100%;
-        overflow-x: hidden;
-    }
-    
-    .healthcare-testimonial-card {
-        width: 100%;
-        max-width: 600px;
-        flex-shrink: 1;
-    }
-    
-    .healthcare-video-placeholder {
-        width: 100%;
-        max-width: 400px;
-        flex-shrink: 1;
-    }
-    
-    /* Story card section responsive */
-    .story-card-section {
-        width: 100%;
-        overflow-x: hidden;
-    }
-    
-    .story-card-wrapper {
-        width: 100%;
-        max-width: calc(100% - 80px);
+    .healthcare-hero-content {
+        max-width: 1728px;   /* same container width as header */
         margin: 0 auto;
+        padding: 0 40px;     /* same side padding as .header-container */
+        width: 100%;
+        box-sizing: border-box;
     }
-    
-    .story-card-content {
-        width: 500px;
-        max-width: 500px;
+    /* Testimonial section – same horizontal alignment as header/program */
+    .healthcare-testimonial-content {
+        max-width: 1728px;
+        margin: 0 auto;
+        padding: 0 40px; /* match header/program content */
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: stretch;
+        gap: 32px;
+    }
+
+    /* Card and video share height and fit within aligned container */
+    .healthcare-testimonial-card,
+    .healthcare-video-placeholder {
+        flex: 1 1 0;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 }
 
-
-
-
-/* Tablet / Medium Screens Breakpoint */
-@media (min-width: 769px) and (max-width: 1199px) {
+/* Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
     .healthcare-hero-content,
     .healthcare-program-content,
     .healthcare-testimonial-content,
     .story-card-wrapper {
-        padding: 0 80px;
-        max-width: 100%;
+        padding: 0 50px;
     }
     
-    /* Fix testimonial section overflow on tablets */
+    .story-card-background {
+        background-size: contain;
+        background-position: center;
+    }
+
     .healthcare-testimonial-content {
+        width: 100%;
+        max-width: 100%;
         flex-direction: column;
         gap: 24px;
         align-items: center;
+        box-sizing: border-box;
     }
     
     .healthcare-testimonial-card {
@@ -813,6 +912,8 @@
         max-width: 100%;
         height: auto;
         min-height: 400px;
+        box-sizing: border-box;
+        margin-right: 0;
     }
     
     .healthcare-video-placeholder {
@@ -820,9 +921,10 @@
         max-width: 100%;
         height: auto;
         min-height: 400px;
+        box-sizing: border-box;
+        margin-right: 0;
     }
     
-    /* Adjust program content layout */
     .healthcare-program-content {
         flex-direction: column;
         gap: 32px;
@@ -847,18 +949,26 @@
         max-width: 100%;
     }
     
-    /* Story card adjustments */
     .story-card-wrapper {
         width: 100%;
         max-width: 100%;
+        background-color: white;
     }
     
     .story-card-content {
-        width: 60%;
-        max-width: 500px;
+        width: 67%;
     }
 }
 
+/* Small Desktop (max-width: 1280px) */
+/* @media (max-width: 1280px) {
+    .healthcare-hero-content,
+    .healthcare-program-content {
+        padding: 0 40px;
+    }
+} */
+
+/* Mobile (max-width: 768px) */
 @media (max-width: 768px) {
     .healthcare-hero-content,
     .healthcare-program-content,
@@ -926,7 +1036,7 @@
     
     .healthcare-all-programs {
         position: static;
-        order: 999; /* Move to bottom after all tabs */
+        order: 999;
         margin-top: 20px;
         margin-bottom: 0;
         margin-left: 0;
@@ -1004,7 +1114,6 @@
     }
     
     .story-card-wrapper {
-        /* max-width: 376px; */
         width: calc(100% - 40px);
         height: auto !important;
         margin: 0 auto;
@@ -1024,7 +1133,6 @@
         position: relative;
     }
     
-    /* Background image appears FIRST (top) */
     .story-card-background {
         order: 1;
         width: 100%;
@@ -1040,7 +1148,6 @@
         margin-bottom: 16px;
     }
     
-    /* Content appears SECOND (bottom) - White overlay */
     .story-card-content {
         order: 2;
         position: relative !important;
@@ -1143,6 +1250,7 @@
     }
 }
 
+/* Small Mobile (max-width: 480px) */
 @media (max-width: 480px) {
     .healthcare-hero-content,
     .healthcare-program-content,
@@ -1212,7 +1320,7 @@
     
     .healthcare-all-programs {
         position: static;
-        order: 999; /* Move to bottom after all tabs */
+        order: 999;
         margin-top: 15px;
         margin-bottom: 0;
         margin-left: 0;

@@ -434,6 +434,17 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mobileMenuToggle && headerNav && navList) {
         // Create mobile CTA button and insert it into mobile menu
         function createMobileCTAButton() {
+            // Check if #get-started-today section exists
+            const getStartedSection = document.getElementById('get-started-today');
+            if (!getStartedSection) {
+                // Section doesn't exist, don't create mobile button
+                const existingMobileButton = headerNav.querySelector('.mobile-cta-button');
+                if (existingMobileButton) {
+                    existingMobileButton.remove();
+                }
+                return;
+            }
+            
             // Check if button already exists
             if (headerNav.querySelector('.mobile-cta-button')) {
                 return;
@@ -489,7 +500,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Auto-expand Programs submenu when mobile menu opens (matching Figma)
-            setTimeout(autoExpandProgramsOnMobile, 100);
+            setTimeout(autoExpandProgramsOnMobile, 200);
+            // Retry after a longer delay to ensure menu is fully rendered
+            setTimeout(autoExpandProgramsOnMobile, 500);
         });
         
         // Close mobile menu when clicking outside
@@ -605,26 +618,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Mobile Submenu Toggle Functionality
-    const mobileSubmenuToggles = document.querySelectorAll('.nav-list .menu-item-has-children > a, .header-menu .menu-item-has-children > a');
+    // Handle clicks on 1st level menu items (2nd level submenu toggle)
+    const firstLevelSubmenuToggles = document.querySelectorAll('.nav-list > .menu-item-has-children > a, .header-menu > .menu-item-has-children > a');
     
-    console.log('Found mobile submenu toggles:', mobileSubmenuToggles.length, mobileSubmenuToggles);
-    
-    mobileSubmenuToggles.forEach(toggle => {
+    firstLevelSubmenuToggles.forEach(toggle => {
         toggle.addEventListener('click', function(e) {
-            // Only prevent default and toggle submenu on mobile
+            // Only prevent default and toggle submenu on mobile/tablet
             if (window.innerWidth <= 1024) {
                 const parentItem = this.parentElement;
                 const wasActive = parentItem.classList.contains('active');
-                
-                console.log('Mobile submenu toggle clicked:', this.textContent, 'Parent:', parentItem, 'Was active:', wasActive);
                 
                 // If submenu is NOT active (collapsed), expand it on first click
                 if (!wasActive) {
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Close all other submenus first
-                    document.querySelectorAll('.nav-list .menu-item-has-children, .header-menu .menu-item-has-children').forEach(item => {
+                    // Close all other 1st level submenus first
+                    document.querySelectorAll('.nav-list > .menu-item-has-children, .header-menu > .menu-item-has-children').forEach(item => {
                         if (item !== parentItem) {
                             item.classList.remove('active');
                         }
@@ -632,14 +642,39 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Expand current submenu
                     parentItem.classList.add('active');
-                    console.log('Expanded submenu on first click');
                 } else {
                     // If submenu IS active (expanded), allow navigation on second click
-                    console.log('Submenu already expanded, allowing navigation to:', this.href);
                     // Don't prevent default - let the link work
                 }
             }
         });
+    });
+    
+    // Handle clicks on 2nd level menu items with 3rd level children (toggle functionality)
+    // Use event delegation to handle dynamically created elements
+    document.addEventListener('click', function(e) {
+        // Only handle on mobile/tablet
+        if (window.innerWidth > 1024) return;
+        
+        // Check if click is on a 2nd level menu item link that has children
+        const link = e.target.closest('.nav-list .sub-menu > .menu-item-has-children > a, .header-menu .sub-menu > .menu-item-has-children > a');
+        if (!link) return;
+        
+        const parentItem = link.parentElement;
+        const wasActive = parentItem.classList.contains('active');
+        
+        // Always toggle the 3rd level submenu independently
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (wasActive) {
+            // Close only this specific 3rd level submenu
+            parentItem.classList.remove('active');
+        } else {
+            // Expand current 3rd level submenu
+            // Note: We don't close other 3rd level menus - they can be open independently
+            parentItem.classList.add('active');
+        }
     });
     
     // Enhanced Mobile Menu Toggle with Smooth Animations (Legacy)
@@ -998,6 +1033,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Helper function to remove shortcodes from text
+    function removeShortcodes(text) {
+        if (!text || typeof text !== 'string') return text;
+        // Remove shortcode patterns like [unitek_posts] or [shortcode attr="value"]
+        return text.replace(/\[[^\]]+\]/g, '').trim().replace(/\s+/g, ' ');
+    }
+    
     // Display search results
     function displaySearchResults(results) {
         if (!searchResults) return;
@@ -1025,10 +1067,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (groups[type].length === 0) return;
             html += `<div class="search-group-heading">${typeLabels[type]}</div>`;
             groups[type].forEach(result => {
+                // Clean shortcodes from title and excerpt
+                const cleanTitle = removeShortcodes(result.title || '');
+                const cleanExcerpt = result.excerpt ? removeShortcodes(result.excerpt) : '';
                 html += `
                     <div class="search-result-item" data-url="${result.url}">
-                        <div class="search-result-title">${result.title}</div>
-                        ${result.excerpt ? `<div class=\"search-result-excerpt\">${result.excerpt}</div>` : ''}
+                        <div class="search-result-title">${cleanTitle}</div>
+                        ${cleanExcerpt ? `<div class=\"search-result-excerpt\">${cleanExcerpt}</div>` : ''}
                     </div>
                 `;
             });
@@ -1109,7 +1154,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setupMegaMenuEvents();
         
         // Auto-expand Programs submenu on mobile (matching Figma design)
-        if (window.innerWidth <= 1024 && mobileSubMenu) {
+        if (window.innerWidth <= 870 && mobileSubMenu) {
             console.log('📱 Mobile detected, auto-expanding Programs submenu');
             setTimeout(function() {
                 mobileSubMenu.style.display = 'block';
@@ -1235,7 +1280,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Desktop hover events
         if (megaMenuParent && megaMenuModal) {
             megaMenuParent.addEventListener('mouseenter', function() {
-                if (window.innerWidth > 1024) {
+                if (window.innerWidth > 870) {
                     clearTimeout(megaMenuTimeout);
                     // Update position before opening
                     const header = document.querySelector('.header');
@@ -1248,7 +1293,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             megaMenuParent.addEventListener('mouseleave', function() {
-                if (window.innerWidth > 1024) {
+                if (window.innerWidth > 870) {
                     megaMenuTimeout = setTimeout(() => {
                         closeMegaMenu();
                     }, 200);
@@ -1258,7 +1303,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Keep open when hovering over modal
             if (megaMenuModal) {
                 megaMenuModal.addEventListener('mouseenter', function() {
-                    if (window.innerWidth > 1024) {
+                    if (window.innerWidth > 870) {
                         clearTimeout(megaMenuTimeout);
                         // Update position to ensure proper alignment
                         const header = document.querySelector('.header');
@@ -1270,7 +1315,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 megaMenuModal.addEventListener('mouseleave', function() {
-                    if (window.innerWidth > 1024) {
+                    if (window.innerWidth > 870) {
                         megaMenuTimeout = setTimeout(() => {
                             closeMegaMenu();
                         }, 200);
@@ -1282,7 +1327,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Click handler for Programs menu - both desktop and mobile
         if (megaMenuTrigger) {
             megaMenuTrigger.addEventListener('click', function(e) {
-                const isMobile = window.innerWidth <= 1024;
+                const isMobile = window.innerWidth <= 870;
                 
                 if (isMobile) {
                     // On mobile: First click expands, second click navigates
@@ -1316,7 +1361,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // On mobile, Programs submenu should always be expanded (matching Figma)
         // No toggle functionality - it's always visible
-        if (window.innerWidth <= 1024) {
+        if (window.innerWidth <= 870) {
             mobileSubMenu.style.display = 'block';
             megaMenuParent.classList.add('active');
         }
@@ -1324,35 +1369,40 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Auto-expand Programs submenu when mobile menu opens
     function autoExpandProgramsOnMobile() {
-        if (window.innerWidth <= 1024) {
+        if (window.innerWidth <= 870) {
             // Ensure mobile submenu exists
             if (!mobileSubMenu && megaMenuModal) {
                 console.log('🔧 Mobile submenu missing, recreating it');
                 createMobileSubMenu();
             }
             
-            if (mobileSubMenu && megaMenuParent) {
-                const headerNavOpen = document.querySelector('.header-nav.mobile-open');
-                if (headerNavOpen) {
-                    console.log('✅ Auto-expanding Programs submenu (matching Figma)');
-                    // Show the 2nd level menu (categories)
-                    mobileSubMenu.style.display = 'block';
-                    megaMenuParent.classList.add('active');
-                    
-                    // Ensure all 3rd level items are collapsed by default
-                    const categoryHeaders = mobileSubMenu.querySelectorAll('.mobile-category-header.has-children');
-                    categoryHeaders.forEach(header => {
-                        header.classList.remove('active');
-                        const programList = header.querySelector('.mobile-program-list');
-                        if (programList) {
-                            programList.style.display = 'none';
-                        }
-                    });
-                } else {
+            // Check if mobile menu is open (check multiple possible selectors)
+            const headerNavOpen = document.querySelector('.header-nav.mobile-open') || 
+                                  document.querySelector('.nav-list.mobile-open') ||
+                                  document.querySelector('.header.menu-open');
+            
+            if (headerNavOpen && mobileSubMenu && megaMenuParent) {
+                console.log('✅ Auto-expanding Programs submenu (matching Figma)');
+                // Show the 2nd level menu (categories)
+                mobileSubMenu.style.display = 'block';
+                megaMenuParent.classList.add('active');
+                
+                // Ensure all 3rd level items are collapsed by default
+                const categoryHeaders = mobileSubMenu.querySelectorAll('.mobile-category-header.has-children');
+                categoryHeaders.forEach(header => {
+                    header.classList.remove('active');
+                    const programList = header.querySelector('.mobile-program-list');
+                    if (programList) {
+                        programList.style.display = 'none';
+                    }
+                });
+            } else {
+                if (!headerNavOpen) {
                     console.log('⚠️ Header nav not open yet');
                 }
-            } else {
-                console.log('⚠️ Mobile submenu or parent not found:', { mobileSubMenu, megaMenuParent });
+                if (!mobileSubMenu || !megaMenuParent) {
+                    console.log('⚠️ Mobile submenu or parent not found:', { mobileSubMenu, megaMenuParent });
+                }
             }
         }
     }
@@ -1424,7 +1474,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             megaMenuModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            // Allow page to scroll normally - scrollbar will show when content overflows
+            // Don't restrict overflow - let the scrollbar appear naturally
+            // The mega menu is position: fixed, so it will stay in place while page scrolls
             
             // Add smooth entrance animation
             setTimeout(() => {
@@ -1440,7 +1492,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeMegaMenu() {
         if (megaMenuModal) {
             megaMenuModal.classList.remove('active');
-            document.body.style.overflow = '';
+            // No overflow styles to reset - page scrolls normally
             
             // Reset animation state
             const megaMenuContent = megaMenuModal.querySelector('.mega-menu-content');
@@ -1454,12 +1506,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle window resize - responsive behavior
     window.addEventListener('resize', function() {
         // Close mega menu modal when switching to mobile
-        if (window.innerWidth <= 1024 && megaMenuModal && megaMenuModal.classList.contains('active')) {
+        if (window.innerWidth <= 870 && megaMenuModal && megaMenuModal.classList.contains('active')) {
             closeMegaMenu();
         }
         
         // Close mobile submenu when switching to desktop
-        if (window.innerWidth > 1024 && mobileSubMenu && mobileSubMenu.style.display === 'block') {
+        if (window.innerWidth > 870 && mobileSubMenu && mobileSubMenu.style.display === 'block') {
             mobileSubMenu.style.display = 'none';
             if (megaMenuParent) {
                 megaMenuParent.classList.remove('active');
@@ -1468,14 +1520,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Reinitialize if needed
-        if (window.innerWidth <= 1024 && !mobileSubMenu) {
+        if (window.innerWidth <= 870 && !mobileSubMenu) {
             initResponsiveMegaMenu();
         }
     });
     
     // Update mega menu position on scroll if it's open
     window.addEventListener('scroll', function() {
-        if (megaMenuModal && megaMenuModal.classList.contains('active') && window.innerWidth > 1024) {
+        if (megaMenuModal && megaMenuModal.classList.contains('active') && window.innerWidth > 870) {
             const header = document.querySelector('.header');
             if (header) {
                 const headerRect = header.getBoundingClientRect();

@@ -209,7 +209,28 @@ get_header(); ?>
           while ($blog_query->have_posts()) : $blog_query->the_post();
             // Get post categories
             $post_categories = get_the_category();
-            $category_name = !empty($post_categories) ? $post_categories[0]->name : 'Uncategorized';
+            
+            // Determine which category to display
+            $display_category_name = 'Uncategorized';
+            
+            if (!empty($post_categories)) {
+                // If a specific category is filtered and post has that category, show it
+                if ($current_category !== 'all') {
+                    foreach ($post_categories as $cat) {
+                        if ($cat->slug === $current_category) {
+                            $display_category_name = $cat->name;
+                            break;
+                        }
+                    }
+                    // If filtered category not found in post's categories, show first one
+                    if ($display_category_name === 'Uncategorized') {
+                        $display_category_name = $post_categories[0]->name;
+                    }
+                } else {
+                    // No filter active, show first category
+                    $display_category_name = $post_categories[0]->name;
+                }
+            }
             
             // Get author name
             $author_name = get_the_author();
@@ -217,9 +238,9 @@ get_header(); ?>
             // Get excerpt
             $excerpt = wp_trim_words(get_the_excerpt(), 20, '...');
         ?>
-        <article class="article-card" style="opacity: 1; transform: translateY(0px); transition: opacity 0.5s ease-out <?php echo $animation_delay > 0 ? $animation_delay . 's' : ''; ?>, transform 0.5s ease-out <?php echo $animation_delay > 0 ? $animation_delay . 's' : ''; ?>;">
+        <article class="article-card" style="opacity: 1; transform: translateY(0px); transition: opacity 0.5s ease-out <?php echo $animation_delay > 0 ? $animation_delay . 's' : ''; ?>, transform 0.5s ease-out <?php echo $animation_delay > 0 ? $animation_delay . 's' : ''; ?>;" data-categories="<?php echo esc_attr(implode(',', array_map(function($cat) { return $cat->slug; }, $post_categories))); ?>">
           <div class="article-card__tag">
-            <span class="label"><?php echo esc_html($category_name); ?></span>
+            <span class="label"><?php echo esc_html($display_category_name); ?></span>
           </div>
           <div class="article-card__image" role="img" aria-label="Article featured image">
             <?php if (has_post_thumbnail()) : ?>

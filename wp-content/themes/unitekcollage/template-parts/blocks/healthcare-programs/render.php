@@ -34,6 +34,299 @@ if (is_admin() && !$story_card_link_text) {
     $story_card_link_text = 'Watch the story';
 }
 
+// Helper function to extract string value from ACF field (handles arrays, objects, etc.)
+
+if (!function_exists('extract_acf_string_value')) {
+function extract_acf_string_value($value) {
+    if (is_string($value) && trim($value) !== '') {
+        return trim($value);
+    }
+    if (is_array($value)) {
+        // If it's an array, get the first non-empty string value
+        foreach ($value as $item) {
+            if (is_string($item) && trim($item) !== '') {
+                return trim($item);
+            }
+            if (is_array($item) || is_object($item)) {
+                $nested = extract_acf_string_value($item);
+                if (!empty($nested)) {
+                    return $nested;
+                }
+            }
+        }
+        // If array has numeric keys, try first element
+        if (isset($value[0])) {
+            if (is_string($value[0])) {
+                return trim($value[0]);
+            }
+        }
+    }
+    if (is_object($value)) {
+        // If it's an object, try to get a string property
+        if (isset($value->value) && is_string($value->value)) {
+            return trim($value->value);
+        }
+        if (isset($value->text) && is_string($value->text)) {
+            return trim($value->text);
+        }
+    }
+    return '';
+}
+}
+
+
+// Helper function to get testimonial data for a tab
+if (!function_exists('get_testimonial_data_for_tab')) {
+function get_testimonial_data_for_tab($tab, $repeater_row_index = null) {
+    global $post;
+    $testimonial_post_id = null;
+    $testimonial_text = '';
+    $testimonial_name = '';
+    $testimonial_title = '';
+    
+    // Get the current block/post ID to read repeater field directly
+    $block_post_id = $post->ID ?? get_the_ID();
+    
+    // Priority 1: Check if specific testimonial is selected on this repeater row
+    $selected_testimonial = $tab['tab_testimonial'] ?? null;
+    
+    // Also try to get the raw value directly from post meta if we have the row index
+    if ($repeater_row_index !== null && function_exists('get_field')) {
+        // Try to get the raw value directly from the repeater field
+        $raw_testimonial_value = get_field('program_tabs', $block_post_id);
+        if (is_array($raw_testimonial_value) && isset($raw_testimonial_value[$repeater_row_index])) {
+            $raw_row = $raw_testimonial_value[$repeater_row_index];
+            if (isset($raw_row['tab_testimonial'])) {
+                $raw_testimonial = $raw_row['tab_testimonial'];
+                // Use raw value if it's different
+                if (!empty($raw_testimonial)) {
+                    $selected_testimonial = $raw_testimonial;
+                }
+            }
+        }
+        
+        // Also try direct post meta lookup for this specific repeater row
+        // ACF stores repeater sub-fields as: {repeater_name}_{row_index}_{sub_field_name}
+        $repeater_meta_key = 'program_tabs_' . $repeater_row_index . '_tab_testimonial';
+        $direct_meta_value = get_post_meta($block_post_id, $repeater_meta_key, true);
+        if (!empty($direct_meta_value) && is_numeric($direct_meta_value)) {
+            $selected_testimonial = (int) $direct_meta_value;
+        }
+    }
+    
+    if (!empty($selected_testimonial)) {
+        // Handle different return formats (ID, object, array)
+        if (is_numeric($selected_testimonial)) {
+            $testimonial_post_id = (int) $selected_testimonial;
+        } elseif (is_object($selected_testimonial) && isset($selected_testimonial->ID)) {
+            $testimonial_post_id = (int) $selected_testimonial->ID;
+        } elseif (is_array($selected_testimonial)) {
+            $first_item = reset($selected_testimonial);
+            if (is_numeric($first_item)) {
+                $testimonial_post_id = (int) $first_item;
+            } elseif (is_object($first_item) && isset($first_item->ID)) {
+                $testimonial_post_id = (int) $first_item->ID;
+            }
+        }
+    }
+    
+    // Priority 2: Fallback to category-based selection if no specific testimonial selected
+    if (empty($testimonial_post_id)) {
+        $selected_testimonial_category = $tab['healthcare_testimonial_category'] ?? null;
+        
+        // Handle ACF taxonomy field - it might return array, object, or ID
+        $category_term_id = null;
+        if (!empty($selected_testimonial_category)) {
+            if (is_array($selected_testimonial_category)) {
+                $first_item = reset($selected_testimonial_category);
+                if (is_object($first_item) && isset($first_item->term_id)) {
+                    $category_term_id = $first_item->term_id;
+                } elseif (is_numeric($first_item)) {
+                    $category_term_id = (int) $first_item;
+                }
+            } elseif (is_object($selected_testimonial_category) && isset($selected_testimonial_category->term_id)) {
+                $category_term_id = $selected_testimonial_category->term_id;
+            } elseif (is_numeric($selected_testimonial_category)) {
+                $category_term_id = (int) $selected_testimonial_category;
+            }
+        }
+        
+        // Query testimonials by category if category is selected
+        if (!empty($category_term_id)) {
+            $testimonial_query_args = array(
+                'post_type'      => 'testimonials',
+                'posts_per_page' => 1,
+                'post_status'    => 'publish',
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+                'tax_query'      => array(
+                    array(
+                        'taxonomy' => 'testimonial_category',
+                        'field'    => 'term_id',
+                        'terms'    => $category_term_id,
+                    ),
+                ),
+            );
+            
+            $testimonial_query = new WP_Query($testimonial_query_args);
+            if ($testimonial_query->have_posts()) {
+                $testimonial_query->the_post();
+                $testimonial_post_id = get_the_ID();
+                wp_reset_postdata();
+            }
+        }
+    }
+    
+    // Get ACF fields from the testimonial post
+    if (!empty($testimonial_post_id)) {
+        // Verify post exists and is correct post type
+        $post_obj = get_post($testimonial_post_id);
+        if (!$post_obj) {
+            // Post doesn't exist - return empty
+            return array(
+                'tab_testimonial_text'  => '',
+                'tab_testimonial_name'  => '',
+                'tab_testimonial_title' => '',
+            );
+        }
+        
+        // ACF field keys: field_testimonial_text, field_testimonial_name, field_testimonial_title
+        // ACF field names: testimonial_text, testimonial_name, testimonial_title
+        
+        // Priority 1: Try get_field() with field name (ACF function - most reliable)
+        // This handles all ACF storage formats automatically
+        if (function_exists('get_field')) {
+            $testimonial_text_raw = get_field('field_testimonial_text', $testimonial_post_id);
+            $testimonial_name_raw = get_field('field_testimonial_name', $testimonial_post_id);
+            $testimonial_title_raw = get_field('field_testimonial_title', $testimonial_post_id);
+            
+            // Extract string values from arrays/objects
+            $testimonial_text = extract_acf_string_value($testimonial_text_raw);
+            $testimonial_name = extract_acf_string_value($testimonial_name_raw);
+            $testimonial_title = extract_acf_string_value($testimonial_title_raw);
+            
+            // If get_field returns false/null, try with format_value = false to get raw value
+            if (empty($testimonial_text)) {
+                $testimonial_text_raw = get_field('testimonial_text', $testimonial_post_id, false);
+                $testimonial_text = extract_acf_string_value($testimonial_text_raw);
+            }
+            if (empty($testimonial_name)) {
+                $testimonial_name_raw = get_field('testimonial_name', $testimonial_post_id, false);
+                $testimonial_name = extract_acf_string_value($testimonial_name_raw);
+            }
+            if (empty($testimonial_title)) {
+                $testimonial_title_raw = get_field('testimonial_title', $testimonial_post_id, false);
+                $testimonial_title = extract_acf_string_value($testimonial_title_raw);
+            }
+        }
+        
+        // Priority 2: Try get_fields() to get all fields at once
+        if ((empty($testimonial_text) || empty($testimonial_name) || empty($testimonial_title)) && function_exists('get_fields')) {
+            $testimonial_acf = get_fields($testimonial_post_id, false); // false = get raw values
+            if (is_array($testimonial_acf) && !empty($testimonial_acf)) {
+                if (empty($testimonial_text)) {
+                    $testimonial_text = extract_acf_string_value($testimonial_acf['testimonial_text'] ?? '');
+                }
+                if (empty($testimonial_name)) {
+                    $testimonial_name = extract_acf_string_value($testimonial_acf['testimonial_name'] ?? '');
+                }
+                if (empty($testimonial_title)) {
+                    $testimonial_title = extract_acf_string_value($testimonial_acf['testimonial_title'] ?? '');
+                }
+            }
+        }
+        
+        // Priority 3: Get directly from post meta using field NAME (standard ACF storage)
+        // ACF stores values in meta keys matching the field NAME, not the field KEY
+        if (empty($testimonial_text)) {
+            $testimonial_text_raw = get_post_meta($testimonial_post_id, 'testimonial_text', true);
+            $testimonial_text = extract_acf_string_value($testimonial_text_raw);
+            // Also try with single=false to get all values if it's an array
+            if (empty($testimonial_text)) {
+                $testimonial_text_raw = get_post_meta($testimonial_post_id, 'testimonial_text', false);
+                $testimonial_text = extract_acf_string_value($testimonial_text_raw);
+            }
+        }
+        if (empty($testimonial_name)) {
+            $testimonial_name_raw = get_post_meta($testimonial_post_id, 'testimonial_name', true);
+            $testimonial_name = extract_acf_string_value($testimonial_name_raw);
+            if (empty($testimonial_name)) {
+                $testimonial_name_raw = get_post_meta($testimonial_post_id, 'testimonial_name', false);
+                $testimonial_name = extract_acf_string_value($testimonial_name_raw);
+            }
+        }
+        if (empty($testimonial_title)) {
+            $testimonial_title_raw = get_post_meta($testimonial_post_id, 'testimonial_title', true);
+            $testimonial_title = extract_acf_string_value($testimonial_title_raw);
+            if (empty($testimonial_title)) {
+                $testimonial_title_raw = get_post_meta($testimonial_post_id, 'testimonial_title', false);
+                $testimonial_title = extract_acf_string_value($testimonial_title_raw);
+            }
+        }
+        
+        // Direct database query as last resort to see what's actually stored
+        if ((empty($testimonial_text) || empty($testimonial_name) || empty($testimonial_title))) {
+            global $wpdb;
+            $meta_keys = array('testimonial_text', 'testimonial_name', 'testimonial_title', 
+                              'field_testimonial_text', 'field_testimonial_name', 'field_testimonial_title');
+            $placeholders = implode(',', array_fill(0, count($meta_keys), '%s'));
+            $meta_values = $wpdb->get_results($wpdb->prepare(
+                "SELECT meta_key, meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key IN ($placeholders)",
+                array_merge(array($testimonial_post_id), $meta_keys)
+            ));
+            
+            foreach ($meta_values as $meta) {
+                if ($meta->meta_key === 'testimonial_text' && empty($testimonial_text) && !empty($meta->meta_value)) {
+                    $testimonial_text = extract_acf_string_value($meta->meta_value);
+                } elseif ($meta->meta_key === 'testimonial_name' && empty($testimonial_name) && !empty($meta->meta_value)) {
+                    $testimonial_name = extract_acf_string_value($meta->meta_value);
+                } elseif ($meta->meta_key === 'testimonial_title' && empty($testimonial_title) && !empty($meta->meta_value)) {
+                    $testimonial_title = extract_acf_string_value($meta->meta_value);
+                }
+            }
+        }
+        
+        // Priority 4: Get directly from post meta using field KEY
+        // Note: field_ keys usually contain field references, but checking just in case
+        if (empty($testimonial_text)) {
+            $field_value = get_post_meta($testimonial_post_id, 'field_testimonial_text', true);
+            $testimonial_text = extract_acf_string_value($field_value);
+        }
+        if (empty($testimonial_name)) {
+            $field_value = get_post_meta($testimonial_post_id, 'field_testimonial_name', true);
+            $testimonial_name = extract_acf_string_value($field_value);
+        }
+        if (empty($testimonial_title)) {
+            $field_value = get_post_meta($testimonial_post_id, 'field_testimonial_title', true);
+            $testimonial_title = extract_acf_string_value($field_value);
+        }
+    }
+    
+    // Ensure values are strings (handle arrays, objects, null/false)
+    // Use extract_acf_string_value to handle arrays/objects properly
+    $testimonial_text = extract_acf_string_value($testimonial_text);
+    $testimonial_name = extract_acf_string_value($testimonial_name);
+    $testimonial_title = extract_acf_string_value($testimonial_title);
+    
+    // Final fallback: convert to string if still not a string
+    if (!is_string($testimonial_text)) {
+        $testimonial_text = ($testimonial_text !== false && $testimonial_text !== null) ? trim((string) $testimonial_text) : '';
+    }
+    if (!is_string($testimonial_name)) {
+        $testimonial_name = ($testimonial_name !== false && $testimonial_name !== null) ? trim((string) $testimonial_name) : '';
+    }
+    if (!is_string($testimonial_title)) {
+        $testimonial_title = ($testimonial_title !== false && $testimonial_title !== null) ? trim((string) $testimonial_title) : '';
+    }
+    
+    return array(
+        'tab_testimonial_text'  => $testimonial_text,
+        'tab_testimonial_name'  => $testimonial_name,
+        'tab_testimonial_title' => $testimonial_title,
+    );
+}
+}
+
 // Use only ACF data - no default fallback
 if (!$program_tabs || empty($program_tabs)) {
     $program_tabs = array();
@@ -42,11 +335,15 @@ if (!$program_tabs || empty($program_tabs)) {
     $unique_tabs = array();
     $seen_names = array();
     
-    foreach ($program_tabs as $tab) {
+    foreach ($program_tabs as $index => $tab) {
         $tab_name = trim($tab['tab_name'] ?? '');
         $tab_name_clean = strtolower(preg_replace('/\s+/', ' ', $tab_name)); // Normalize spaces
         
         if (!empty($tab_name) && !in_array($tab_name_clean, $seen_names)) {
+            // Fetch and add testimonial data for this tab
+            $testimonial_data = get_testimonial_data_for_tab($tab, $index);
+            $tab = array_merge($tab, $testimonial_data);
+            
             $unique_tabs[] = $tab;
             $seen_names[] = $tab_name_clean;
         }
@@ -239,6 +536,15 @@ if ($json_data === false) {
     }
     ?>
     <?php
+    // Get testimonial data for active tab (use helper function for consistency)
+    $testimonial_data = get_testimonial_data_for_tab($active_tab);
+    $testimonial_text = $testimonial_data['tab_testimonial_text'];
+    $testimonial_name = $testimonial_data['tab_testimonial_name'];
+    $testimonial_title = $testimonial_data['tab_testimonial_title'];
+    
+    // Check if we have any testimonial content
+    $has_testimonial_content = !empty($testimonial_text) || !empty($testimonial_name) || !empty($testimonial_title);
+    
     // Get testimonial background image
     $testimonial_bg_image = $active_tab['tab_testimonial_background_image'] ?? null;
     $testimonial_bg_url = '';
@@ -247,25 +553,34 @@ if ($json_data === false) {
     }
     
     // Build testimonial card style attribute
-    $testimonial_card_style = '';
-    $is_testimonial_empty = empty($active_tab['tab_testimonial_text'] ?? '') && empty($active_tab['tab_testimonial_name'] ?? '') && empty($active_tab['tab_testimonial_title'] ?? '');
+    $testimonial_card_style_parts = array();
+    $has_testimonial_content = !empty($testimonial_text) || !empty($testimonial_name) || !empty($testimonial_title);
     
-    if ($is_testimonial_empty) {
-        $testimonial_card_style = 'display:none;';
-    } elseif (!empty($testimonial_bg_url)) {
-        $testimonial_card_style = 'background-image: url(\'' . esc_url($testimonial_bg_url) . '\'); background-size: cover; background-position: center; background-repeat: no-repeat;';
+    // Only hide card if there's NO testimonial content at all
+    if (!$has_testimonial_content) {
+        $testimonial_card_style_parts[] = 'display:none;';
+    } else {
+        // Add background image if available
+    if (!empty($testimonial_bg_url)) {
+        $testimonial_card_style_parts[] = 'background-image: url(\'' . esc_url($testimonial_bg_url) . '\');';
+        $testimonial_card_style_parts[] = 'background-size: cover;';
+        $testimonial_card_style_parts[] = 'background-position: center;';
+        $testimonial_card_style_parts[] = 'background-repeat: no-repeat;';
+        }
     }
+    
+    $testimonial_card_style = implode(' ', $testimonial_card_style_parts);
     ?>
     <div class="healthcare-testimonial">
         <div class="healthcare-testimonial-content">
-            <div class="healthcare-testimonial-card" <?php if (!empty($testimonial_card_style)): ?>style="<?php echo $testimonial_card_style; ?>"<?php endif; ?>>
+            <div class="healthcare-testimonial-card" <?php if (!empty($testimonial_card_style)): ?>style="<?php echo esc_attr($testimonial_card_style); ?>"<?php endif; ?>>
                 <div class="healthcare-testimonial-content-wrapper">
-                    <div class="healthcare-testimonial-quote" <?php echo empty($active_tab['tab_testimonial_text'] ?? '') ? 'style="display:none;"' : ''; ?>>"</div>
+                    <div class="healthcare-testimonial-quote" <?php echo empty($testimonial_text) ? 'style="display:none;"' : ''; ?>>"</div>
                     <div class="healthcare-testimonial-content-inner">
-                        <p class="healthcare-testimonial-text tab-testimonial-text" <?php echo empty($active_tab['tab_testimonial_text'] ?? '') ? 'style="display:none;"' : ''; ?>><?php echo esc_html($active_tab['tab_testimonial_text'] ?? ''); ?></p>
-                        <div class="healthcare-testimonial-author" <?php echo empty($active_tab['tab_testimonial_name'] ?? '') && empty($active_tab['tab_testimonial_title'] ?? '') ? 'style="display:none;"' : ''; ?>>
-                            <div class="healthcare-testimonial-name tab-testimonial-name" <?php echo empty($active_tab['tab_testimonial_name'] ?? '') ? 'style="display:none;"' : ''; ?>><?php echo esc_html($active_tab['tab_testimonial_name'] ?? ''); ?></div>
-                            <div class="healthcare-testimonial-title tab-testimonial-title" <?php echo empty($active_tab['tab_testimonial_title'] ?? '') ? 'style="display:none;"' : ''; ?>><?php echo esc_html($active_tab['tab_testimonial_title'] ?? ''); ?></div>
+                        <p class="healthcare-testimonial-text tab-testimonial-text" <?php echo empty($testimonial_text) ? 'style="display:none;"' : ''; ?>><?php echo esc_html($testimonial_text); ?></p>
+                        <div class="healthcare-testimonial-author" <?php echo empty($testimonial_name) && empty($testimonial_title) ? 'style="display:none;"' : ''; ?>>
+                            <div class="healthcare-testimonial-name tab-testimonial-name" <?php echo empty($testimonial_name) ? 'style="display:none;"' : ''; ?>><?php echo esc_html($testimonial_name); ?></div>
+                            <div class="healthcare-testimonial-title tab-testimonial-title" <?php echo empty($testimonial_title) ? 'style="display:none;"' : ''; ?>><?php echo esc_html($testimonial_title); ?></div>
                         </div>
                     </div>
                     <div class="healthcare-testimonial-read-more" <?php echo empty($active_tab['tab_read_more_link'] ?? '') ? 'style="display:none;"' : ''; ?>>

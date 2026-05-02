@@ -1,0 +1,43 @@
+/* Accreditation Info Block Styles */
+
+.v0-acc {
+    padding: 80px 0;
+    background: #f7f8f9;
+}
+.v0-acc .v0-acc__inner {
+    margin: 0 auto;
+    padding: 50px 20px;
+    text-align: center;
+    color: #2a2f36;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+.v0-acc .v0-acc__title {
+    font-weight: 700;
+    font-size: clamp(22px, 3vw, 28px);
+    line-height: 1.25;
+    margin: 0 0 12px;
+    letter-spacing: .2px;
+}
+.v0-acc .v0-acc__desc {
+    margin: 0 auto 18px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4b5563;
+    max-width: 62ch;
+}
+.v0-acc .v0-acc__link {
+    color: #0d6b3f;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.v0-acc .v0-acc__badge {
+    margin-top: 20px;
+}
+.v0-acc a:focus-visible {
+    outline: 2px solid #0d6b3f;
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+.wp-block-acf-accreditation::before{
+  content:"Single Accreditation";position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.8);color:white;padding:8px 12px;font-size:11px;border-radius:4px;z-index:10;font-weight:500;max-width:280px;text-align:center;line-height:1.3;  
+}

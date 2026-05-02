@@ -106,6 +106,9 @@ class Mega_Menu_Walker extends Walker_Nav_Menu {
                 // Regular submenu at depth 2
                 $output .= "\n<ul class=\"sub-menu\">\n";
             }
+        } elseif ($depth === 3) {
+            // Handle depth 3 (3rd level) - nested submenu
+            $output .= "\n<ul class=\"sub-menu\">\n";
         }
     }
     
@@ -133,8 +136,8 @@ class Mega_Menu_Walker extends Walker_Nav_Menu {
                 // Use anchor tag instead of button for proper navigation
                 $output .= "<a href=\"" . esc_url($cta_url) . "\" class=\"mega-menu-cta\">\n";
                 $output .= esc_html($cta_text) . "\n";
-                $output .= "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n";
-                $output .= "<path d=\"M4 8h8m0 0l-4-4m4 4l-4 4\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n";
+                $output .= "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n";
+                $output .= "<path d=\"M7 17L17 7M17 7H7M17 7V17\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n";
                 $output .= "</svg>\n";
                 $output .= "</a>\n";
                 $output .= "</div><!-- .mega-menu-footer -->\n";
@@ -165,6 +168,9 @@ class Mega_Menu_Walker extends Walker_Nav_Menu {
                 // Close regular submenu
                 $output .= "</ul><!-- .sub-menu -->\n";
             }
+        } elseif ($depth === 3) {
+            // Close 3rd level submenu
+            $output .= "</ul><!-- .sub-menu -->\n";
         }
     }
     

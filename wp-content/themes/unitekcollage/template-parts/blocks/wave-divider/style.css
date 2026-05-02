@@ -1,0 +1,162 @@
+/**
+ * Wave Divider Block - Frontend Styles
+ * Responsive wave divider with different patterns for desktop, tablet, and mobile
+ */
+
+.wave-divider-block {
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.wave-divider-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.wave-divider-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    object-position: bottom center;
+}
+
+/* Desktop Wave (default, shown on screens 1025px and above) */
+.wave-divider-desktop {
+    display: block;
+}
+
+.wave-divider-tablet,
+.wave-divider-mobile {
+    display: none;
+}
+
+/* Width Control - Aligned with header/footer */
+.wave-divider-block.wave-width-container {
+    max-width: 1728px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 150px;
+    box-sizing: border-box;
+}
+
+/* Block Alignment Support */
+.wave-divider-block.alignwide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wave-divider-block.alignfull {
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+/* Fix for editor - prevent overflow */
+.block-editor-block-list__layout .wave-divider-block.alignfull,
+.editor-styles-wrapper .wave-divider-block.alignfull,
+.wp-block-acf-wave-divider .wave-divider-block.alignfull {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Responsive Design */
+
+/* Tablet - 769px to 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .wave-divider-desktop {
+        display: none;
+    }
+    
+    .wave-divider-tablet {
+        display: block;
+    }
+    
+    .wave-divider-mobile {
+        display: none;
+    }
+}
+
+/* Mobile - 768px and below */
+@media (max-width: 768px) {
+    .wave-divider-desktop {
+        display: none;
+    }
+    
+    .wave-divider-tablet {
+        display: none;
+    }
+    
+    .wave-divider-mobile {
+        display: block;
+    }
+    
+    .wave-divider-block.alignfull {
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+    }
+    
+    .wave-divider-block.alignwide {
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* Container width responsive adjustments - Match header/footer padding */
+
+/* Desktop - 1200px and below (applies to most screens, overridden by more specific rules below) */
+@media (max-width: 1200px) {
+    .wave-divider-block.wave-width-container {
+        padding: 0 80px;
+    }
+}
+
+/* Desktop - 1025px to 1280px (overrides 1200px rule for this range) */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .wave-divider-block.wave-width-container {
+        padding: 0 40px;
+    }
+}
+
+/* Tablet - 769px to 1024px (overrides 1200px rule for this range) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .wave-divider-block.wave-width-container {
+        padding: 0 50px;
+    }
+}
+
+/* Mobile - 768px and below (overrides all above rules) */
+@media (max-width: 768px) {
+    .wave-divider-block.wave-width-container {
+        padding: 0 20px;
+        margin-bottom: 30px;
+    }
+}
+
+/* Wave Direction: Bottom to Top */
+.wave-divider-block.wave-direction-bottom-top .wave-divider-image {
+    transform: rotate(180deg);
+}
+
+/* Ensure smooth transitions */
+.wave-divider-image {
+    transition: opacity 0.3s ease;
+}
+
+/* Print styles */
+@media print {
+    .wave-divider-block {
+        background: #000;
+    }
+    
+    .wave-divider-image {
+        display: none;
+    }
+}
+

@@ -17,6 +17,93 @@ require get_template_directory() . '/inc/acf-options.php';
 require get_template_directory() . '/inc/acf-fields/theme-settings.php';
 require get_template_directory() . '/inc/acf-fields/mega-menu-settings.php';
 require get_template_directory() . '/inc/class-mega-menu-walker.php';
+require get_template_directory() . '/inc/acf-fields/testimonials.php';
+require get_template_directory() . '/inc/custom-post-types.php';
+
+// Register native Gutenberg blocks
+// DISABLED - Using plugin version instead
+/*
+add_action('init', function() {
+    $block_path = get_template_directory() . '/template-parts/blocks/full-width-container';
+    
+    register_block_type(
+        $block_path . '/block.json',
+        array(
+            'render_callback' => function($attributes, $content, $block) use ($block_path) {
+                // For dynamic blocks with save: null, WordPress should populate $content with inner blocks
+                $inner_content = '';
+                
+                // First, try to use $content if WordPress populated it automatically
+                if ( ! empty( $content ) ) {
+                    $inner_content = $content;
+                }
+                // If content is empty, manually render inner blocks from $block object
+                elseif ( ! empty( $block ) && is_object( $block ) ) {
+                    // Method 1: Directly iterate inner_blocks (WP_Block_List) - this is the most reliable
+                    if ( ! empty( $block->inner_blocks ) ) {
+                        foreach ( $block->inner_blocks as $inner_block ) {
+                            if ( is_object( $inner_block ) && method_exists( $inner_block, 'render' ) ) {
+                                $inner_content .= $inner_block->render();
+                            }
+                        }
+                    }
+                    
+                    // Method 2: Use inner_content array if inner_blocks didn't work
+                    if ( empty( $inner_content ) && ! empty( $block->inner_content ) && is_array( $block->inner_content ) ) {
+                        $block_index = 0;
+                        $inner_blocks_list = array();
+                        // Convert WP_Block_List to array for indexed access
+                        if ( ! empty( $block->inner_blocks ) ) {
+                            foreach ( $block->inner_blocks as $idx => $ib ) {
+                                $inner_blocks_list[ $idx ] = $ib;
+                            }
+                        }
+                        
+                        foreach ( $block->inner_content as $chunk ) {
+                            if ( is_string( $chunk ) ) {
+                                $inner_content .= $chunk;
+                            } elseif ( isset( $inner_blocks_list[ $block_index ] ) ) {
+                                $inner_content .= $inner_blocks_list[ $block_index ]->render();
+                                $block_index++;
+                            }
+                        }
+                    }
+                    
+                    // Method 3: Use parsed_block as last resort
+                    if ( empty( $inner_content ) && ! empty( $block->parsed_block['innerBlocks'] ) ) {
+                        foreach ( $block->parsed_block['innerBlocks'] as $inner_block_data ) {
+                            $inner_content .= render_block( $inner_block_data );
+                        }
+                    }
+                }
+                
+                // Get block wrapper attributes
+                $wrapper_attributes = get_block_wrapper_attributes( array(
+                    'class' => 'full-width-container-block',
+                ) );
+                
+                // Output the template
+                ob_start();
+                ?>
+                <section <?php echo $wrapper_attributes; ?> role="region" aria-label="Full width container">
+                    <div class="full-width-container-inner">
+                        <?php echo $inner_content; ?>
+                    </div>
+                </section>
+                <?php
+                return ob_get_clean();
+            }
+        )
+    );
+});
+*/
+
+
+
+
+
+
+
 
 
 /**
@@ -412,19 +499,26 @@ function unitek_college_posts_shortcode($atts) {
                             <div class="category-tag"><?php echo esc_html($category_name); ?></div>
                         </div>
                         <div class="news-content">
-                            <?php if ($atts['show_date'] === 'true') : ?>
+                            <!-- <?php if ($atts['show_date'] === 'true') : ?>
                                 <time class="news-date" datetime="<?php echo esc_attr(get_the_date('c')); ?>">
                                     <?php echo get_the_date('F j, Y'); ?>
                                 </time>
-                            <?php endif; ?>
+
+                            <?php endif; ?> -->
+
+                            <div class="article-card__meta">
+                                    <span class="article-card__date"><?php echo get_the_date('F j, Y'); ?></span>
+                                    <span class="article-card__divider"></span>
+                                    <span class="article-card__author"><?php echo esc_html(get_the_author()); ?></span>
+                                </div>
                             <h3 class="news-title">
                                 <a href="<?php the_permalink(); ?>" rel="bookmark">
                                     <?php the_title(); ?>
                                 </a>
                             </h3>
-                            <?php if ($atts['show_excerpt'] === 'true') : ?>
-                                <p class="news-snippet"><?php echo wp_trim_words(get_the_excerpt(), 15, '...'); ?></p>
-                            <?php endif; ?>
+                            <!-- <?php if ($atts['show_excerpt'] === 'true') : ?>
+                                <p class="news-snippet"><?php // echo wp_trim_words(get_the_excerpt(), 15, '...'); ?></p>
+                            <?php endif; ?> -->
                             <a href="<?php the_permalink(); ?>" class="read-more-link">Read more →</a>
                         </div>
                     </article>
@@ -441,6 +535,114 @@ function unitek_college_posts_shortcode($atts) {
     return ob_get_clean();
 }
 add_shortcode('unitek_posts', 'unitek_college_posts_shortcode');
+
+/**
+ * Process shortcodes in ACF fields
+ */
+function unitek_college_process_acf_shortcodes($value, $post_id, $field) {
+    // Process shortcodes in text-based fields
+    if (in_array($field['type'], array('wysiwyg', 'textarea', 'text'))) {
+        if (is_string($value) && !empty($value)) {
+            $value = do_shortcode($value);
+        }
+    }
+    return $value;
+}
+add_filter('acf/format_value/type=wysiwyg', 'unitek_college_process_acf_shortcodes', 10, 3);
+add_filter('acf/format_value/type=textarea', 'unitek_college_process_acf_shortcodes', 10, 3);
+add_filter('acf/format_value/type=text', 'unitek_college_process_acf_shortcodes', 10, 3);
+
+/**
+ * Process shortcodes in ACF field output (when using the_field)
+ */
+function unitek_college_process_acf_output_shortcodes($value, $post_id, $field) {
+    if (is_string($value) && !empty($value)) {
+        $value = do_shortcode($value);
+    }
+    return $value;
+}
+add_filter('acf/format_value', 'unitek_college_process_acf_output_shortcodes', 20, 3);
+
+/**
+ * Process shortcodes in post content (fallback)
+ */
+function unitek_college_process_content_shortcodes($content) {
+    if (is_string($content)) {
+        $content = do_shortcode($content);
+    }
+    return $content;
+}
+add_filter('the_content', 'unitek_college_process_content_shortcodes', 20);
+
+/**
+ * Remove shortcodes from titles and excerpts in search results
+ */
+function unitek_college_remove_shortcodes_from_search($text) {
+    if (empty($text) || !is_string($text)) {
+        return $text;
+    }
+    
+    // Remove all shortcodes (including [unitek_posts] and any other shortcodes)
+    $text = strip_shortcodes($text);
+    
+    // Also remove any remaining shortcode-like patterns that might have been missed
+    $text = preg_replace('/\[[^\]]+\]/', '', $text);
+    
+    // Clean up extra whitespace
+    $text = preg_replace('/\s+/', ' ', $text);
+    $text = trim($text);
+    
+    return $text;
+}
+
+/**
+ * Remove shortcodes from excerpts (especially in search results)
+ */
+function unitek_college_clean_excerpt_shortcodes($excerpt) {
+    // Always remove shortcodes from excerpts
+    return unitek_college_remove_shortcodes_from_search($excerpt);
+}
+add_filter('get_the_excerpt', 'unitek_college_clean_excerpt_shortcodes', 10, 1);
+add_filter('the_excerpt', 'unitek_college_clean_excerpt_shortcodes', 10, 1);
+add_filter('wp_trim_excerpt', 'unitek_college_clean_excerpt_shortcodes', 10, 1);
+
+/**
+ * Remove shortcodes from titles in search results and admin
+ */
+function unitek_college_clean_title_shortcodes($title, $post_id = null) {
+    // Remove shortcodes from titles in search context or admin
+    if (is_search() || is_admin()) {
+        return unitek_college_remove_shortcodes_from_search($title);
+    }
+    return $title;
+}
+add_filter('the_title', 'unitek_college_clean_title_shortcodes', 10, 2);
+add_filter('get_the_title', 'unitek_college_clean_title_shortcodes', 10, 2);
+
+/**
+ * Remove shortcodes from REST API responses (for JavaScript search)
+ */
+function unitek_college_clean_rest_api_shortcodes($response, $post, $request) {
+    // Clean title
+    if (isset($response->data['title']['rendered'])) {
+        $response->data['title']['rendered'] = unitek_college_remove_shortcodes_from_search($response->data['title']['rendered']);
+    }
+    
+    // Clean excerpt
+    if (isset($response->data['excerpt']['rendered'])) {
+        $response->data['excerpt']['rendered'] = unitek_college_remove_shortcodes_from_search($response->data['excerpt']['rendered']);
+    }
+    
+    // Clean content if needed
+    if (isset($response->data['content']['rendered'])) {
+        // Only strip shortcodes, don't remove all content
+        $response->data['content']['rendered'] = strip_shortcodes($response->data['content']['rendered']);
+    }
+    
+    return $response;
+}
+add_filter('rest_prepare_post', 'unitek_college_clean_rest_api_shortcodes', 10, 3);
+add_filter('rest_prepare_page', 'unitek_college_clean_rest_api_shortcodes', 10, 3);
 
 /**
  * ACF Field Validation for Required Fields
@@ -461,43 +663,27 @@ add_filter('acf/validate_value', 'unitek_college_validate_acf_fields', 10, 4);
 /**
  * Prevent saving posts with empty required ACF fields
  */
-function unitek_college_prevent_save_empty_required_fields($post_id) {
-    // Skip for autosaves and revisions
-    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
-        return;
-    }
-    
-    // Get all ACF field groups for this post
-    $field_groups = acf_get_field_groups(array('post_id' => $post_id));
-    
-    foreach ($field_groups as $field_group) {
-        $fields = acf_get_fields($field_group['key']);
+/**
+ * Validate ACF required fields using ACF's validation filter
+ * This runs BEFORE ACF saves, so we check POST data (new values)
+ */
+function unitek_college_validate_acf_required_fields($valid, $value, $field, $input) {
+    // Only validate if field is required
+    if ($field['required'] && $field['type'] !== 'tab') {
+        // Check if value is empty (but allow 0 and '0' as valid values)
+        $is_empty = ($value === '' || $value === null || $value === false || (is_array($value) && empty($value)));
         
-        foreach ($fields as $field) {
-            if ($field['required'] && $field['type'] !== 'tab') {
-                $value = get_field($field['name'], $post_id);
-                
-                if (empty($value)) {
-                    // Add admin notice
-                    add_action('admin_notices', function() use ($field) {
-                        echo '<div class="notice notice-error"><p>';
-                        printf(
-                            __('Post not saved: %s is required but empty.', 'unitek-college'),
-                            $field['label']
-                        );
-                        echo '</p></div>';
-                    });
-                    
-                    // Remove the save action and redirect back
-                    remove_action('save_post', 'unitek_college_prevent_save_empty_required_fields');
-                    wp_redirect(admin_url('post.php?post=' . $post_id . '&action=edit&message=validation_failed'));
-                    exit;
-                }
-            }
+        if ($is_empty) {
+            $valid = sprintf(
+                __('%s is required.', 'unitek-college'),
+                $field['label']
+            );
         }
     }
+    
+    return $valid;
 }
-add_action('save_post', 'unitek_college_prevent_save_empty_required_fields', 5);
+add_filter('acf/validate_value', 'unitek_college_validate_acf_required_fields', 10, 4);
 
 /**
  * JavaScript validation for ACF blocks in editor
@@ -975,14 +1161,35 @@ function filter_blog_posts_ajax() {
         while ($blog_query->have_posts()) : $blog_query->the_post();
             // Get post categories
             $post_categories = get_the_category();
-            $category_name = !empty($post_categories) ? $post_categories[0]->name : 'Uncategorized';
+            
+            // Determine which category to display
+            $display_category_name = 'Uncategorized';
+            
+            if (!empty($post_categories)) {
+                // If a specific category is filtered and post has that category, show it
+                if ($category !== 'all') {
+                    foreach ($post_categories as $cat) {
+                        if ($cat->slug === $category) {
+                            $display_category_name = $cat->name;
+                            break;
+                        }
+                    }
+                    // If filtered category not found in post's categories, show first one
+                    if ($display_category_name === 'Uncategorized') {
+                        $display_category_name = $post_categories[0]->name;
+                    }
+                } else {
+                    // No filter active, show first category
+                    $display_category_name = $post_categories[0]->name;
+                }
+            }
             
             // Get author name
             $author_name = get_the_author();
     ?>
-        <article class="article-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out <?php echo $animation_delay; ?>s, transform 0.5s ease-out <?php echo $animation_delay; ?>s;">
+        <article class="article-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out <?php echo $animation_delay; ?>s, transform 0.5s ease-out <?php echo $animation_delay; ?>s;" data-categories="<?php echo esc_attr(implode(',', array_map(function($cat) { return $cat->slug; }, $post_categories))); ?>">
           <div class="article-card__tag">
-            <span class="label"><?php echo esc_html($category_name); ?></span>
+            <span class="label"><?php echo esc_html($display_category_name); ?></span>
           </div>
           <div class="article-card__image" role="img" aria-label="Article featured image">
             <?php if (has_post_thumbnail()) : ?>
@@ -1086,14 +1293,35 @@ function blog_inline_search_posts() {
         while ($search_results->have_posts()) : $search_results->the_post();
             // Get post categories
             $post_categories = get_the_category();
-            $category_name = !empty($post_categories) ? $post_categories[0]->name : 'Uncategorized';
+            
+            // Determine which category to display
+            $display_category_name = 'Uncategorized';
+            
+            if (!empty($post_categories)) {
+                // If a specific category is filtered and post has that category, show it
+                if ($category !== 'all') {
+                    foreach ($post_categories as $cat) {
+                        if ($cat->slug === $category) {
+                            $display_category_name = $cat->name;
+                            break;
+                        }
+                    }
+                    // If filtered category not found in post's categories, show first one
+                    if ($display_category_name === 'Uncategorized') {
+                        $display_category_name = $post_categories[0]->name;
+                    }
+                } else {
+                    // No filter active, show first category
+                    $display_category_name = $post_categories[0]->name;
+                }
+            }
             
             // Get author name
             $author_name = get_the_author();
     ?>
-        <article class="article-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out <?php echo $animation_delay; ?>s, transform 0.5s ease-out <?php echo $animation_delay; ?>s;">
+        <article class="article-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out <?php echo $animation_delay; ?>s, transform 0.5s ease-out <?php echo $animation_delay; ?>s;" data-categories="<?php echo esc_attr(implode(',', array_map(function($cat) { return $cat->slug; }, $post_categories))); ?>">
           <div class="article-card__tag">
-            <span class="label"><?php echo esc_html($category_name); ?></span>
+            <span class="label"><?php echo esc_html($display_category_name); ?></span>
           </div>
           <div class="article-card__image" role="img" aria-label="Article featured image">
             <?php if (has_post_thumbnail()) : ?>
@@ -1209,6 +1437,7 @@ function toggle_featured_post_callback() {
 }
 add_action('wp_ajax_toggle_featured_post', 'toggle_featured_post_callback');
 
+
 /**
  * Automatically clean HTML entities from post titles when saving
  * Converts &nbsp; to regular spaces and other HTML entities to their proper characters
@@ -1234,87 +1463,68 @@ function unitek_clean_post_title_on_save($data, $postarr) {
     return $data;
 }
 add_filter('wp_insert_post_data', 'unitek_clean_post_title_on_save', 10, 2);
+add_shortcode('html_sitemap', 'htmlSitemap');
 
-/**
- * Expose selected ACF option fields to headless frontend (Next.js).
- *
- * This avoids requiring "ACF to REST API" plugin and keeps the payload small.
- */
-add_action('rest_api_init', function () {
-    register_rest_route('unitek/v1', '/options', array(
-        'methods'  => 'GET',
-        'callback' => function () {
-            if (!function_exists('get_field')) {
-                return new WP_REST_Response(array('error' => 'ACF not available'), 501);
-            }
+function htmlSitemap() {
+    ob_start();
 
-            $image_to_payload = function ($image) {
-                if (is_array($image) && !empty($image['url'])) {
-                    return array(
-                        'url'    => $image['url'],
-                        'alt'    => $image['alt'] ?? '',
-                        'width'  => $image['width'] ?? null,
-                        'height' => $image['height'] ?? null,
-                    );
-                }
-                return null;
-            };
+    $excludesIds = get_posts([
+        'post_type'      => 'page',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'fields'         => 'ids',
+        'meta_query'     => [
+            [
+                'key'     => '_yoast_wpseo_meta-robots-noindex',
+                'value'   => '1',
+                'compare' => '='
+            ]
+        ]
+    ]);
 
-            $footer_columns = array();
-            if (have_rows('footer_columns', 'option')) {
-                while (have_rows('footer_columns', 'option')) {
-                    the_row();
-                    $col = array(
-                        'title' => get_sub_field('title') ?: '',
-                        'links' => array(),
-                    );
-                    if (have_rows('links')) {
-                        while (have_rows('links')) {
-                            the_row();
-                            $label = get_sub_field('label');
-                            $url   = get_sub_field('url');
-                            if ($label && $url) {
-                                $col['links'][] = array('label' => $label, 'url' => $url);
-                            }
-                        }
-                    }
-                    $footer_columns[] = $col;
-                }
-            }
+    $excludesIds = implode(',', $excludesIds);
 
-            $social_links = array();
-            if (have_rows('social_links', 'option')) {
-                while (have_rows('social_links', 'option')) {
-                    the_row();
-                    $social_links[] = array(
-                        'icon_class' => get_sub_field('icon_class') ?: '',
-                        'url'        => get_sub_field('url') ?: '',
-                        'label'      => get_sub_field('label') ?: '',
-                    );
-                }
-            }
+    echo '<div class="html-sitemap">';
 
-            $payload = array(
-                // Header options
-                'top_bar_enabled'    => (bool) get_field('top_bar_enabled', 'option'),
-                'top_bar_text'       => get_field('top_bar_text', 'option') ?: 'Get info',
-                'header_phone'       => get_field('header_phone', 'option') ?: '',
-                'header_logo'        => $image_to_payload(get_field('header_logo', 'option')),
-                'mobile_logo'        => $image_to_payload(get_field('mobile_logo', 'option')),
-                'apply_button_text'  => get_field('apply_button_text', 'option') ?: 'Apply now',
-                'apply_button_url'   => get_field('apply_button_url', 'option') ?: '#',
+    echo '<h2>Pages</h2>';
+    echo '<ul>';
+    wp_list_pages([
+        'exclude'   => $excludesIds,
+        'title_li'  => '',
+        'depth'     => 0,       // keep hierarchy
+        'sort_column' => 'menu_order'
+    ]);
+    echo '</ul>';
 
-                // Footer options
-                'footer_logo'        => $image_to_payload(get_field('footer_logo', 'option')),
-                'footer_copyright'   => get_field('footer_copyright', 'option') ?: ('© ' . date('Y') . ' Unitek College. All rights reserved.'),
-                'footer_description' => get_field('footer_description', 'option') ?: '',
-                'footer_columns'     => $footer_columns,
-                'social_links'       => $social_links,
-            );
+    $posts = get_posts([
+        'post_type'      => 'post',
+        'posts_per_page' => -1
+    ]);
 
-            return new WP_REST_Response($payload, 200);
-        },
-        // Public read; contains only non-sensitive theme options.
-        'permission_callback' => '__return_true',
-    ));
+    echo '<h2>Blog Posts</h2>';
+    echo '<ul>';
+    foreach ( $posts as $post ) {
+        echo '<li><a href="' . get_permalink($post->ID) . '">' . esc_html($post->post_title) . '</a></li>';
+    }
+    echo '</ul>';
+
+    echo '</div>';
+
+    return ob_get_clean();
+}
+add_action( 'template_redirect', function() {
+ 
+    // Only on frontend, only when it's a 404
+    if ( is_404() && ! is_admin() ) {
+ 
+        // URL of your custom 404 page
+        $url = home_url( '/404-error/' );
+ 
+        // Optional: keep it as 404 in browser (better for SEO)
+        status_header( 404 );
+ 
+        // Show the page content instead of default 404 template
+        wp_redirect( $url, 302 );
+        exit;
+    }
 });

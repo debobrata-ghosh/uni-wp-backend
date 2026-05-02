@@ -16,17 +16,9 @@
 
 <?php
 // Get theme settings
-$acf_get_option = static function ( string $key, $default = null ) {
-	if ( function_exists( 'get_field' ) ) {
-		$val = get_field( $key, 'option' );
-		return ( $val === null || $val === '' ) ? $default : $val;
-	}
-	return $default;
-};
-
-$top_bar_enabled = (bool) $acf_get_option( 'top_bar_enabled', false );
-$top_bar_text    = (string) $acf_get_option( 'top_bar_text', 'Get info' );
-$header_phone    = $acf_get_option( 'header_phone', '' );
+$top_bar_enabled = get_field('top_bar_enabled', 'option');
+$top_bar_text = get_field('top_bar_text', 'option') ?: 'Get info';
+$header_phone = get_field('header_phone', 'option');
 ?>
 
 <?php if ($top_bar_enabled): ?>
@@ -77,8 +69,8 @@ $header_phone    = $acf_get_option( 'header_phone', '' );
         <!-- Logo -->
         <div class="header-logo">
             <?php
-            $header_logo = $acf_get_option( 'header_logo', null );
-            $mobile_logo = $acf_get_option( 'mobile_logo', null );
+            $header_logo = get_field('header_logo', 'option');
+            $mobile_logo = get_field('mobile_logo', 'option');
             
             // Determine which logo to use for mobile
             $mobile_logo_src = $mobile_logo ? $mobile_logo : $header_logo;
@@ -122,7 +114,7 @@ $header_phone    = $acf_get_option( 'header_phone', '' );
         <nav class="header-nav" role="navigation" aria-label="<?php _e('Primary Menu', 'unitek-college'); ?>">
             <?php
             wp_nav_menu(array(
-                'menu'           => 'Header Main Menu',
+                'menu'           => 'Main Menu',
                 'theme_location' => 'primary_menu',
                 'container'      => false,
                 'menu_class'     => 'nav-list',
@@ -134,11 +126,11 @@ $header_phone    = $acf_get_option( 'header_phone', '' );
 
         
         
-        <!-- Apply Button (Desktop Only) -->
-        <div class="header-cta">
+        <!-- Apply Button (Desktop Only) - Only show if #get-started-today section exists -->
+        <div class="header-cta" id="header-apply-button">
             <?php
             $apply_text = get_field('apply_button_text', 'option') ?: 'Apply now';
-            $apply_url = get_field('apply_button_url', 'option') ?: '#';
+            $apply_url = get_field('apply_button_url', 'option') ?: '#get-started-today';
             ?>
             <a href="<?php echo esc_url($apply_url); ?>" class="btn-apply">
                 <?php echo esc_html($apply_text); ?>
@@ -147,6 +139,52 @@ $header_phone    = $acf_get_option( 'header_phone', '' );
                 </svg>
             </a>
         </div>
+        
+        <script>
+        (function() {
+            // Check if #get-started-today section exists on the page
+            function checkGetStartedSection() {
+                const getStartedSection = document.getElementById('get-started-today');
+                const headerCta = document.getElementById('header-apply-button');
+                const mobileCtaButton = document.querySelector('.mobile-cta-button');
+                
+                // Handle desktop button
+                if (headerCta) {
+                    if (getStartedSection) {
+                        // Section exists, show the button
+                        headerCta.style.display = '';
+                    } else {
+                        // Section doesn't exist, hide the button
+                        headerCta.style.display = 'none';
+                    }
+                }
+                
+                // Handle mobile button
+                if (mobileCtaButton) {
+                    if (getStartedSection) {
+                        // Section exists, show the mobile button
+                        mobileCtaButton.style.display = '';
+                    } else {
+                        // Section doesn't exist, hide the mobile button
+                        mobileCtaButton.style.display = 'none';
+                    }
+                }
+            }
+            
+            // Check when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkGetStartedSection);
+            } else {
+                checkGetStartedSection();
+            }
+            
+            // Also check after a short delay in case content loads dynamically
+            setTimeout(checkGetStartedSection, 500);
+            
+            // Check again after mobile menu button is created (if it's created dynamically)
+            setTimeout(checkGetStartedSection, 1000);
+        })();
+        </script>
         
         <!-- Mobile Header Right Section (Mobile Only) -->
         <div class="mobile-header-right">
@@ -185,7 +223,23 @@ $header_phone    = $acf_get_option( 'header_phone', '' );
             <!-- Logo Section -->
             <div class="search-logo">
                 <div class="search-logo-icon">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/UC-Side-Stack.png" alt="Unitek College Logo">
+                    <?php
+                    // Get footer logo for search overlay (fallback to header logo if not set)
+                    $footer_logo = get_field('footer_logo', 'option');
+                    $search_logo = $footer_logo ? $footer_logo : get_field('header_logo', 'option');
+                    
+                    if ($search_logo):
+                    ?>
+                        <img src="<?php echo esc_url($search_logo['url']); ?>" 
+                             alt="<?php echo esc_attr($search_logo['alt'] ?: 'Unitek College Logo search overlay'); ?>" 
+                             width="<?php echo esc_attr($search_logo['width'] ?? ''); ?>"
+                             height="<?php echo esc_attr($search_logo['height'] ?? ''); ?>">
+                    <?php else: ?>
+                        <img src="<?php echo get_template_directory_uri(); ?>/images/UC-Side-Stack.png" alt="Unitek College Logo search overlay">
+                    <?php endif; ?>
+
+
+                    
                 </div>
             </div>
             

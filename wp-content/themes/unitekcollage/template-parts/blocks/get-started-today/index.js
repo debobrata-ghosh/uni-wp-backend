@@ -1,3 +1,20 @@
+document.addEventListener('DOMContentLoaded', function () {
+  // Hide CF7 Akismet honeypot label inside this block only
+  var honeypots = document.querySelectorAll(
+    '.get-started-today-block textarea[name="_wpcf7_ak_hp_textarea"]'
+  );
+
+  honeypots.forEach(function (textarea) {
+    var label = textarea.closest('label');
+    if (label) {
+      label.style.display = 'none';
+    } else {
+      // Fallback: hide the textarea itself
+      textarea.style.display = 'none';
+    }
+  });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     // Form validation and submission handling
     const form = document.querySelector('.get-started-today-form-fields');

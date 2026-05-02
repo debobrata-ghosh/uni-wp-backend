@@ -126,36 +126,129 @@ function toggleMobileFAQItem(button) {
     }
 }
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    // Activate first category on desktop only (mobile categories start collapsed)
+// Function to activate first category and expand first question
+function activateFirstCategory() {
     const isDesktop = window.innerWidth > 768;
-    if (isDesktop) {
-        switchFAQCategory(0);
+    const isEditor = document.body.classList.contains('block-editor-page') || 
+                     document.querySelector('.block-editor-block-list__layout') ||
+                     document.querySelector('.editor-styles-wrapper');
+    
+    // Always activate first category in editor or on desktop
+    if (isDesktop || isEditor) {
+        const firstTab = document.querySelector('.faq-category-tab');
+        if (firstTab) {
+            const tabs = document.querySelectorAll('.faq-category-tab');
+            const tabIndex = Array.from(tabs).indexOf(firstTab);
+            if (tabIndex >= 0 && !firstTab.classList.contains('active')) {
+                switchFAQCategory(tabIndex);
+            }
+            
+            // Also expand first question in first category for editor preview
+            if (isEditor) {
+                setTimeout(function() {
+                    const firstCategory = document.querySelector('.faq-accordion-category:first-child');
+                    if (firstCategory) {
+                        const firstQuestion = firstCategory.querySelector('.faq-accordion-question:first-child');
+                        const firstAnswer = firstCategory.querySelector('.faq-accordion-answer:first-child');
+                        if (firstQuestion && firstAnswer && !firstAnswer.classList.contains('active')) {
+                            firstAnswer.classList.add('active');
+                            firstQuestion.classList.add('active');
+                            firstQuestion.setAttribute('aria-expanded', 'true');
+                        }
+                    }
+                }, 100);
+            }
+        }
+    }
+}
+
+// Use event delegation for better editor compatibility
+document.addEventListener('click', function(e) {
+    // Handle category tab clicks
+    if (e.target.classList.contains('faq-category-tab') || e.target.closest('.faq-category-tab')) {
+        const tab = e.target.classList.contains('faq-category-tab') ? e.target : e.target.closest('.faq-category-tab');
+        if (tab) {
+            e.preventDefault();
+            e.stopPropagation();
+            const tabs = document.querySelectorAll('.faq-category-tab');
+            const index = Array.from(tabs).indexOf(tab);
+            if (index >= 0) {
+                switchFAQCategory(index);
+            }
+        }
     }
     
-    // Set up event listeners for category tabs
-    const categoryTabs = document.querySelectorAll('.faq-category-tab');
-    categoryTabs.forEach((tab, index) => {
-        tab.addEventListener('click', function() {
-            switchFAQCategory(index);
-        });
+    // Handle desktop FAQ question clicks
+    if (e.target.classList.contains('faq-accordion-question') || e.target.closest('.faq-accordion-question')) {
+        const question = e.target.classList.contains('faq-accordion-question') ? e.target : e.target.closest('.faq-accordion-question');
+        if (question) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleFAQItem(question);
+        }
+    }
+    
+    // Handle mobile FAQ question clicks
+    if (e.target.classList.contains('faq-mobile-question') || e.target.closest('.faq-mobile-question')) {
+        const question = e.target.classList.contains('faq-mobile-question') ? e.target : e.target.closest('.faq-mobile-question');
+        if (question) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMobileFAQItem(question);
+        }
+    }
+}, true); // Use capture phase for better event handling
+
+// Initialize on page load
+function initializeFAQ() {
+    activateFirstCategory();
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeFAQ);
+} else {
+    initializeFAQ();
+}
+
+// Also initialize for editor preview (Gutenberg)
+if (typeof wp !== 'undefined' && wp.domReady) {
+    wp.domReady(initializeFAQ);
+}
+
+// Re-initialize when ACF block is rendered/updated
+if (typeof acf !== 'undefined') {
+    acf.addAction('render_block_preview/type=faq', function() {
+        setTimeout(initializeFAQ, 50);
+    });
+}
+
+// Use MutationObserver to handle dynamically loaded content in editor
+if (typeof MutationObserver !== 'undefined') {
+    let initTimeout;
+    const observer = new MutationObserver(function(mutations) {
+        const hasFAQBlock = document.querySelector('.faq-section-block');
+        if (hasFAQBlock) {
+            clearTimeout(initTimeout);
+            initTimeout = setTimeout(initializeFAQ, 100);
+        }
     });
     
-    // Set up event listeners for desktop FAQ questions
-    const desktopQuestions = document.querySelectorAll('.faq-accordion-question');
-    desktopQuestions.forEach(question => {
-        question.addEventListener('click', function() {
-            toggleFAQItem(this);
+    // Start observing when body is available
+    if (document.body) {
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
         });
-    });
-    
-    // Set up event listeners for mobile FAQ questions
-    const mobileQuestions = document.querySelectorAll('.faq-mobile-question');
-    mobileQuestions.forEach(question => {
-        question.addEventListener('click', function() {
-            toggleMobileFAQItem(this);
+    } else {
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.body) {
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            }
         });
-    });
-});
+    }
+}
 

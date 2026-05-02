@@ -23,49 +23,26 @@ acf_add_local_field_group(array(
             'rows' => 3,
         ),
         array(
-            'key' => 'field_get_started_dark_form_settings',
-            'label' => 'Form Settings',
-            'name' => 'get_started_dark_form_settings',
-            'type' => 'group',
-            'sub_fields' => array(
-                array(
-                    'key' => 'field_dark_form_action',
-                    'label' => 'Form Action URL',
-                    'name' => 'form_action',
-                    'type' => 'url',
-                    'default_value' => '#',
-                ),
-                array(
-                    'key' => 'field_dark_form_method',
-                    'label' => 'Form Method',
-                    'name' => 'form_method',
-                    'type' => 'select',
-                    'choices' => array(
-                        'post' => 'POST',
-                        'get' => 'GET',
-                    ),
-                    'default_value' => 'post',
-                ),
-            ),
-        ),
-        array(
-            'key' => 'field_get_started_dark_disclaimer',
-            'label' => 'Consent Text',
-            'name' => 'get_started_dark_disclaimer',
-            'type' => 'wysiwyg',
-            'default_value' => 'By submitting contact information on this website, you are consenting to receive calls, SMS and emails from Unitek Learning Education Group Corp (ULEGC) and its affiliates. Your information will not be sold or shared with parties unrelated to ULEGC. You certify that you are the owner of the contact information provided and agree to our privacy policy. Please note, this consent is not required to attend our institutions.',
-            'required' => 1,
-        ),
-        array(
-            'key' => 'field_get_started_dark_button_text',
-            'label' => 'Submit Button Text',
-            'name' => 'get_started_dark_button_text',
-            'type' => 'text',
-            'default_value' => 'Get started today',
-            'required' => 1,
+            'key' => 'field_get_started_dark_cf7_form',
+            'label' => 'Contact Form 7',
+            'name' => 'get_started_dark_cf7_form',
+            'type' => 'select',
+            'instructions' => 'Select a Contact Form 7 form to display.',
+            'choices' => array(),
+            'allow_null' => 1,
+            'default_value' => '',
         ),
     ),
     'location' => array(
+        // Support block editor (pages, posts)
+        array(
+            array(
+                'param' => 'block',
+                'operator' => '==',
+                'value' => 'acf/get-started-today-dark',
+            ),
+        ),
+        // Support theme options page
         array(
             array(
                 'param' => 'options_page',
@@ -82,4 +59,36 @@ acf_add_local_field_group(array(
 ));
 
 endif;
+
+// Populate CF7 form choices dynamically
+add_filter('acf/load_field/name=get_started_dark_cf7_form', function($field) {
+    // Check if Contact Form 7 is active
+    if (!function_exists('wpcf7_contact_form')) {
+        $field['choices'] = array('' => 'Contact Form 7 is not installed');
+        return $field;
+    }
+    
+    // Get all Contact Form 7 forms
+    $forms = get_posts(array(
+        'post_type' => 'wpcf7_contact_form',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'orderby' => 'title',
+        'order' => 'ASC',
+    ));
+    
+    $field['choices'] = array();
+    
+    if (!empty($forms)) {
+        foreach ($forms as $form) {
+            $form_id = $form->ID;
+            $form_title = $form->post_title;
+            $field['choices'][$form_id] = $form_title . ' (ID: ' . $form_id . ')';
+        }
+    } else {
+        $field['choices'][''] = 'No Contact Form 7 forms found';
+    }
+    
+    return $field;
+});
 

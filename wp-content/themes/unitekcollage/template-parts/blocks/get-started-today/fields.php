@@ -22,11 +22,54 @@ acf_add_local_field_group(array(
             'required' => 1,
         ),
         array(
+            'key' => 'field_get_started_content_type',
+            'label' => 'Right Side Content Type',
+            'name' => 'get_started_content_type',
+            'type' => 'radio',
+            'choices' => array(
+                'image' => 'Image',
+                'wysiwyg' => 'WYSIWYG Editor',
+            ),
+            'default_value' => 'image',
+            'layout' => 'horizontal',
+            'return_format' => 'value',
+            'required' => 1,
+        ),
+        array(
             'key' => 'field_get_started_image',
             'label' => 'Right Side Image',
             'name' => 'get_started_image',
             'type' => 'image',
             'return_format' => 'array',
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => 'field_get_started_content_type',
+                        'operator' => '==',
+                        'value' => 'image',
+                    ),
+                ),
+            ),
+        ),
+        array(
+            'key' => 'field_get_started_wysiwyg',
+            'label' => 'Right Side Content',
+            'name' => 'get_started_wysiwyg',
+            'type' => 'wysiwyg',
+            'default_value' => '',
+            'tabs' => 'all',
+            'toolbar' => 'full',
+            'media_upload' => 1,
+            'delay' => 0,
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => 'field_get_started_content_type',
+                        'operator' => '==',
+                        'value' => 'wysiwyg',
+                    ),
+                ),
+            ),
         ),
         array(
             'key' => 'field_get_started_cf7_form',

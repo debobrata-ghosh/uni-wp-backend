@@ -1,0 +1,330 @@
+/* Editor overflow fix for what you'll learn block */
+.block-editor-block-list__layout .what-youll-learn-block,
+.editor-styles-wrapper .what-youll-learn-block,
+.wp-block-acf-what-you-ll-learn .what-youll-learn-block {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.what-youll-learn-block {
+    background-color: #F0F1F2;
+    padding: 0;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.what-youll-learn-content {
+    max-width: 100%;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: stretch;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    min-width: 0;
+}
+
+/* Left Column - Dark Green Background */
+.what-youll-learn-left {
+    background-color: #58A430; /* Dark green background */
+    padding: 80px 60px 80px 150px;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    width: 100%;
+    color: #FFFFFF;
+}
+
+/* Align content with 1728px container on large screens */
+@media (min-width: 1729px) {
+    .what-youll-learn-left {
+        padding-left: calc((100vw - 1728px) / 2 + 150px);
+    }
+}
+
+/* Prevent overflow on medium-large desktop screens */
+@media (min-width: 1281px) and (max-width: 1728px) {
+    .what-youll-learn-left {
+        padding-left: min(150px, 10vw);
+        padding-right: min(60px, 5vw);
+    }
+}
+
+.what-youll-learn-heading {
+    font-size: 40px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0 0 20px 0;
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.what-youll-learn-description {
+    font-size: 16px;
+    color: #FFFFFF;
+    margin: 0 0 40px 0;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.what-youll-learn-separator {
+    width: 100%;
+    height: 1px;
+    background-color: #FFFFFF;
+    margin: 0 0 40px 0;
+}
+
+.what-youll-learn-points {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.what-youll-learn-points-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+}
+
+.what-youll-learn-point {
+    font-size: 16px;
+    color: #FFFFFF;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.what-youll-learn-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #FFFFFF;
+    color: #58A430;
+    border: none;
+    border-radius: 100px;
+    padding: 19px 32px;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    box-sizing: border-box;
+    max-width: fit-content;
+}
+
+.what-youll-learn-button:hover {
+    background-color: #F0F1F2;
+    color: #58A430;
+}
+
+.what-youll-learn-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.what-youll-learn-button-arrow {
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Right Column - Light Gray Background */
+.what-youll-learn-right {
+    background-color: #F0F1F2;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    min-width: 0;
+    position: relative;
+}
+
+.what-youll-learn-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    min-width: 0;
+    min-height: 100%;
+}
+
+.what-youll-learn-image-placeholder {
+    color: #6C757D;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* Block Alignment Support */
+.what-youll-learn-block.alignwide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.what-youll-learn-block.alignfull {
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+/* Fix for editor - prevent overflow */
+.block-editor-block-list__layout .what-youll-learn-block.alignfull,
+.editor-styles-wrapper .what-youll-learn-block.alignfull,
+.wp-block-acf-what-you-ll-learn .what-youll-learn-block.alignfull {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Responsive Design */
+@media (min-width: 1024px) and (max-width: 1280px) {
+    .what-youll-learn-left {
+        padding: 80px min(60px, 5vw) 80px min(40px, 4vw);
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .what-youll-learn-content {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .what-youll-learn-left {
+        padding: 80px min(50px, 6vw) 80px min(50px, 6vw);
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .what-youll-learn-points {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .what-youll-learn-content {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .what-youll-learn-left {
+        order: 2;
+        padding: 60px 16px;
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .what-youll-learn-right {
+        order: 1;
+        display: flex;
+        min-height: 300px;
+    }
+    
+    .what-youll-learn-heading {
+        font-size: 32px; 
+        line-height: 1.25; 
+        margin-bottom: 16px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .what-youll-learn-description {
+        margin-bottom: 24px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .what-youll-learn-separator {
+        margin-bottom: 24px;
+    }
+    
+    .what-youll-learn-points {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+    
+    .what-youll-learn-button {
+        display: block;
+        margin: 0 auto 0 0;
+        width: 100%;
+        max-width: 240px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .what-youll-learn-left {
+        padding: 40px 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .what-youll-learn-heading {
+        font-size: clamp(24px, 6vw, 32px);
+    }
+    
+    .what-youll-learn-button {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* Extra small devices - prevent any overflow */
+@media (max-width: 320px) {
+    .what-youll-learn-left {
+        padding: 32px 12px;
+    }
+    
+    .what-youll-learn-points {
+        gap: 12px;
+    }
+}
+
+/* Editor Preview Styles */
+.wp-block-acf-what-you-ll-learn .what-youll-learn-block {
+    border: 2px dashed #ccc;
+    position: relative;
+}
+
+.wp-block-acf-what-you-ll-learn .what-youll-learn-block::after {
+    content: "📚 What you'll learn - Learning points with image";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 8px 12px;
+    font-size: 11px;
+    border-radius: 4px;
+    z-index: 10;
+    font-weight: 500;
+    max-width: 280px;
+    text-align: center;
+    line-height: 1.3;
+}

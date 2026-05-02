@@ -1,12 +1,24 @@
 <?php
-// Get ACF field values from options page
-$heading = get_field('get_started_dark_heading', 'option');
-$description = get_field('get_started_dark_description', 'option');
-$form_settings = get_field('get_started_dark_form_settings', 'option');
-$form_action = $form_settings['form_action'] ?? '#';
-$form_method = $form_settings['form_method'] ?? 'post';
-$disclaimer = get_field('get_started_dark_disclaimer', 'option');
-$button_text = get_field('get_started_dark_button_text', 'option') ?: 'Get started today';
+/**
+ * Get ACF field values - supports both block context (pages) and options page
+ * When used as a block in pages, fields are in block context
+ * When used in theme options, fields are in options context
+ */
+// Determine context: block context (pages) or options page context
+$is_block_context = isset($block) && !empty($block['id']);
+
+// Get fields based on context
+if ($is_block_context) {
+    // Block context - fields are stored with the block instance
+    $heading = get_field('get_started_dark_heading');
+    $description = get_field('get_started_dark_description');
+    $cf7_form_id = get_field('get_started_dark_cf7_form');
+} else {
+    // Options page context - fields are stored in options
+    $heading = get_field('get_started_dark_heading', 'option');
+    $description = get_field('get_started_dark_description', 'option');
+    $cf7_form_id = get_field('get_started_dark_cf7_form', 'option');
+}
 
 // Validate required fields but do not block rendering/preview
 $required_fields = array(
@@ -14,39 +26,6 @@ $required_fields = array(
     'get_started_dark_description' => 'Description'
 );
 unitek_college_validate_block_fields($required_fields, 'Get Started Today (Dark Background) Block');
-
-// State options
-$state_options = array(
-    'AL' => 'Alabama', 'AK' => 'Alaska', 'AZ' => 'Arizona', 'AR' => 'Arkansas', 'CA' => 'California',
-    'CO' => 'Colorado', 'CT' => 'Connecticut', 'DE' => 'Delaware', 'FL' => 'Florida', 'GA' => 'Georgia',
-    'HI' => 'Hawaii', 'ID' => 'Idaho', 'IL' => 'Illinois', 'IN' => 'Indiana', 'IA' => 'Iowa',
-    'KS' => 'Kansas', 'KY' => 'Kentucky', 'LA' => 'Louisiana', 'ME' => 'Maine', 'MD' => 'Maryland',
-    'MA' => 'Massachusetts', 'MI' => 'Michigan', 'MN' => 'Minnesota', 'MS' => 'Mississippi', 'MO' => 'Missouri',
-    'MT' => 'Montana', 'NE' => 'Nebraska', 'NV' => 'Nevada', 'NH' => 'New Hampshire', 'NJ' => 'New Jersey',
-    'NM' => 'New Mexico', 'NY' => 'New York', 'NC' => 'North Carolina', 'ND' => 'North Dakota', 'OH' => 'Ohio',
-    'OK' => 'Oklahoma', 'OR' => 'Oregon', 'PA' => 'Pennsylvania', 'RI' => 'Rhode Island', 'SC' => 'South Carolina',
-    'SD' => 'South Dakota', 'TN' => 'Tennessee', 'TX' => 'Texas', 'UT' => 'Utah', 'VT' => 'Vermont',
-    'VA' => 'Virginia', 'WA' => 'Washington', 'WV' => 'West Virginia', 'WI' => 'Wisconsin', 'WY' => 'Wyoming'
-);
-
-// Campus options
-$campus_options = array(
-    'fremont' => 'Fremont Campus',
-    'hayward' => 'Hayward Campus',
-    'sacramento' => 'Sacramento Campus',
-    'san-jose' => 'San Jose Campus',
-    'stockton' => 'Stockton Campus',
-    'online' => 'Online Programs'
-);
-
-// Program options
-$program_options = array(
-    'nursing' => 'Nursing Programs',
-    'healthcare' => 'Healthcare Programs',
-    'business' => 'Business Programs',
-    'technology' => 'Technology Programs',
-    'education' => 'Education Programs'
-);
 
 // Get block attributes
 $block_id = $block['id'] ?? '';
@@ -87,105 +66,32 @@ $css_class_string = implode(' ', $css_classes);
                 <div class="get-started-dark-divider"></div>
                 
                 <!-- Form Section -->
-                <form class="get-started-dark-form" action="<?php echo esc_url($form_action); ?>" method="<?php echo esc_attr($form_method); ?>">
-                <div class="get-started-dark-form-grid">
-                    <!-- Column 1 -->
-                    <div class="get-started-dark-form-column">
-                        <!-- Firstname -->
-                        <div class="get-started-dark-form-field">
-                            <label for="gsd-firstname" class="sr-only">First Name</label>
-                            <input type="text" id="gsd-firstname" name="firstname" placeholder="Firstname" required>
-                        </div>
-                        
-                        <!-- Lastname -->
-                        <div class="get-started-dark-form-field">
-                            <label for="gsd-lastname" class="sr-only">Last Name</label>
-                            <input type="text" id="gsd-lastname" name="lastname" placeholder="Lastname" required>
-                        </div>
-                        
-                        <!-- State -->
-                        <div class="get-started-dark-form-field">
-                            <label for="gsd-state" class="sr-only">State</label>
-                            <select id="gsd-state" name="state" required>
-                                <option value="" disabled selected>State</option>
-                                <?php foreach ($state_options as $code => $state_name): ?>
-                                    <option value="<?php echo esc_attr($code); ?>"><?php echo esc_html($state_name); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <svg class="get-started-dark-form-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12.83 16.67L20 23.82L27.17 16.67" stroke="#141A1E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        
-                        <!-- Zipcode -->
-                        <div class="get-started-dark-form-field">
-                            <label for="gsd-zipcode" class="sr-only">Zipcode</label>
-                            <input type="text" id="gsd-zipcode" name="zipcode" placeholder="Zipcode" pattern="[0-9]{5}" required>
-                        </div>
-                    </div>
+                <?php if ($cf7_form_id && function_exists('wpcf7_contact_form')): ?>
+                    <!-- Display Contact Form 7 -->
+                    <?php
+                    // Disable autop formatting for CF7
+                    add_filter('wpcf7_autop_or_not', '__return_false', 999);
                     
-                    <!-- Column 2 -->
-                    <div class="get-started-dark-form-column">
-                        <!-- Email -->
-                        <div class="get-started-dark-form-field">
-                            <label for="gsd-email" class="sr-only">Email</label>
-                            <input type="email" id="gsd-email" name="email" placeholder="Email" required>
-                        </div>
-                        
-                        <!-- Phone -->
-                        <div class="get-started-dark-form-field">
-                            <label for="gsd-phone" class="sr-only">Phone</label>
-                            <input type="tel" id="gsd-phone" name="phone" placeholder="Phone" pattern="[0-9]{10}" required>
-                        </div>
-                        
-                        <!-- Campus of interest -->
-                        <div class="get-started-dark-form-field">
-                            <label for="gsd-campus" class="sr-only">Campus of Interest</label>
-                            <select id="gsd-campus" name="campus" required>
-                                <option value="" disabled selected>Campus of interest</option>
-                                <?php foreach ($campus_options as $value => $campus_name): ?>
-                                    <option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($campus_name); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <svg class="get-started-dark-form-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12.83 16.67L20 23.82L27.17 16.67" stroke="#141A1E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        
-                        <!-- Program of interest -->
-                        <div class="get-started-dark-form-field">
-                            <label for="gsd-program" class="sr-only">Program of Interest</label>
-                            <select id="gsd-program" name="program" required>
-                                <option value="" disabled selected>Program of interest</option>
-                                <?php foreach ($program_options as $value => $program_name): ?>
-                                    <option value="<?php echo esc_attr($value); ?>"><?php echo esc_html($program_name); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <svg class="get-started-dark-form-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12.83 16.67L20 23.82L27.17 16.67" stroke="#141A1E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Consent Checkbox -->
-                <div class="get-started-dark-consent">
-                    <input type="checkbox" id="gsd-consent" name="consent" required>
-                    <label for="gsd-consent">
-                        <?php if ($disclaimer): ?>
-                            <?php echo wp_kses_post($disclaimer); ?>
-                        <?php endif; ?>
-                    </label>
-                </div>
-                
-                <!-- Submit Button -->
-                <button type="submit" class="get-started-dark-submit">
-                    <?php echo esc_html($button_text); ?>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-            </form>
+                    // Capture CF7 output
+                    ob_start();
+                    echo do_shortcode('[contact-form-7 id="' . intval($cf7_form_id) . '"]');
+                    $cf7_output = ob_get_clean();
+                    
+                    // Remove unwanted p and br tags
+                    $cf7_output = preg_replace('/<p[^>]*>\s*<\/p>/i', '', $cf7_output); // Empty p tags
+                    $cf7_output = preg_replace('/<p[^>]*>/i', '', $cf7_output); // Opening p tags
+                    $cf7_output = preg_replace('/<\/p>/i', '', $cf7_output); // Closing p tags
+                    $cf7_output = preg_replace('/<br\s*\/?>\s*/i', '', $cf7_output); // br tags
+                    $cf7_output = preg_replace('/\n\s*\n/', '', $cf7_output); // Double line breaks
+                    
+                    echo $cf7_output;
+                    
+                    // Remove filter
+                    remove_filter('wpcf7_autop_or_not', '__return_false', 999);
+                    ?>
+                <?php else: ?>
+                    <p class="get-started-dark-no-form">Please select a Contact Form 7 form in the block settings.</p>
+                <?php endif; ?>
         </div>
     </div>
 </section>

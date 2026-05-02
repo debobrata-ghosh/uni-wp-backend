@@ -169,6 +169,16 @@
     }
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Tablet styles here */
+    .career-container {
+        padding: 0 50px;
+    }
+    .career-card {
+        width: clamp(300px, calc(300px + (100vw - 769px) * 100 / 255), 376px);
+    }
+}
+
 @media (max-width: 768px) {
     .career-block {
         min-height: 400px;

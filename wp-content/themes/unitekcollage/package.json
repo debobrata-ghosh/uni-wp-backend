@@ -1,0 +1,13 @@
+{
+  "name": "unitek-college-theme",
+  "version": "1.0.0",
+  "description": "Unitek College WordPress Theme",
+  "scripts": {
+    "build": "wp-scripts build template-parts/blocks/full-width-container/src/index.js --output-path=template-parts/blocks/full-width-container/build",
+    "start": "wp-scripts start template-parts/blocks/full-width-container/src/index.js --output-path=template-parts/blocks/full-width-container/build",
+    "packages-update": "wp-scripts packages-update"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^31.0.0"
+  }
+}

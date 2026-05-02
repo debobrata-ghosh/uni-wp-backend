@@ -114,8 +114,26 @@
     transition: border-color 0.2s ease;
 }
 
+.get-started-dark-form-field textarea {
+    width: 100%;
+    border-radius: 10px;
+    padding: 16px;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(172, 180, 188, 0.3);
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.4444em;
+    color: #28323C;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+    min-height: 100px;
+    resize: vertical;
+}
+
 .get-started-dark-form-field input:focus,
-.get-started-dark-form-field select:focus {
+.get-started-dark-form-field select:focus,
+.get-started-dark-form-field textarea:focus {
     outline: none;
     border-color: #9FE870; /* Green focus state from image */
 }
@@ -123,6 +141,17 @@
 .get-started-dark-form-field input::placeholder {
     color: #A0A0A0; /* Placeholder color from image */
     opacity: 1;
+}
+
+/* File Upload Helper Text */
+.get-started-dark-form-field small {
+    display: block;
+    color: #FFFFFF;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5em;
+    margin-top: 8px;
 }
 
 /* Select Field Styling */
@@ -178,6 +207,53 @@
     margin: 0;
 }
 
+/* Contact Form 7 Checkbox Alignment */
+.get-started-dark-form-wrapper .wpcf7-list-item,
+.get-started-dark-block .wpcf7-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.get-started-dark-form-wrapper .wpcf7-list-item label,
+.get-started-dark-block .wpcf7-list-item label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.3333em;
+    color: #DADEE0;
+    cursor: pointer;
+    margin: 0;
+}
+
+.get-started-dark-form-wrapper .wpcf7-list-item label input[type="checkbox"],
+.get-started-dark-block .wpcf7-list-item label input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    flex-shrink: 0;
+    cursor: pointer;
+    margin: 0;
+    margin-top: 0;
+    align-self: flex-start;
+}
+
+.get-started-dark-form-wrapper .wpcf7-list-item-label,
+.get-started-dark-block .wpcf7-list-item-label {
+    display: inline;
+    flex: 1;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.3333em;
+    color: #DADEE0;
+    margin: 0;
+    padding: 0;
+}
+
 /* Submit Button */
 .get-started-dark-submit {
     display: flex;
@@ -225,6 +301,92 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+}
+
+/* Hide Contact Form 7 Honeypot Field (Anti-Spam) */
+/* Hide on frontend and in editor */
+.get-started-dark-form-wrapper label:has(textarea[name="_wpcf7_ak_hp_textarea"]),
+.get-started-dark-form-wrapper textarea[name="_wpcf7_ak_hp_textarea"],
+label:has(textarea[name="_wpcf7_ak_hp_textarea"]),
+textarea[name="_wpcf7_ak_hp_textarea"],
+.wpcf7-form label:has(textarea[name="_wpcf7_ak_hp_textarea"]),
+.wpcf7-form textarea[name="_wpcf7_ak_hp_textarea"],
+/* Hide any label containing honeypot textarea */
+label:has(textarea[name*="_wpcf7_ak_hp"]),
+textarea[name*="_wpcf7_ak_hp"],
+/* Hide honeypot fields in block editor */
+.block-editor-block-list__layout label:has(textarea[name*="_wpcf7_ak_hp"]),
+.block-editor-block-list__layout textarea[name*="_wpcf7_ak_hp"],
+.editor-styles-wrapper label:has(textarea[name*="_wpcf7_ak_hp"]),
+.editor-styles-wrapper textarea[name*="_wpcf7_ak_hp"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+}
+
+/* Alternative selector for older browsers - target by name attribute */
+label[for*="_wpcf7_ak_hp"],
+textarea[name*="_wpcf7_ak_hp"],
+input[name*="_wpcf7_ak_hp"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* Contact Form 7 Response Output Styling */
+.get-started-dark-form-wrapper .wpcf7-response-output,
+.get-started-dark-block .wpcf7-response-output {
+    color: #FFFFFF !important;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    line-height: 1.5em;
+    margin: 16px 0 0 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+}
+
+/* Success message styling */
+.get-started-dark-form-wrapper .wpcf7-mail-sent-ok,
+.get-started-dark-block .wpcf7-mail-sent-ok {
+    color: #FFFFFF !important;
+    background-color: rgba(159, 232, 112, 0.1);
+    border: 1px solid #9FE870;
+}
+
+/* Error message styling */
+.get-started-dark-form-wrapper .wpcf7-validation-errors,
+.get-started-dark-form-wrapper .wpcf7-mail-sent-ng,
+.get-started-dark-block .wpcf7-validation-errors,
+.get-started-dark-block .wpcf7-mail-sent-ng {
+    color: #FFFFFF !important;
+    background-color: rgba(255, 107, 107, 0.1);
+    border: 1px solid #FF6B6B;
+}
+
+/* Spam message styling */
+.get-started-dark-form-wrapper .wpcf7-spam,
+.get-started-dark-block .wpcf7-spam {
+    color: #FFFFFF !important;
+    background-color: rgba(255, 165, 0, 0.1);
+    border: 1px solid #FFA500;
 }
 
 /* ===================================

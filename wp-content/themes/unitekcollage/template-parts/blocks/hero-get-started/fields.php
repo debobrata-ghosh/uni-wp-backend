@@ -122,20 +122,14 @@ acf_add_local_field_group(array(
             'maxlength' => '',
         ),
         array(
-            'key' => 'field_hero_get_started_action_url',
-            'label' => 'Form Action URL',
-            'name' => 'hero_get_started_action_url',
-            'type' => 'url',
-            'instructions' => 'Enter the URL where the form should be submitted (optional).',
-            'required' => 0,
-            'conditional_logic' => 0,
-            'wrapper' => array(
-                'width' => '',
-                'class' => '',
-                'id' => '',
-            ),
+            'key' => 'field_hero_get_started_cf7_form',
+            'label' => 'Contact Form 7',
+            'name' => 'hero_get_started_cf7_form',
+            'type' => 'select',
+            'instructions' => 'Select a Contact Form 7 form to process submissions. The CF7 form should only contain hidden fields.',
+            'choices' => array(),
+            'allow_null' => 1,
             'default_value' => '',
-            'placeholder' => 'https://example.com/form-handler',
         ),
     ),
     'location' => array(
@@ -158,3 +152,35 @@ acf_add_local_field_group(array(
 ));
 
 endif;
+
+// Populate CF7 form choices dynamically
+add_filter('acf/load_field/name=hero_get_started_cf7_form', function($field) {
+    // Check if Contact Form 7 is active
+    if (!function_exists('wpcf7_contact_form')) {
+        $field['choices'] = array('' => 'Contact Form 7 is not installed');
+        return $field;
+    }
+    
+    // Get all Contact Form 7 forms
+    $forms = get_posts(array(
+        'post_type' => 'wpcf7_contact_form',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'orderby' => 'title',
+        'order' => 'ASC',
+    ));
+    
+    $field['choices'] = array();
+    
+    if (!empty($forms)) {
+        foreach ($forms as $form) {
+            $form_id = $form->ID;
+            $form_title = $form->post_title;
+            $field['choices'][$form_id] = $form_title . ' (ID: ' . $form_id . ')';
+        }
+    } else {
+        $field['choices'][''] = 'No Contact Form 7 forms found';
+    }
+    
+    return $field;
+});

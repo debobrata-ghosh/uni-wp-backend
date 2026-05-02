@@ -10,7 +10,7 @@ $heading            = get_field( 'hero_get_started_heading' );
 $programs           = get_field( 'hero_get_started_programs' );
 $placeholder        = get_field( 'hero_get_started_placeholder' );
 $button_text        = get_field( 'hero_get_started_button_text' );
-$action_url         = get_field( 'hero_get_started_action_url' );
+$cf7_form_id        = get_field( 'hero_get_started_cf7_form' );
 $total_steps        = 6; // Total steps: one field per step
 
 // Validate required fields but do not block rendering/preview
@@ -72,7 +72,7 @@ $css_class_string = implode( ' ', $css_classes );
         </div>
         
         <!-- Right Section - Multi-step Form -->
-        <form class="hero-get-started-form" method="post" action="" id="hgs-form" novalidate onsubmit="handleFormSubmit(event)">
+        <div class="hero-get-started-form" id="hgs-form">
             <div class="hgs-steps">
                 <!-- Step 1: Campus Selection -->
                 <div class="hgs-step active" data-step="1">
@@ -120,7 +120,7 @@ $css_class_string = implode( ' ', $css_classes );
                 <div class="hgs-step" data-step="6">
                     <div class="hgs-step-row">
                         <input type="email" class="hgs-input" name="email" id="hgs-email" placeholder="Email address" required oninput="validateEmailInput(this)">
-                        <button type="submit" class="hero-get-started-button" id="hgs-submit" disabled>Get started</button>
+                        <button type="button" class="hero-get-started-button" id="hgs-submit" disabled onclick="handleFormSubmit(event)">Get started</button>
                     </div>
                     <label class="hgs-consent">
                         <input type="checkbox" id="hgs-consent" required onchange="validateConsentInput(this)">
@@ -131,7 +131,7 @@ $css_class_string = implode( ' ', $css_classes );
                 <!-- Actions (right) -->
                 <div class="hgs-actions">
                     <button type="button" class="hero-get-started-button" id="hgs-next" disabled onclick="goToNextStep()">Next</button>
-                    <button type="submit" class="hero-get-started-button hgs-hidden" id="hgs-submit-mobile" disabled>Get started</button>
+                    <button type="button" class="hero-get-started-button hgs-hidden" id="hgs-submit-mobile" disabled onclick="handleFormSubmit(event)">Get started</button>
                 </div>
 
                 <!-- Progress row below -->
@@ -141,7 +141,7 @@ $css_class_string = implode( ' ', $css_classes );
                     <div class="hgs-progress-text" id="hgs-progress-text">1 of <?php echo (int) $total_steps; ?></div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
     
     <!-- Confirmation Message -->
@@ -156,4 +156,11 @@ $css_class_string = implode( ' ', $css_classes );
             </div>
         </div>
     </div>
+
+    <?php if ( $cf7_form_id && function_exists( 'wpcf7_contact_form' ) ): ?>
+    <div class="cf7-hidden-wrapper">
+        <?php echo do_shortcode( '[contact-form-7 id="' . intval( $cf7_form_id ) . '"]' ); ?>
+    </div>
+    <?php endif; ?>
+
 </section>

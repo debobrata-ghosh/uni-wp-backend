@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Build files
+template-parts/blocks/full-width-container/build/
+
+# WordPress
+.DS_Store
+Thumbs.db
+

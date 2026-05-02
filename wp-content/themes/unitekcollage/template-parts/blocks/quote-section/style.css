@@ -1,0 +1,186 @@
+/* Quote Section Block Styles */
+.quote-section-slider {
+    max-width: 800px;
+    margin: 40px auto 0 auto;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 220px;
+    background: transparent;
+}
+.quote-slider-nav {
+    width: 48px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+.quote-slider-nav.right {
+    order: 3;
+}
+.nav-arrow {
+    background: none;
+    border: none;
+    padding: 0;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    line-height: 1;
+    width: 36px;
+    height: 36px;
+    transition: background 0.15s;
+}
+.nav-arrow:hover {
+    background: #edf2f7;
+}
+.quote-slider-wrapper {
+    order: 2;
+    width: 100%;
+    max-width: 800px;
+    min-height: 120px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+}
+.quote-slide {
+    display: none;
+    width: 100%;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    text-align: left;
+}
+.quote-slide.active {
+    display: block;
+}
+.quote-text {
+    font-size: 1.13rem;
+    font-weight: 400;
+    color: #20232a;
+    margin-bottom: 20px;
+    margin-top: 12px;
+    line-height: 1.44;
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+}
+.quote-icon {
+    font-size: 2.1rem;
+    color: #232f3e;
+    margin-right: 15px;
+    min-width: 24px;
+}
+.quote-meta {
+    font-size: 0.95rem;
+    color: #222;
+    text-align: left;
+    font-style: normal;
+    margin-top: 6px;
+    padding-left: 6%;
+}
+.wp-block-acf-quote-section::before {
+    content: "🎯 Quote Section";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    font-size: 11px;
+    border-radius: 4px;
+    z-index: 10;
+    font-weight: 500;
+    max-width: 250px;
+    text-align: center;
+    line-height: 1.3;
+}
+.quote-name {
+    font-weight: 600;
+    color: #222;
+}
+.quote-caption {
+    display: block;
+    font-size: 0.91rem;
+    color: #7d807d;
+    font-weight: 400;
+    margin-top: 3px;
+}
+.quote-pagination.mobile-pagination {
+    display: none;
+}
+
+/* Mobile styles: column layout, dots below quote text and above meta, arrows hidden */
+@media (max-width: 600px) {
+    .quote-section-slider {
+        flex-direction: column;
+        min-height: unset;
+        margin: 12px 0 0 0;
+        max-width: 98vw;
+        padding: 0;
+    }
+    .desktop-nav {
+        display: none;
+    }
+    .quote-slider-wrapper {
+        max-width: 98vw;
+        width: 100%;
+        min-height: unset;
+        padding: 0;
+        display: block;
+        justify-content: unset;
+        align-items: unset;
+    }
+    .quote-slide {
+        text-align: center;
+        padding: 20px;
+    }
+    .quote-text {
+        font-size: 1.05rem;
+        margin-bottom: 12px;
+        margin-top: 4px;
+        justify-content: center;
+        text-align: center;
+    }
+    .quote-icon {
+        font-size: 1.6rem;
+        min-width: 17px;
+        margin-right: 6px;
+    }
+    /* Dots centered below text, above meta */
+    .quote-pagination.mobile-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 6px 0 2px 0;
+        gap: 8px;
+    }
+    .pagination-dot {
+        background: #cbd5e0;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: inline-block;
+        height: 9px;
+        width: 9px;
+        transition: background 0.3s;
+        margin: 0;
+        padding: 0;
+    }
+    .pagination-dot.active {
+        background: #2d3748;
+    }
+    .quote-meta {
+        font-size: 0.93rem;
+        text-align: center;
+        margin-top: 8px;
+    }
+}
+

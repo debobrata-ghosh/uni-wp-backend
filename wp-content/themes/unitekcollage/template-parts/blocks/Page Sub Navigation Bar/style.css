@@ -1,0 +1,430 @@
+/**
+ * Page Sub Navigation Bar Block - Frontend Styles
+ * Based on Figma design: Sub Nav Bar component
+ */
+
+.page-sub-nav-bar-block {
+    width: 100%;
+    position: sticky;
+    top: 80px; /* Header height - stick below the header */
+    z-index: 998; /* Below header z-index: 999 */
+    margin-top: 80px;
+}
+
+.page-sub-nav-bar-container {
+    max-width: 1728px;
+    margin: 0 auto;
+    padding: 0 150px;
+    box-sizing: border-box;
+}
+
+.page-sub-nav-bar-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    position: relative;
+    background-color: #F0F1F2;
+    
+}
+
+/* Chevron Icon - Hidden on desktop */
+.page-sub-nav-bar-chevron {
+    display: none;
+}
+
+.page-sub-nav-bar-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.page-sub-nav-bar-item {
+    margin: 0;
+    padding: 0;
+}
+
+.page-sub-nav-bar-link {
+    display: inline-block;
+    padding: 8px 16px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5em;
+    color: #28323C;
+    text-decoration: none;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    border-radius: 6px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.page-sub-nav-bar-link:hover,
+.page-sub-nav-bar-link.is-active {
+    color: #28323C;
+    background-color: white;
+}
+
+/* Active/Hover State Indicator - White background with shadow */
+.page-sub-nav-bar-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease, box-shadow 0.2s ease;
+    z-index: -1;
+    pointer-events: none;
+    box-shadow: 0px 4px 8px 0px rgba(48, 48, 48, 0.08);
+}
+
+/* Hover state - same styling as active */
+.page-sub-nav-bar-link:hover::before {
+    opacity: 1;
+}
+
+/* Active state - same styling as hover */
+.page-sub-nav-bar-link.is-active::before {
+    opacity: 1;
+}
+
+/* Bottom Rule */
+/* .page-sub-nav-bar-rule {
+    width: 100%;
+    height: 1px;
+    background-color: #DADEE0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+} */
+
+/* Block Alignment Support */
+.page-sub-nav-bar-block.alignwide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-sub-nav-bar-block.alignwide .page-sub-nav-bar-container {
+    max-width: 100%;
+    padding: 0 50px;
+}
+
+.page-sub-nav-bar-block.alignfull {
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+.page-sub-nav-bar-block.alignfull .page-sub-nav-bar-container {
+    max-width: 100%;
+    padding: 0 150px;
+}
+
+/* Fix for editor - prevent overflow */
+.block-editor-block-list__layout .page-sub-nav-bar-block.alignfull,
+.editor-styles-wrapper .page-sub-nav-bar-block.alignfull,
+.wp-block-acf-page-sub-navigation-bar .page-sub-nav-bar-block.alignfull {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Responsive Design */
+
+/* Desktop - 1025px to 1280px */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .page-sub-nav-bar-block {
+        margin-top: 60px;
+    }
+    
+    .page-sub-nav-bar-container {
+        padding: 0 40px;
+    }
+    
+    .page-sub-nav-bar-block.alignfull .page-sub-nav-bar-container {
+        padding: 0 40px;
+    }
+}
+
+/* Desktop - 1200px and below */
+@media (max-width: 1200px) {
+    .page-sub-nav-bar-block {
+        margin-top: 60px;
+    }
+    
+    .page-sub-nav-bar-container {
+        padding: 0 80px;
+    }
+    
+    .page-sub-nav-bar-block.alignfull .page-sub-nav-bar-container {
+        padding: 0 80px;
+    }
+    
+    .page-sub-nav-bar-block.alignwide .page-sub-nav-bar-container {
+        padding: 0 40px;
+    }
+}
+
+/* Tablet - 769px to 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .page-sub-nav-bar-block {
+        margin-top: 50px;
+        top: 48px;
+    }
+    
+    .page-sub-nav-bar-container {
+        padding: 0 50px;
+    }
+    
+    .page-sub-nav-bar-block.alignfull .page-sub-nav-bar-container {
+        padding: 0 50px;
+    }
+    
+    .page-sub-nav-bar-list {
+        gap: 24px;
+    }
+    
+    .page-sub-nav-bar-link {
+        font-size: 15px;
+    }
+}
+
+/* Mobile - 768px and below */
+@media (max-width: 768px) {
+    .page-sub-nav-bar-block {
+        top: 48px; /* Mobile header height - stick below the header */
+        margin-top: 30px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox - hide scrollbar */
+        -ms-overflow-style: none; /* IE and Edge - hide scrollbar */
+        scrollbar-color: transparent transparent; /* Firefox - make scrollbar transparent */
+    }
+    
+    /* Hide scrollbar for Chrome, Safari, Opera */
+    .page-sub-nav-bar-block::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+        background: transparent;
+    }
+    
+    .page-sub-nav-bar-block::-webkit-scrollbar-track {
+        display: none;
+        background: transparent;
+    }
+    
+    .page-sub-nav-bar-block::-webkit-scrollbar-thumb {
+        display: none;
+        background: transparent;
+    }
+    
+    .page-sub-nav-bar-container {
+        padding: 0 16px;
+    }
+    
+    .page-sub-nav-bar-block.alignfull .page-sub-nav-bar-container {
+        padding: 0 16px;
+    }
+    
+    .page-sub-nav-bar-block.alignwide .page-sub-nav-bar-container {
+        padding: 0 16px;
+    }
+    
+    .page-sub-nav-bar-wrapper {
+        height: 80px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+    }
+    
+    .page-sub-nav-bar-list {
+        gap: 32px;
+        justify-content: flex-start;
+        padding: 0;
+        flex: 1;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox - hide scrollbar */
+        -ms-overflow-style: none; /* IE and Edge - hide scrollbar */
+    }
+    
+    /* Hide scrollbar on the list as well */
+    .page-sub-nav-bar-list::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+        background: transparent;
+    }
+    
+    .page-sub-nav-bar-list::-webkit-scrollbar-track {
+        display: none;
+        background: transparent;
+    }
+    
+    .page-sub-nav-bar-list::-webkit-scrollbar-thumb {
+        display: none;
+        background: transparent;
+    }
+    
+    .page-sub-nav-bar-link {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+    
+    .page-sub-nav-bar-link::before {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: auto;
+        width: auto;
+        transform: none;
+        border-radius: 6px;
+    }
+    
+    /* Mobile Chevron Icon - Clickable Button */
+    .page-sub-nav-bar-chevron {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        margin-left: 8px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+        color: #28323C;
+        outline: none;
+    }
+    
+    .page-sub-nav-bar-chevron:hover {
+        background-color: rgba(40, 50, 60, 0.1);
+        transform: scale(1.1);
+    }
+    
+    .page-sub-nav-bar-chevron:active {
+        transform: scale(0.95);
+        background-color: rgba(40, 50, 60, 0.15);
+    }
+    
+    .page-sub-nav-bar-chevron svg {
+        width: 24px;
+        height: 24px;
+        display: block;
+    }
+}
+
+/* Small Mobile - 480px and below */
+@media (max-width: 480px) {
+    .page-sub-nav-bar-block {
+        margin-top: 20px;
+    }
+    
+    .page-sub-nav-bar-list {
+        gap: 16px;
+    }
+    
+    .page-sub-nav-bar-link {
+        font-size: 13px;
+    }
+}
+
+/* Smooth scroll behavior for anchor links */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 200px; /* Header (80px) + Nav Bar (80px) + 40px padding */
+}
+
+/* Add scroll margin to anchor targets to prevent covering by sticky nav */
+[id] {
+    scroll-margin-top: 200px; /* Header (80px) + Nav Bar (80px) + 40px padding */
+}
+
+/* Tablet scroll padding */
+@media (min-width: 769px) and (max-width: 1024px) {
+    html {
+        scroll-padding-top: 168px; /* Tablet Header (48px) + Nav Bar (80px) + 40px padding */
+    }
+    
+    [id] {
+        scroll-margin-top: 168px; /* Tablet Header (48px) + Nav Bar (80px) + 40px padding */
+    }
+}
+
+/* Mobile scroll padding */
+@media (max-width: 768px) {
+    html {
+        scroll-padding-top: 250px !important; /* Mobile Header (48px) + Nav Bar (80px) + 122px padding to ensure heading is fully visible */
+    }
+    
+    [id] {
+        scroll-margin-top: 250px !important; /* Mobile Header (48px) + Nav Bar (80px) + 122px padding */
+    }
+    
+    /* Ensure headings are fully visible on mobile */
+    h1[id],
+    h2[id],
+    h3[id],
+    h4[id],
+    h5[id],
+    h6[id] {
+        scroll-margin-top: 250px !important;
+        padding-top: 250px !important; /* Create space above heading */
+        margin-top: -250px !important; /* Pull content back up so layout doesn't shift */
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* For sections/divs with IDs - ensure first heading inside is visible */
+    section[id],
+    div[id] {
+        scroll-margin-top: 250px !important;
+        position: relative;
+    }
+    
+    /* Ensure first heading in sections is visible with proper spacing */
+    section[id] > h1:first-child,
+    section[id] > h2:first-child,
+    section[id] > h3:first-child,
+    section[id] > h4:first-child,
+    section[id] > h5:first-child,
+    section[id] > h6:first-child,
+    div[id] > h1:first-child,
+    div[id] > h2:first-child,
+    div[id] > h3:first-child,
+    div[id] > h4:first-child,
+    div[id] > h5:first-child,
+    div[id] > h6:first-child {
+        padding-top: 250px !important; /* Create space above heading */
+        margin-top: -250px !important; /* Pull content back up */
+        position: relative;
+        z-index: 1;
+    }
+}
+
+/* Print styles */
+@media print {
+    .page-sub-nav-bar-block {
+        display: none;
+    }
+}
+

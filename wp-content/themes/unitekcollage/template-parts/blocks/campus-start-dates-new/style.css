@@ -1,0 +1,301 @@
+ .campus-dates-block {
+      background: #28323C;
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      padding: 80px 250px 80px;
+    }
+    .campus-dates-block-title {
+          font-size: 35px;
+    font-weight: 400;
+    margin-bottom: 1em;
+    text-align: left;
+    letter-spacing: .02em;
+    }
+    .campus-dates-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 38px;
+      width: 100%;
+      margin-bottom: 0.5em;
+      box-sizing: border-box;
+    }
+    .campus-dates-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 18px rgba(66,66,66,0.09);
+      display: flex;
+      align-items: stretch;
+      padding: 1.7em 1.5em 1.5em 1.65em;
+      gap: 1.35em;
+      min-height: 165px;
+      width: 100%;
+      transition: box-shadow .16s;
+      position: relative;
+    }
+    .campus-info {
+      flex: 1 1 60%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      min-width: 0;
+      margin-right: 1em;
+    }
+    .campus-location {
+      font-size: 1.17em;
+      font-weight: 700;
+      color: #353c43;
+      margin-bottom: 0.45em;
+      margin-top: .3em;
+      letter-spacing: 0.01em;
+    }
+    .campus-address {
+      font-size: 1.03em;
+      color: #494949;
+      margin-bottom: 0.45em;
+      line-height: 1.5;
+    }
+    .campus-card-btn {
+      margin-top: 0.38em;
+      display: inline-block;
+      background: #58b949;
+      color: #fff;
+      font-size: 1.09em;
+      font-weight: 500;
+      border-radius: 40px;
+      padding: 0.61em 1.85em 0.61em 1.33em;
+      border: none;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(58,195,81,.13);
+      transition: background .18s;
+      cursor: pointer;
+      letter-spacing: 0.015em;
+    }
+    .campus-card-btn:hover,
+    .campus-card-btn:focus {
+      background: #48a735;
+      color: #fff;
+      outline: none;
+    }
+    .campus-calendar {
+      flex: 0 0 113px;
+      width: 125px;
+      min-width: 250px;
+      max-width: 250px;
+      background: #ececec;
+      border-radius: 10px;
+      padding: 1.13em 0.7em .92em 0.9em;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 1px 5px rgba(46,46,46,0.07);
+      margin-left: auto;
+      margin-right: 0;
+      position: relative;
+    }
+    .calendar-label {
+      font-size: 1em;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 0.11em;
+      letter-spacing: .03em;
+      margin-top: 0;
+      text-align: right;
+      width: 100%;
+    }
+    .calendar-sub {
+      font-size: .97em;
+      font-weight: 700;
+      color: #4e545d;
+      margin-bottom: 0.05em;
+      letter-spacing: .01em;
+      margin-top: 0.11em;
+      text-align: right;
+      width: 100%;
+    }
+    .calendar-day {
+      font-size: 2.21em;
+      font-weight: 700;
+      color: #222;
+      margin: 0.16em 0 .03em 0;
+      letter-spacing: 0.035em;
+      text-align: right;
+      width: 100%;
+    }
+    @media (max-width: 1100px) {
+      .campus-dates-list { grid-template-columns: 1fr; gap: 26px 0; }
+    }
+    @media (max-width: 700px) {
+      .campus-dates-block { padding: 1.3em 20px 1.1em 20px; }
+      .campus-dates-block-title { font-size: 1.28rem; margin-bottom: 1.2em; }
+      .campus-dates-list { grid-template-columns: 1fr; gap: 18px 0; }
+      .campus-dates-card { flex-direction: row; align-items: stretch; min-height: 0; padding: 1em 0.93em; }
+      .campus-info { margin: 0 0 1.1em 0; }
+      .campus-calendar { width: 100%; max-width: 140px; margin: 0 auto;box-shadow: none;    background: #fff; }
+      .campus-card-btn {font-size: 10px;}
+      .campus-calendar {
+    flex: 0 0 53px;
+    width: 125px;
+    min-width: 150px;}
+    
+    }
+    .start-date-stack {
+    display: flex
+;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 14.82%;
+    height: 63.18%;
+    position: absolute;
+    right: 5.56%;
+    left: 60%;
+    bottom: 18.28%;
+    top: 18.54%;
+}
+.start-date {
+    color: var(--base-ui-four-28323c, #28323c);
+    text-align: center;
+    font-family: "Outfit-Bold", sans-serif;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
+    align-self: center;
+    height: 15.62px;
+        left: 24px;
+    bottom: 4px;
+}
+.lg-calendar {
+    flex-shrink: 0;
+    width: 86.68px;
+    height: 94.84px;
+    position: relative;
+    aspect-ratio: 86.68 / 94.84;
+}
+.vector {
+    width: 100.37%;
+    height: 32.69%;
+    position: absolute;
+    right: -0.37%;
+    left: 0%;
+    bottom: 57.75%;
+    top: 9.57%;
+    overflow: visible;
+}
+.vector2 {
+    width: 100.37%;
+    height: 54.83%;
+    position: absolute;
+    right: -0.37%;
+    left: 0%;
+    bottom: -0.25%;
+    top: 45.42%;
+    overflow: visible;
+}
+.vector3 {
+    width: 5.77%;
+    height: 15.82%;
+    position: absolute;
+    right: 78.08%;
+    left: 16.15%;
+    bottom: 84.11%;
+    top: 0.08%;
+    overflow: visible;
+}
+.vector4 {
+    width: 5.77%;
+    height: 15.82%;
+    position: absolute;
+    right: 15.78%;
+    left: 78.45%;
+    bottom: 84.11%;
+    top: 0.08%;
+    overflow: visible;
+}
+.abc {
+    color: var(--base-ui-light-ffffff, #ffffff);
+    text-align: center;
+    font-family: "Outfit-Bold", sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
+    position: absolute;
+    right: 28.49%;
+    left: 28.02%;
+    width: 43.49%;
+    bottom: 59.04%;
+    top: 19.63%;
+    height: 22.33%;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+}
+._00 {
+    color: var(--base-ui-light-ffffff, #ffffff);
+    text-align: center;
+    font-family: var(--display-bold-48-font-family);
+    font-size: var(--display-bold-48-font-size, 48px);
+    line-height: var(--display-bold-48-line-height, 48px);
+    font-weight: var(--display-bold-48-font-weight, 700);
+    text-transform: uppercase;
+    position: absolute;
+    right: 0.05%;
+    left: 0%;
+    width: 99.95%;
+    bottom: 0.07%;
+    top: 46.2%;
+    height: 53.73%;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+}
+@media (max-width: 800px) {
+  .start-date-stack {
+    display: flex
+;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 14.82%;
+    height: 63.18%;
+    position: absolute;
+    right: 5.56%;
+    left: 38%;
+    bottom: 18.28%;
+    top: 18.54%;
+}
+.start-date {
+    color: var(--base-ui-four-28323c, #28323c);
+    text-align: center;
+    font-family: "Outfit-Bold", sans-serif;
+    font-size: 13px;
+    line-height: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
+    align-self: center;
+    height: 15.62px;
+    left: 31px;
+    bottom: 4px;
+}
+}
+@media (min-width: 1200px) and (max-width: 1920px) {
+  .campus-dates-block {
+    padding: 80px 13% 80px;
+  }
+}  
+@media (min-width: 1729px) {
+ .campus-dates-block1 {
+    padding: 80px 21% 80px;
+}
+}

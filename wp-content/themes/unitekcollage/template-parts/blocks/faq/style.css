@@ -1,4 +1,15 @@
-/* Editor overflow fix for FAQ block */
+/**
+ * FAQ Block - Frontend Styles
+ * 
+ * @package UnitekCollege
+ * @version 1.0.0
+ */
+
+/* ===================================
+   1. BASE & GLOBAL STYLES
+   =================================== */
+
+/* Editor overflow fix */
 .block-editor-block-list__layout .faq-section-block,
 .editor-styles-wrapper .faq-section-block,
 .wp-block-acf-faq .faq-section-block {
@@ -6,14 +17,42 @@
     overflow-x: hidden;
 }
 
-/* FAQ Section Block Styles */
+/* Main block container */
 .faq-section-block {
     width: 100%;
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #ffffff; /* White background for the entire block */
+    background-color: #ffffff;
     color: #333333;
     box-sizing: border-box;
+    overflow-x: visible;
+    position: relative;
 }
+
+/* Block Alignment Support */
+.faq-section-block.alignwide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.faq-section-block.alignfull {
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+/* Fix for editor - prevent overflow */
+.block-editor-block-list__layout .faq-section-block.alignfull,
+.editor-styles-wrapper .faq-section-block.alignfull,
+.wp-block-acf-faq .faq-section-block.alignfull {
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* ===================================
+   2. LAYOUT STRUCTURE
+   =================================== */
 
 .faq-section-content {
     display: flex;
@@ -22,31 +61,64 @@
     min-height: 600px;
     width: 100%;
     box-sizing: border-box;
+    position: relative;
+    overflow-x: visible;
 }
+
+/* ===================================
+   3. SIDEBAR SECTION
+   =================================== */
 
 .faq-section-sidebar {
     background-color: #28323C;
     padding: 90px 0px 82px 0px;
-    padding-left: max(150px, calc((100vw - 1728px) / 2 + 150px));
+    padding-left: 150px;
     padding-right: 0px;
     display: flex;
     flex-direction: column;
     gap: 40px;
     box-sizing: border-box;
     min-width: 0;
-    width: calc(576px + max(0px, (100vw - 1728px) / 2));
+    width: 660px;
     flex-shrink: 0;
+    position: relative;
+}
+
+/* Extend sidebar background to left edge on large screens */
+@media (min-width: 1281px) {
+    .faq-section-block::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(max(0px, ((100vw - 1728px) / 2)) + 150px + 660px);
+        height: 100%;
+        background-color: #28323C;
+        z-index: 0;
+        pointer-events: none;
+    }
+    
+    .faq-section-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .faq-section-sidebar {
+        position: relative;
+        z-index: 2;
+    }
 }
 
 .faq-section-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 40px; /* Headline Regular 40 per Figma */
-    font-weight: 400; /* Regular weight per Figma */
-    line-height: 1.2em; /* Per Figma */
-    color: #B4E850; /* Base UI-Light per Figma */
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.2em;
+    color: #B4E850;
     margin: 0;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    padding-right: 20PX;
 }
 
 .faq-section-categories {
@@ -59,13 +131,13 @@
 
 .faq-category-tab {
     font-family: 'Outfit', sans-serif;
-    background-color: #28323C; /* Base UI-Four per Figma */
-    color: #d3cfcf; /* Base UI-Light per Figma */
+    background-color: #28323C;
+    color: #ffffff;
     border: none;
-    padding: 18px 20px; /* Padding per Figma */
-    font-size: 16px; /* Body Medium 16 per Figma */
-    font-weight: 500; /* Medium weight per Figma */
-    line-height: 1.5em; /* Per Figma */
+    padding: 18px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5em;
     text-align: left;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -81,8 +153,8 @@
 }
 
 .faq-category-tab.active {
-    background-color: #ffffff; /* Base UI-Light per Figma */
-    color: #007ACC; /* Primary Two per Figma */
+    background-color: #ffffff;
+    color: #007ACC;
     border: none !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-top: none !important;
@@ -94,15 +166,23 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* ===================================
+   4. MAIN CONTENT SECTION
+   =================================== */
+
 .faq-section-main {
     background-color: #ffffff;
     padding: 223px 30px 60px 30px;
-    padding-right: max(150px, calc((100vw - 1728px) / 2 + 150px));
+    padding-right: 150px;
     position: relative;
     box-sizing: border-box;
     min-width: 0;
     flex: 1;
 }
+
+/* ===================================
+   5. DESKTOP ACCORDION
+   =================================== */
 
 .faq-accordion-category {
     display: none;
@@ -110,6 +190,49 @@
 
 .faq-accordion-category.active {
     display: block;
+}
+
+/* ===================================
+   EDITOR PREVIEW STYLES
+   =================================== */
+
+/* 1. Only show first category as active if it has the active class (JavaScript controls this) */
+.block-editor-block-list__layout .faq-accordion-category.active:first-child,
+.editor-styles-wrapper .faq-accordion-category.active:first-child,
+.wp-block-acf-faq .faq-accordion-category.active:first-child {
+    display: block !important;
+}
+
+/* Only style first tab as active if it has the active class (initial state only) */
+.block-editor-block-list__layout .faq-category-tab.active:first-child,
+.editor-styles-wrapper .faq-category-tab.active:first-child,
+.wp-block-acf-faq .faq-category-tab.active:first-child {
+    background-color: #ffffff !important;
+    color: #007ACC !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 2. Show first question/answer expanded only in active category for editor preview */
+.block-editor-block-list__layout .faq-accordion-category.active .faq-accordion-item:first-child .faq-accordion-answer.active,
+.editor-styles-wrapper .faq-accordion-category.active .faq-accordion-item:first-child .faq-accordion-answer.active,
+.wp-block-acf-faq .faq-accordion-category.active .faq-accordion-item:first-child .faq-accordion-answer.active {
+    max-height: 500px !important;
+    background-color: #F0F1F2 !important;
+    overflow: visible !important;
+}
+
+.block-editor-block-list__layout .faq-accordion-category.active .faq-accordion-item:first-child .faq-accordion-question.active,
+.editor-styles-wrapper .faq-accordion-category.active .faq-accordion-item:first-child .faq-accordion-question.active,
+.wp-block-acf-faq .faq-accordion-category.active .faq-accordion-item:first-child .faq-accordion-question.active {
+    background-color: #F0F1F2 !important;
+    color: #007ACC !important;
+}
+
+.block-editor-block-list__layout .faq-accordion-category.active .faq-accordion-item:first-child .faq-accordion-question.active::before,
+.editor-styles-wrapper .faq-accordion-category.active .faq-accordion-item:first-child .faq-accordion-question.active::before,
+.wp-block-acf-faq .faq-accordion-category.active .faq-accordion-item:first-child .faq-accordion-question.active::before {
+    transform: rotate(180deg) !important;
 }
 
 .faq-accordion {
@@ -138,10 +261,10 @@
     box-shadow: none !important;
     width: 100%;
     padding: 20px 0 20px 30px;
-    font-size: 16px; /* Body Medium 16 per Figma */
-    font-weight: 500; /* Medium weight per Figma */
-    line-height: 1.5em; /* Per Figma */
-    color: #007ACC; /* Primary Two per Figma */
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5em;
+    color: #007ACC;
     text-align: left;
     cursor: pointer;
     display: flex;
@@ -155,7 +278,7 @@
 }
 
 .faq-accordion-question:hover {
-    color: #005aa3; /* Darker shade of Primary Two for hover */
+    color: #005aa3;
 }
 
 .faq-accordion-question::before {
@@ -174,8 +297,8 @@
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
-    background-color: #F0F1F2; /* Base UI-One per Figma - gray background when active */
-    color: #007ACC; /* Primary Two per Figma */
+    background-color: #F0F1F2;
+    color: #007ACC;
 }
 
 .faq-accordion-answer {
@@ -187,16 +310,16 @@
 
 .faq-accordion-answer.active {
     max-height: 500px;
-    background-color: #F0F1F2; /* Base UI-One per Figma - gray background when expanded */
+    background-color: #F0F1F2;
 }
 
 .faq-accordion-answer-content {
     font-family: 'Outfit', sans-serif;
     padding: 0 90px 20px 55px;
-    font-size: 16px; /* Body Light 16 per Figma */
-    font-weight: 300; /* Light weight per Figma */
-    line-height: 1.5em; /* Per Figma */
-    color: #28323C; /* Base UI-Four per Figma */
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5em;
+    color: #28323C;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -209,46 +332,15 @@
     margin-bottom: 0;
 }
 
-/* Block Alignment Support */
-.faq-section-block.alignwide {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-}
+/* ===================================
+   6. MOBILE ACCORDION
+   =================================== */
 
-.faq-section-block.alignfull {
-    max-width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-}
-
-/* Fix for editor - prevent overflow */
-.block-editor-block-list__layout .faq-section-block.alignfull,
-.editor-styles-wrapper .faq-section-block.alignfull,
-.wp-block-acf-faq .faq-section-block.alignfull {
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-}
-
-/* Mobile FAQ Expansion Styles */
 .faq-mobile-accordion {
-    display: none; /* Hidden on desktop */
+    display: none;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-}
-
-/* Ensure mobile accordion is hidden on desktop */
-@media (min-width: 769px) {
-    .faq-mobile-accordion {
-        display: none !important;
-        max-height: 0 !important;
-    }
-    
-    .faq-mobile-accordion.active {
-        display: none !important;
-    }
 }
 
 .faq-mobile-accordion.active {
@@ -257,28 +349,28 @@
 }
 
 .faq-mobile-accordion-item {
-    border-bottom: 1px solid #ACB4BC; /* Medium Gray separator per Figma */
+    border-bottom: 1px solid #ACB4BC;
     background-color: transparent;
 }
 
 .faq-mobile-question {
     font-family: 'Outfit', sans-serif;
-    background-color: #ffffff; /* White background per image */
+    background-color: #ffffff;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
     width: 100%;
     padding: 20px 20px 20px 32px;
-    font-size: 20px; /* Action 20 per Figma mobile */
-    font-weight: 500; /* Medium weight */
-    line-height: 1.4em; /* Per Figma */
-    color: #007ACC; /* Primary Two per Figma */
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.4em;
+    color: #007ACC;
     text-align: left;
     cursor: pointer;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 32px; /* Gap between arrow and text per Figma */
+    gap: 32px;
     transition: all 0.3s ease;
     box-sizing: border-box;
     word-wrap: break-word;
@@ -304,28 +396,28 @@
 }
 
 .faq-mobile-question.active {
-    background-color: #F0F1F2; /* Light gray background when expanded per image */
+    background-color: #F0F1F2;
 }
 
 .faq-mobile-answer {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-    background-color: #ffffff; /* White background when collapsed */
+    background-color: #ffffff;
 }
 
 .faq-mobile-answer.active {
     max-height: 1000px;
-    background-color: #F0F1F2; /* Light gray background when expanded per image */
+    background-color: #F0F1F2;
 }
 
 .faq-mobile-answer-content {
     font-family: 'Outfit', sans-serif;
-    padding: 20px 32px 20px 88px; /* Padding per Figma (x: 88 = 32px question + 32px gap + 24px arrow) */
-    font-size: 16px; /* Body Light 16 per Figma */
-    font-weight: 300; /* Light weight per Figma */
-    line-height: 1.5em; /* Per Figma */
-    color: #28323C; /* Base UI-Four per Figma */
+    padding: 20px 32px 20px 88px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5em;
+    color: #28323C;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -338,92 +430,10 @@
     margin-bottom: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 1728px) {
-    .faq-section-sidebar {
-        width: auto;
-        padding-left: 80px;
-        padding-right: 0px;
-    }
-    
-    .faq-section-main {
-        padding-right: 80px;
-    }
-}
+/* ===================================
+   7. EDITOR PREVIEW STYLES
+   =================================== */
 
-@media (max-width: 768px) {
-    .faq-section-content { flex-direction: column; gap: 0; }
-    .faq-section-sidebar { 
-        width: 100%;
-        padding: 60px 20px 0 20px; 
-        gap: 0; 
-    }
-    .faq-section-title { 
-        font-size: 32px; /* Headline SemiBold 32 per Figma mobile */
-        font-weight: 600; /* SemiBold per Figma */
-        line-height: 1.25em; 
-        color: #B4E850; /* Secondary Three per Figma mobile */
-        margin-bottom: 56px; /* Space to categories */
-    }
-    .faq-section-categories {
-        padding: 0; /* Remove padding to match image */
-        background-color: transparent;
-        gap: 0;
-        margin-bottom: 50px;
-    }
-    .faq-category-tab { 
-        width: 100%;
-        padding: 0;
-        min-height: 56px; /* Standard height for category buttons */
-        font-size: 20px; /* Action 20 / Body Light 20 per Figma */
-        line-height: 1.4em;
-        background-color: #28323C; /* Base UI-Four - black background per image */
-        border: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.2); /* Thin separator line */
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Thin separator line */
-        color: #ffffff; /* Base UI-Light per Figma */
-        font-weight: 300; /* Body Light - default inactive */
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        text-align: left;
-    }
-    .faq-category-tab:first-child {
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .faq-category-tab:last-child {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .faq-category-tab.active {
-        font-weight: 500; /* Action weight - active item */
-        background-color: #ffffff; /* Keep black background */
-        color: #141A1E; /* Base UI-Dark - dark text when active per image */
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        padding-left: 20px;
-    }
-    
-    /* Style mobile accordion items when category is active */
-    .faq-category-tab.active + .faq-mobile-accordion {
-        background-color: #ffffff; /* White background for FAQ items container */
-    }
-    
-    .faq-mobile-accordion-item {
-        background-color: #ffffff; /* White background for collapsed items */
-        border-bottom: 1px solid #ACB4BC; /* Medium Gray separator per Figma */
-    }
-    .faq-category-tab:hover:not(.active) {
-        background-color: rgba(255, 255, 255, 0.05); /* Slight hover effect */
-        opacity: 1;
-    }
-    /* Show mobile accordion, hide desktop accordion */
-    .faq-mobile-accordion { display: block; }
-    .faq-section-main { display: none; /* Hide desktop accordion on mobile */ }
-}
-
-
-/* Editor Preview Styles */
 .wp-block-acf-faq .faq-section-block {
     border: 2px dashed #ccc;
     position: relative;
@@ -444,5 +454,293 @@
     max-width: 280px;
     text-align: center;
     line-height: 1.3;
+    pointer-events: none;
 }
 
+/* 3. Hide mobile accordion in editor preview (desktop view only) */
+.block-editor-block-list__layout .faq-mobile-accordion,
+.editor-styles-wrapper .faq-mobile-accordion,
+.wp-block-acf-faq .faq-mobile-accordion {
+    display: none !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+}
+
+.block-editor-block-list__layout .faq-mobile-accordion.active,
+.editor-styles-wrapper .faq-mobile-accordion.active,
+.wp-block-acf-faq .faq-mobile-accordion.active {
+    display: none !important;
+    max-height: 0 !important;
+    visibility: hidden !important;
+}
+
+.block-editor-block-list__layout .faq-mobile-accordion-item,
+.editor-styles-wrapper .faq-mobile-accordion-item,
+.wp-block-acf-faq .faq-mobile-accordion-item {
+    display: none !important;
+}
+
+/* 4. Ensure desktop accordion is visible and functional in editor preview */
+.block-editor-block-list__layout .faq-section-main,
+.editor-styles-wrapper .faq-section-main,
+.wp-block-acf-faq .faq-section-main {
+    display: block !important;
+    visibility: visible !important;
+}
+
+.block-editor-block-list__layout .faq-accordion-category,
+.editor-styles-wrapper .faq-accordion-category,
+.wp-block-acf-faq .faq-accordion-category {
+    visibility: visible !important;
+}
+
+.block-editor-block-list__layout .faq-accordion,
+.editor-styles-wrapper .faq-accordion,
+.wp-block-acf-faq .faq-accordion {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+/* 5. Ensure interactive elements are clickable in editor preview */
+.block-editor-block-list__layout .faq-category-tab,
+.editor-styles-wrapper .faq-category-tab,
+.wp-block-acf-faq .faq-category-tab {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 2 !important;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.block-editor-block-list__layout .faq-accordion-question,
+.editor-styles-wrapper .faq-accordion-question,
+.wp-block-acf-faq .faq-accordion-question {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 2 !important;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.block-editor-block-list__layout .faq-mobile-question,
+.editor-styles-wrapper .faq-mobile-question,
+.wp-block-acf-faq .faq-mobile-question {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 2 !important;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* 6. Ensure editor preview container doesn't block interactions */
+.block-editor-block-list__layout .faq-section-block,
+.editor-styles-wrapper .faq-section-block,
+.wp-block-acf-faq .faq-section-block {
+    pointer-events: auto !important;
+    position: relative;
+}
+
+.block-editor-block-list__layout .faq-section-content,
+.editor-styles-wrapper .faq-section-content,
+.wp-block-acf-faq .faq-section-content {
+    pointer-events: auto !important;
+    position: relative;
+}
+
+.block-editor-block-list__layout .faq-section-sidebar,
+.editor-styles-wrapper .faq-section-sidebar,
+.wp-block-acf-faq .faq-section-sidebar {
+    pointer-events: auto !important;
+}
+
+.block-editor-block-list__layout .faq-section-main,
+.editor-styles-wrapper .faq-section-main,
+.wp-block-acf-faq .faq-section-main {
+    pointer-events: auto !important;
+}
+
+/* ===================================
+   8. RESPONSIVE DESIGN
+   =================================== */
+
+/* Large Desktop (1729px and above) - Align with container */
+@media (min-width: 1729px) {
+    .faq-section-content {
+        max-width: 1728px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .faq-section-sidebar {
+        padding-left: 150px;
+    }
+    
+    .faq-section-block::before {
+        left: 0;
+        width: calc(max(0px, ((100vw - 1728px) / 2)) + 150px + 660px);
+    }
+    
+    .faq-section-main {
+        padding-right: 150px;
+    }
+}
+
+/* Medium Desktop (1281px - 1728px) - Align with header */
+@media (min-width: 1281px) and (max-width: 1728px) {
+    .faq-section-content {
+        max-width: 1728px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .faq-section-block::before {
+        left: 0;
+        width: calc(max(0px, ((100vw - 1728px) / 2)) + 150px + 660px);
+    }
+    
+    .faq-section-main {
+        padding-right: 80px;
+    }
+}
+
+
+/* Desktop (1025px - 1280px) - Align with header */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .faq-section-sidebar {
+        padding-left: 40px;
+    }
+    
+    .faq-section-main {
+        padding-right: 40px;
+    }
+}
+
+
+
+/* Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .faq-section-sidebar {
+        padding-left: 50px;
+        padding-right: 0px;
+        width: clamp(350px, calc(350px + (100vw - 769px) * 100 / 255), 450px);
+        flex-shrink: 0;
+    }
+    
+    .faq-section-main {
+        padding-right: 50px;
+    }
+    
+    /* Ensure mobile accordion is hidden on tablet */
+    .faq-mobile-accordion {
+        display: none !important;
+        max-height: 0 !important;
+    }
+    
+    .faq-mobile-accordion.active {
+        display: none !important;
+    }
+}
+
+/* Desktop (1025px and above) - Hide mobile accordion */
+@media (min-width: 769px) {
+    .faq-mobile-accordion {
+        display: none !important;
+        max-height: 0 !important;
+    }
+    
+    .faq-mobile-accordion.active {
+        display: none !important;
+    }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+    .faq-section-content {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .faq-section-sidebar {
+        width: 100%;
+        padding: 60px 20px 0 20px;
+        gap: 0;
+    }
+    
+    .faq-section-title {
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 1.25em;
+        color: #B4E850;
+        margin-bottom: 56px;
+    }
+    
+    .faq-section-categories {
+        padding: 0;
+        background-color: transparent;
+        gap: 0;
+        margin-bottom: 50px;
+    }
+    
+    .faq-category-tab {
+        width: 100%;
+        padding: 0;
+        min-height: 56px;
+        font-size: 20px;
+        line-height: 1.4em;
+        background-color: #28323C;
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        font-weight: 300;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: left;
+    }
+    
+    .faq-category-tab:first-child {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .faq-category-tab:last-child {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .faq-category-tab.active {
+        font-weight: 500;
+        background-color: #ffffff;
+        color: #141A1E;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-left: 20px;
+    }
+    
+    .faq-category-tab.active + .faq-mobile-accordion {
+        background-color: #ffffff;
+    }
+    
+    .faq-mobile-accordion-item {
+        background-color: #ffffff;
+        border-bottom: 1px solid #ACB4BC;
+    }
+    
+    .faq-category-tab:hover:not(.active) {
+        background-color: rgba(255, 255, 255, 0.05);
+        opacity: 1;
+    }
+    
+    /* Show mobile accordion, hide desktop accordion */
+    .faq-mobile-accordion {
+        display: block;
+    }
+    
+    .faq-section-main {
+        display: none;
+    }
+}

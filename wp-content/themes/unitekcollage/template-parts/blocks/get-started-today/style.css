@@ -39,8 +39,40 @@
     width: 100%;
 }
 
+/* Contact Form 7 Checkbox Alignment */
+.get-started-today-block .wpcf7-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 0;
+}
+
+.get-started-today-block .wpcf7-list-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex-shrink: 0;
+    align-self: flex-start;
+    position: relative;
+    top: 7px;
+    cursor: pointer;
+}
+
 .wpcf7-list-item-label {
-    font-size: 13px;
+    font-size: 12px;
+    color: #28323C;
+    line-height: 1.4;
+    margin: 0;
+    cursor: pointer;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    flex: 1;
+}
+
+.get-started-today-block .wpcf7-list-item-label p {
+    margin: 0;
+    line-height: 1.4;
+    display: inline;
 }
 
 /* Align content with 1728px container on large screens */
@@ -155,7 +187,11 @@
     height: 18px;
     margin: 0;
     flex-shrink: 0;
-    margin-top: 2px;
+    margin-top: 0;
+    align-self: flex-start;
+    position: relative;
+    top: 0;
+    cursor: pointer;
 }
 
 .get-started-today-disclaimer {
@@ -166,6 +202,13 @@
     cursor: pointer;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    flex: 1;
+}
+
+.get-started-today-disclaimer p {
+    margin: 0;
+    line-height: 1.4;
+    display: inline;
 }
 
 .get-started-today-disclaimer p {
@@ -224,6 +267,65 @@
     color: #6C757D;
     font-size: 1.2rem;
     font-weight: 500;
+}
+
+/* WYSIWYG Content Styles */
+.get-started-today-wysiwyg-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Make iframes responsive and fit the container */
+.get-started-today-wysiwyg-content iframe {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 400px;
+    border: 0;
+    display: block;
+}
+
+/* Responsive iframe heights */
+@media (min-width: 769px) and (max-width: 1023px) {
+    /* Tablet: Maintain 4:3 aspect ratio */
+    .get-started-today-wysiwyg-content iframe {
+        aspect-ratio: 4 / 3;
+        min-height: 500px;
+        max-height: 600px;
+        width: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .get-started-today-wysiwyg-content iframe {
+        min-height: 696px;
+        width: 100%;
+        min-width: 950px;
+    }
+}
+
+
+
+/* General content styling within WYSIWYG */
+.get-started-today-wysiwyg-content p,
+.get-started-today-wysiwyg-content h1,
+.get-started-today-wysiwyg-content h2,
+.get-started-today-wysiwyg-content h3,
+.get-started-today-wysiwyg-content h4,
+.get-started-today-wysiwyg-content h5,
+.get-started-today-wysiwyg-content h6 {
+    margin: 0 0 1em 0;
+    padding: 0 20px;
+}
+
+.get-started-today-wysiwyg-content img:not([class*="wp-image"]) {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 .sr-only {
@@ -401,5 +503,17 @@
     max-width: 280px;
     text-align: center;
     line-height: 1.3;
+}
+
+/* Hide CF7 Akismet honeypot field on frontend for this block */
+.get-started-today-block label > textarea[name="_wpcf7_ak_hp_textarea"],
+.get-started-today-block textarea[name="_wpcf7_ak_hp_textarea"],
+.get-started-today-block [name="_wpcf7_ak_hp_textarea"] {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
 }
 

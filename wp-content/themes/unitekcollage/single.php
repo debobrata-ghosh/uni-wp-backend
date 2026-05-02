@@ -165,8 +165,42 @@ get_header(); ?>
     <!-- Get Started Today (Dark Background) Block - Full Width -->
     <?php
     // Render the Get Started Today Dark Background Block
+    // This will use fields from Theme Options since no block instance exists
     if ( function_exists( 'acf' ) ) {
-        echo do_blocks( '<!-- wp:acf/get-started-today-dark {"align":"full"} /-->' );
+        // Enqueue block assets
+        $block_dir = get_template_directory() . '/template-parts/blocks/get-started-today-with-dark-background/';
+        if ( file_exists( $block_dir . 'style.css' ) ) {
+            wp_enqueue_style(
+                'get-started-today-dark-block',
+                get_template_directory_uri() . '/template-parts/blocks/get-started-today-with-dark-background/style.css',
+                array(),
+                filemtime( $block_dir . 'style.css' )
+            );
+        }
+        if ( file_exists( $block_dir . 'index.js' ) ) {
+            wp_enqueue_script(
+                'get-started-today-dark-block',
+                get_template_directory_uri() . '/template-parts/blocks/get-started-today-with-dark-background/index.js',
+                array(),
+                filemtime( $block_dir . 'index.js' ),
+                true
+            );
+        }
+        
+        // Render the block template directly
+        // The template will detect no block context and use options page fields
+        $render_template = $block_dir . 'render.php';
+        if ( file_exists( $render_template ) ) {
+            // Create minimal block array for template context (align, className, etc.)
+            // Empty 'id' ensures it uses options page fields
+            $block = array(
+                'id' => '', // Empty ID means it's not a block instance - will use options
+                'className' => '',
+                'align' => 'full',
+                'anchor' => ''
+            );
+            include $render_template;
+        }
     }
     ?>
      <!-- Related News Section -->

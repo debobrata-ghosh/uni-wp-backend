@@ -9,6 +9,7 @@
     // Global variables
     var currentStep = 1;
     var totalSteps = 6; // Updated to 6 steps: campus, program, first name, last name, phone, email+consent
+    var isSubmitting = false; // Flag to prevent duplicate submissions
 
     // Campus-specific programs
     var campusPrograms = {
@@ -412,11 +413,345 @@
         console.log('Submit buttons disabled');
     };
 
-    // Function to handle form submission
+    // Function to handle form submission - Copy values to CF7 and submit
     window.handleFormSubmit = function(event) {
-        event.preventDefault(); // Prevent page refresh
+        // Prevent duplicate submissions
+        if (isSubmitting) {
+            console.log('⚠️ Form submission already in progress, ignoring duplicate call');
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            }
+            return false;
+        }
         
-        console.log('Form submitted');
+        if (event) {
+            event.preventDefault(); // Prevent page refresh if called from form
+            event.stopPropagation(); // Stop event from bubbling
+            event.stopImmediatePropagation(); // Stop all other handlers
+        }
+        
+        // Set submission lock IMMEDIATELY
+        isSubmitting = true;
+        
+        // Store current scroll position to prevent page from moving
+        var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Disable submit buttons IMMEDIATELY to prevent double-clicks
+        var submitBtn = document.getElementById('hgs-submit');
+        var submitBtnMobile = document.getElementById('hgs-submit-mobile');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.6';
+            submitBtn.style.cursor = 'not-allowed';
+            submitBtn.textContent = 'Submitting...';
+            // Blur the button to prevent focus-related scrolling
+            submitBtn.blur();
+        }
+        if (submitBtnMobile) {
+            submitBtnMobile.disabled = true;
+            submitBtnMobile.style.opacity = '0.6';
+            submitBtnMobile.style.cursor = 'not-allowed';
+            submitBtnMobile.textContent = 'Submitting...';
+            // Blur the button to prevent focus-related scrolling
+            submitBtnMobile.blur();
+        }
+        
+        // Maintain scroll position during submission
+        // Prevent any scroll changes that might occur during form processing
+        requestAnimationFrame(function() {
+            window.scrollTo(0, scrollPosition);
+        });
+        console.log('=== FORM SUBMISSION DEBUG START ===');
+        
+        // Get custom form values
+        var customCampus = document.getElementById('hgs-campus');
+        var customProgram = document.getElementById('hgs-program');
+        var customFirst = document.getElementById('hgs-first');
+        var customLast = document.getElementById('hgs-last');
+        var customPhone = document.getElementById('hgs-phone');
+        var customEmail = document.getElementById('hgs-email');
+        var customConsent = document.getElementById('hgs-consent');
+        
+        console.log('Custom form values:');
+        console.log('- Campus:', customCampus ? customCampus.value : 'NOT FOUND');
+        console.log('- Program:', customProgram ? customProgram.value : 'NOT FOUND');
+        console.log('- First:', customFirst ? customFirst.value : 'NOT FOUND');
+        console.log('- Last:', customLast ? customLast.value : 'NOT FOUND');
+        console.log('- Phone:', customPhone ? customPhone.value : 'NOT FOUND');
+        console.log('- Email:', customEmail ? customEmail.value : 'NOT FOUND');
+        console.log('- Consent:', customConsent ? customConsent.checked : 'NOT FOUND');
+        
+        // Find CF7 form wrapper
+        var cf7Wrapper = document.querySelector('.cf7-hidden-wrapper');
+        if (!cf7Wrapper) {
+            console.error('❌ CF7 wrapper (.cf7-hidden-wrapper) not found!');
+            alert('CF7 form wrapper not found. Please check if CF7 form is configured.');
+            return false;
+        }
+        console.log('✅ CF7 wrapper found');
+        
+        // Find CF7 form
+        var cf7Form = cf7Wrapper.querySelector('.wpcf7 form');
+        if (!cf7Form) {
+            console.error('❌ CF7 form not found inside wrapper!');
+            console.log('Looking for: .cf7-hidden-wrapper .wpcf7 form');
+            console.log('Wrapper HTML:', cf7Wrapper.innerHTML.substring(0, 500));
+            alert('CF7 form not found. Please check if CF7 form ID is correct.');
+            isSubmitting = false; // Reset lock on error
+            return false;
+        }
+        console.log('✅ CF7 form found');
+        
+        // Don't block CF7 form submission - let it submit normally
+        // We'll only prevent duplicates after the first submission starts
+        
+        // Try multiple ways to find CF7 fields (by ID, by name attribute, by class)
+        var fieldMapping = [
+            { custom: customCampus, cf7Id: 'cf7-campus', cf7Name: 'campus_interest', label: 'Campus' },
+            { custom: customProgram, cf7Id: 'cf7-program', cf7Name: 'program_interest', label: 'Program' },
+            { custom: customFirst, cf7Id: 'cf7-first', cf7Name: 'first_name', label: 'First Name' },
+            { custom: customLast, cf7Id: 'cf7-last', cf7Name: 'last_name', label: 'Last Name' },
+            { custom: customPhone, cf7Id: 'cf7-phone', cf7Name: 'phone', label: 'Phone' },
+            { custom: customEmail, cf7Id: 'cf7-email', cf7Name: 'email', label: 'Email' },
+            { custom: customConsent, cf7Id: 'cf7-consent', cf7Name: 'consent', label: 'Consent', isCheckbox: true }
+        ];
+        
+        var allFieldsFound = true;
+        var foundFields = [];
+        var missingFields = [];
+        
+        fieldMapping.forEach(function(field) {
+            var cf7Field = null;
+            var customValue = null;
+            
+            // Get custom value
+            if (field.custom) {
+                customValue = field.isCheckbox ? field.custom.checked : field.custom.value;
+            }
+            
+            // Try to find CF7 field by ID first
+            cf7Field = document.getElementById(field.cf7Id);
+            
+            // If not found by ID, try by name attribute
+            if (!cf7Field) {
+                cf7Field = cf7Form.querySelector('[name="' + field.cf7Name + '"]');
+            }
+            
+            // If still not found, try by name containing
+            if (!cf7Field) {
+                var allInputs = cf7Form.querySelectorAll('input, select, textarea');
+                allInputs.forEach(function(input) {
+                    if (input.name && input.name.indexOf(field.cf7Name) !== -1) {
+                        cf7Field = input;
+                    }
+                });
+            }
+            
+            if (cf7Field && customValue !== null && customValue !== '') {
+                // Copy value
+                if (field.isCheckbox) {
+                    if (cf7Field.type === 'checkbox') {
+                        cf7Field.checked = customValue;
+                    } else if (cf7Field.type === 'hidden') {
+                        cf7Field.value = customValue ? '1' : '0';
+                    }
+                } else {
+                    cf7Field.value = customValue;
+                }
+                foundFields.push(field.label + ' (' + (cf7Field.id || cf7Field.name || 'no id/name') + ')');
+                console.log('✅ ' + field.label + ' copied:', customValue, '→ Field:', cf7Field.id || cf7Field.name || cf7Field);
+            } else {
+                if (!cf7Field) {
+                    missingFields.push(field.label + ' - CF7 field not found (tried: ' + field.cf7Id + ', ' + field.cf7Name + ')');
+                    console.warn('⚠️ ' + field.label + ' - CF7 field not found (tried ID: ' + field.cf7Id + ', name: ' + field.cf7Name + ')');
+                } else if (!customValue || customValue === '') {
+                    missingFields.push(field.label + ' - Custom field has no value');
+                    console.warn('⚠️ ' + field.label + ' - Custom field empty');
+                }
+                allFieldsFound = false;
+            }
+        });
+        
+        console.log('Fields found and copied:', foundFields.length);
+        console.log('Missing/empty fields:', missingFields.length);
+        
+        if (missingFields.length > 0) {
+            console.warn('Missing fields:', missingFields);
+        }
+        
+        // Debug: List all CF7 form fields
+        console.log('=== All CF7 Form Fields ===');
+        var allCf7Fields = cf7Form.querySelectorAll('input, select, textarea');
+        allCf7Fields.forEach(function(field) {
+            console.log('- Type:', field.type, '| ID:', field.id, '| Name:', field.name, '| Class:', field.className);
+        });
+        console.log('=== End CF7 Fields ===');
+        
+        // Check if form is valid before submission
+        // Note: CF7 forms might not support checkValidity(), so we'll skip this check
+        // CF7 will handle its own validation
+        console.log('✅ Ready to submit CF7 form. CF7 will handle validation.');
+        
+        // Disable submit buttons to prevent multiple clicks
+        var submitBtn = document.getElementById('hgs-submit');
+        var submitBtnMobile = document.getElementById('hgs-submit-mobile');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.6';
+            submitBtn.style.cursor = 'not-allowed';
+        }
+        if (submitBtnMobile) {
+            submitBtnMobile.disabled = true;
+            submitBtnMobile.style.opacity = '0.6';
+            submitBtnMobile.style.cursor = 'not-allowed';
+        }
+        
+        // Trigger CF7 form submission
+        // CF7 uses AJAX, so we need to click the submit button (not use form.submit())
+        setTimeout(function() {
+            console.log('=== TRIGGERING CF7 SUBMISSION ===');
+            
+            // Re-find CF7 form (in case DOM changed)
+            var cf7FormToSubmit = cf7Wrapper.querySelector('.wpcf7 form');
+            if (!cf7FormToSubmit) {
+                console.error('❌ CF7 form not found when trying to submit!');
+                isSubmitting = false; // Reset lock
+                return;
+            }
+            
+            // Find CF7 submit button - CF7 requires clicking the button for AJAX to work
+            var cf7SubmitBtn = cf7FormToSubmit.querySelector('input[type="submit"], button[type="submit"], .wpcf7-submit');
+            
+            if (cf7SubmitBtn) {
+                console.log('✅ CF7 submit button found');
+                console.log('Button disabled:', cf7SubmitBtn.disabled);
+                console.log('Button display:', window.getComputedStyle(cf7SubmitBtn).display);
+                
+                // Ensure button is enabled and visible for click
+                cf7SubmitBtn.disabled = false;
+                cf7SubmitBtn.removeAttribute('disabled');
+                cf7SubmitBtn.style.display = '';
+                cf7SubmitBtn.style.visibility = 'visible';
+                cf7SubmitBtn.style.opacity = '1';
+                cf7SubmitBtn.style.position = 'static';
+                cf7SubmitBtn.style.width = 'auto';
+                cf7SubmitBtn.style.height = 'auto';
+                
+                console.log('Button enabled and visible. Clicking...');
+                
+                // Remove action attribute from form if present (to prevent page reload)
+                if (cf7FormToSubmit.hasAttribute('action')) {
+                    cf7FormToSubmit.removeAttribute('action');
+                    console.log('⚠️ Removed action attribute from CF7 form');
+                }
+                
+                // Ensure form method is not causing page reload
+                if (cf7FormToSubmit.method && cf7FormToSubmit.method.toLowerCase() === 'get') {
+                    cf7FormToSubmit.method = 'post';
+                    console.log('⚠️ Changed CF7 form method to POST');
+                }
+                
+                // Ensure form cannot cause page reload
+                // Remove action attribute completely (this prevents page reload)
+                if (cf7FormToSubmit.hasAttribute('action')) {
+                    cf7FormToSubmit.removeAttribute('action');
+                    console.log('✅ Removed action attribute to prevent page reload');
+                }
+                
+                // Ensure form method is POST (not GET which can cause URL changes)
+                if (!cf7FormToSubmit.method || cf7FormToSubmit.method.toLowerCase() === 'get') {
+                    cf7FormToSubmit.method = 'post';
+                }
+                
+                // CF7 should handle submission via AJAX automatically
+                // We just need to ensure the form can't cause a page reload
+                // Click the button to trigger CF7 AJAX submission
+                cf7SubmitBtn.click();
+                
+                console.log('✅ CF7 submit button clicked - form has no action attribute (AJAX only)');
+            } else {
+                console.error('❌ CF7 submit button not found!');
+                console.log('Available inputs in form:');
+                var allInputs = cf7FormToSubmit.querySelectorAll('input, button');
+                allInputs.forEach(function(input) {
+                    console.log('  - Type:', input.type, '| Class:', input.className, '| ID:', input.id);
+                });
+                
+                // Fallback: try requestSubmit if available (but prevent page reload)
+                if (typeof cf7FormToSubmit.requestSubmit === 'function') {
+                    console.log('Trying requestSubmit() as fallback...');
+                    // Prevent page reload before calling requestSubmit
+                    var preventReloadHandler = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                    };
+                    cf7FormToSubmit.addEventListener('submit', preventReloadHandler, true);
+                    cf7FormToSubmit.requestSubmit();
+                } else {
+                    console.error('❌ No way to submit CF7 form - submit button missing and requestSubmit() not available');
+                    isSubmitting = false; // Reset lock on error
+                }
+            }
+        }, 300);
+        
+        console.log('=== FORM SUBMISSION DEBUG END ===');
+        
+        // CRITICAL: Prevent any page reload/navigation
+        // Return false to prevent any default form behavior
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+        }
+        
+        // Maintain scroll position - prevent any unwanted page movement
+        // Check scroll position periodically during submission
+        var checkScrollInterval = setInterval(function() {
+            var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            if (Math.abs(currentScroll - scrollPosition) > 5) {
+                // Scroll position changed, restore it
+                window.scrollTo(0, scrollPosition);
+            }
+        }, 100);
+        
+        // Clear the interval after 5 seconds (submission should be complete by then)
+        setTimeout(function() {
+            clearInterval(checkScrollInterval);
+        }, 5000);
+        
+        // Reset submission lock after CF7 responds (success or failure)
+        // This will be reset in the event handlers below
+        
+        return false;
+    };
+    
+    // Helper function to trigger CF7 form submission (used by fallback)
+    function triggerCF7Submission(cf7Form) {
+        var submitButton = cf7Form.querySelector('input[type="submit"], button[type="submit"], .wpcf7-submit');
+        if (submitButton && !submitButton.disabled) {
+            console.log('Clicking CF7 submit button');
+            // Temporarily enable and make visible for click
+            submitButton.disabled = false;
+            submitButton.style.display = '';
+            submitButton.click();
+        } else if (submitButton && submitButton.disabled) {
+            console.log('CF7 submit button is disabled, enabling and clicking');
+            submitButton.disabled = false;
+            submitButton.click();
+        } else {
+            console.log('No submit button found, using form.submit()');
+            // Use native form submit method
+            cf7Form.submit();
+        }
+    }
+    
+    // Function to show confirmation message
+    function showConfirmationMessage() {
+        // Store current scroll position before showing confirmation
+        var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
         
         // Hide the entire content container
         var contentContainer = document.querySelector('.hero-get-started-content');
@@ -430,16 +765,160 @@
             confirmationMessage.style.display = 'block';
         }
         
-        // Optional: Scroll to confirmation message
-        if (confirmationMessage) {
-            confirmationMessage.scrollIntoView({ behavior: 'smooth' });
+        // Restore scroll position to prevent page movement
+        // Use requestAnimationFrame to ensure it happens after DOM updates
+        requestAnimationFrame(function() {
+            window.scrollTo(0, scrollPosition);
+        });
+    }
+    
+    // Handle CF7 form submission responses
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('=== Initializing CF7 Integration ===');
+        
+        // Debug: Check if CF7 wrapper exists
+        var cf7Wrapper = document.querySelector('.cf7-hidden-wrapper');
+        if (cf7Wrapper) {
+            console.log('✅ CF7 wrapper found on page load');
+            var cf7Form = cf7Wrapper.querySelector('.wpcf7 form');
+            if (cf7Form) {
+                console.log('✅ CF7 form found on page load');
+                console.log('CF7 form HTML structure:', cf7Form.innerHTML.substring(0, 1000));
+                
+                // Hide CF7's default submit button visually but keep it functional
+                // We need it for programmatic submission
+                var cf7SubmitBtn = cf7Form.querySelector('input[type="submit"], button[type="submit"], .wpcf7-submit');
+                if (cf7SubmitBtn) {
+                    // Hide visually but keep it in DOM and enabled for programmatic clicks
+                    cf7SubmitBtn.style.position = 'absolute';
+                    cf7SubmitBtn.style.opacity = '0';
+                    cf7SubmitBtn.style.width = '1px';
+                    cf7SubmitBtn.style.height = '1px';
+                    cf7SubmitBtn.style.overflow = 'hidden';
+                    cf7SubmitBtn.style.pointerEvents = 'none';
+                    cf7SubmitBtn.disabled = false; // Keep enabled so we can trigger it
+                    console.log('✅ CF7 submit button hidden but kept functional');
+                }
+                
+                // Remove action attribute to prevent page reload (CF7 uses AJAX by default)
+                // CF7 forms should not have an action attribute - it submits via AJAX
+                if (cf7Form.hasAttribute('action')) {
+                    console.log('⚠️ Removing action attribute from CF7 form to prevent page reload');
+                    cf7Form.removeAttribute('action');
+                }
+                
+                // Ensure form method is POST (not GET) to avoid URL parameters
+                if (!cf7Form.method || cf7Form.method.toLowerCase() === 'get') {
+                    cf7Form.method = 'post';
+                    console.log('✅ Set CF7 form method to POST');
+                }
+                
+                // CF7 should handle form submission via AJAX automatically
+                // We just need to ensure it doesn't have attributes that cause page reload
+                console.log('✅ CF7 form configured for AJAX submission (no page reload)');
+                
+                // Duplicate prevention is handled at the button level (isSubmitting flag)
+                console.log('✅ CF7 form ready for submission');
+            } else {
+                console.warn('⚠️ CF7 form not found in wrapper on page load');
+            }
+        } else {
+            console.warn('⚠️ CF7 wrapper not found on page load');
         }
         
-        // Here you can add code to send form data to your server
-        // For example, using fetch API or XMLHttpRequest
+        // Listen for CF7 form submission events - reset flags on completion
+        var handleCF7Success = function(event) {
+            console.log('✅ CF7 form submitted successfully!', event.detail);
+            isSubmitting = false; // Reset submission lock on success
+            showConfirmationMessage();
+        };
         
-        return false; // Prevent any further form submission
-    };
+        var handleCF7Failure = function(event) {
+            console.error('❌ CF7 form submission failed!', event.detail);
+            isSubmitting = false; // Reset submission lock on failure
+            alert('There was an error submitting your form. Please check console for details and try again.');
+            
+            // Re-enable submit buttons
+            var submitBtn = document.getElementById('hgs-submit');
+            var submitBtnMobile = document.getElementById('hgs-submit-mobile');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+                submitBtn.textContent = 'Get started';
+            }
+            if (submitBtnMobile) {
+                submitBtnMobile.disabled = false;
+                submitBtnMobile.style.opacity = '1';
+                submitBtnMobile.style.cursor = 'pointer';
+                submitBtnMobile.textContent = 'Get started';
+            }
+        };
+        
+        var handleCF7Invalid = function(event) {
+            console.error('❌ CF7 form validation failed!', event.detail);
+            isSubmitting = false; // Reset submission lock on validation error
+            alert('Please fill in all required fields correctly.');
+            
+            // Re-enable submit buttons
+            var submitBtn = document.getElementById('hgs-submit');
+            var submitBtnMobile = document.getElementById('hgs-submit-mobile');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+                submitBtn.textContent = 'Get started';
+            }
+            if (submitBtnMobile) {
+                submitBtnMobile.disabled = false;
+                submitBtnMobile.style.opacity = '1';
+                submitBtnMobile.style.cursor = 'pointer';
+                submitBtnMobile.textContent = 'Get started';
+            }
+        };
+        
+        var handleCF7Spam = function(event) {
+            console.error('❌ CF7 form marked as spam!', event.detail);
+            isSubmitting = false; // Reset submission lock on spam
+            alert('Form submission was marked as spam. Please try again.');
+            
+            // Re-enable submit buttons
+            var submitBtn = document.getElementById('hgs-submit');
+            var submitBtnMobile = document.getElementById('hgs-submit-mobile');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+                submitBtn.textContent = 'Get started';
+            }
+            if (submitBtnMobile) {
+                submitBtnMobile.disabled = false;
+                submitBtnMobile.style.opacity = '1';
+                submitBtnMobile.style.cursor = 'pointer';
+                submitBtnMobile.textContent = 'Get started';
+            }
+        };
+        
+        // Listen for CF7 events - allow multiple listeners but only handle once per submission
+        document.addEventListener('wpcf7mailsent', handleCF7Success);
+        document.addEventListener('wpcf7mailfailed', handleCF7Failure);
+        document.addEventListener('wpcf7invalid', handleCF7Invalid);
+        document.addEventListener('wpcf7spam', handleCF7Spam);
+        
+        // Reset flags after 15 seconds as a safety measure
+        setTimeout(function() {
+            if (isSubmitting) {
+                console.warn('⚠️ Submission lock timeout - resetting after 15 seconds');
+                isSubmitting = false;
+            }
+        }, 15000);
+        
+        // Remove duplicate event listeners - we're using onclick in HTML, so we don't need addEventListener
+        // This prevents double submission
+        console.log('ℹ️ Using onclick handlers from HTML, not attaching additional event listeners');
+        
+        console.log('=== CF7 Integration Initialized ===');
+    });
 
     // Simple form initialization
     document.addEventListener('DOMContentLoaded', function() {
@@ -484,6 +963,59 @@
         currentStep = 1;
         console.log('Current step set to:', currentStep);
     });
+    
+    // Debug helper function - can be called from browser console: debugHeroGetStarted()
+    window.debugHeroGetStarted = function() {
+        console.log('=== HERO GET STARTED DEBUG INFO ===');
+        
+        // Check custom form fields
+        console.log('\n1. CUSTOM FORM FIELDS:');
+        var fields = ['hgs-campus', 'hgs-program', 'hgs-first', 'hgs-last', 'hgs-phone', 'hgs-email', 'hgs-consent'];
+        fields.forEach(function(fieldId) {
+            var field = document.getElementById(fieldId);
+            if (field) {
+                var value = field.type === 'checkbox' ? field.checked : field.value;
+                console.log('  ✅', fieldId + ':', value);
+            } else {
+                console.log('  ❌', fieldId + ': NOT FOUND');
+            }
+        });
+        
+        // Check CF7 form
+        console.log('\n2. CF7 FORM:');
+        var cf7Wrapper = document.querySelector('.cf7-hidden-wrapper');
+        if (cf7Wrapper) {
+            console.log('  ✅ CF7 wrapper exists');
+            var cf7Form = cf7Wrapper.querySelector('.wpcf7 form');
+            if (cf7Form) {
+                console.log('  ✅ CF7 form exists');
+                console.log('  Form ID:', cf7Form.id);
+                console.log('  Form action:', cf7Form.action);
+                
+                // List all CF7 fields
+                console.log('\n3. CF7 FORM FIELDS:');
+                var cf7Fields = cf7Form.querySelectorAll('input, select, textarea');
+                cf7Fields.forEach(function(field) {
+                    console.log('  - Type:', field.type || 'N/A', '| ID:', field.id || 'N/A', '| Name:', field.name || 'N/A', '| Value:', field.value || field.checked || 'N/A');
+                });
+            } else {
+                console.log('  ❌ CF7 form NOT FOUND in wrapper');
+                console.log('  Wrapper HTML:', cf7Wrapper.innerHTML.substring(0, 500));
+            }
+        } else {
+            console.log('  ❌ CF7 wrapper NOT FOUND');
+        }
+        
+        // Check submit buttons
+        console.log('\n4. SUBMIT BUTTONS:');
+        var submitBtn = document.getElementById('hgs-submit');
+        var submitBtnMobile = document.getElementById('hgs-submit-mobile');
+        console.log('  Submit button:', submitBtn ? '✅ Found (disabled: ' + submitBtn.disabled + ')' : '❌ NOT FOUND');
+        console.log('  Mobile submit button:', submitBtnMobile ? '✅ Found (disabled: ' + submitBtnMobile.disabled + ')' : '❌ NOT FOUND');
+        
+        console.log('\n=== END DEBUG INFO ===');
+        console.log('💡 Tip: Try calling handleFormSubmit() manually to test submission');
+    };
 
 })();
 

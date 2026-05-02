@@ -200,6 +200,13 @@
     }
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Tablet styles here */
+    .accreditations-approvals-content {
+        padding: 0 50px; /* 50px padding on both sides for tablet view */
+    }
+}
+
 @media (max-width: 768px) {
     .accreditations-approvals-block {
         padding: 80px 0;

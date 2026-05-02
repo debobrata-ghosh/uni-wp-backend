@@ -174,7 +174,7 @@ acf_add_local_field_group(array(
                             'key' => 'field_footer_link_url',
                             'label' => 'URL',
                             'name' => 'url',
-                            'type' => 'url',
+                            'type' => 'text',
                             'wrapper' => array('width' => '50'),
                         ),
                     ),

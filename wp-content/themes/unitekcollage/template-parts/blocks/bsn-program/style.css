@@ -1,0 +1,191 @@
+/* BSN Program Block Styles */
+@media screen and (min-width: 1025px) {
+ .main-wrapper-desk{
+        max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 80px;
+}
+.bsn-program-wrap{
+        max-width: 1728px;
+    margin: 0 auto;
+    padding: 0 150px;
+}
+.bsn-program-wrap .bsn-program-left {
+    max-width: 50%;
+}
+.bsn-program-wrap .bsn-program-right {
+    width: 50%;}
+}
+.bsn-program-section {
+    background: #fff;
+    /* padding: 80px 0; */
+    font-family: 'Inter', Arial, sans-serif;
+    position: relative;
+}
+.main-wrapper-deska{
+    padding: 100px 0;
+
+}
+.bsn-program-wrap {
+    display: flex;
+    gap: 56px;
+    justify-content: center;
+    align-items: flex-start;
+    /* max-width: 1200px; */
+    margin: 0 auto;
+}
+.bsn-program-left {
+    max-width: 480px;
+}
+.bsn-program-title {
+    color: #419143;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.24;
+    margin-bottom: 28px;
+}
+.bsn-program-desc {
+    color: #424242;
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+.bsn-program-right {
+    background: #2c343a;
+    border-radius: 20px;
+    width: 600px;
+    padding: 0;
+    box-shadow: 0 2px 18px 0 rgba(23,29,44,0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.bsn-feature-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 96px;
+    padding: 33px 40px 31px 36px;
+    border-bottom: 2px solid #394147;
+    position: relative;
+}
+.wp-block-acf-bsn-program::before {
+    content: "🚀 BSN Program section";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    font-size: 11px;
+    border-radius: 4px;
+    z-index: 10;
+    font-weight: 500;
+    max-width: 280px;
+    text-align: center;
+    line-height: 1.3;
+}
+.bsn-feature-block:last-child {
+    border-bottom: none;
+    min-height: 118px;
+    padding-top: 34px;
+    padding-bottom: 36px;
+}
+.bsn-feature-title {
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.01em;
+    line-height: 1.22;
+    margin-bottom: 5px;
+    text-align: left;
+}
+.bsn-feature-right {
+    text-align: right;
+    flex: 1 1 auto;
+    margin-left: 26px;
+}
+.bsn-feature-desc {
+    font-size: 1.07rem;
+    font-weight: 400;
+    color: #e7eaf0;
+    margin-top: 1px;
+    margin-bottom: 0;
+}
+.bsn-card-arrow {
+    width: 26px;
+    height: 26px;
+    margin-left: 30px;
+    margin-right: 0;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.bsn-feature-block:last-child .bsn-card-arrow {
+    align-self: flex-start;
+    margin-left: 30px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.bsn-nclex-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    width: 68%;
+}
+.bsn-nclex-label {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.bsn-nclex-rate {
+    color: #d0fd3f;
+    font-size: 3.1rem;
+    font-weight: 800;
+    margin: 0 0 3px 0;
+    line-height: 1.07;
+}
+.bsn-nclex-source {
+    color: #84caf7;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 3px;
+    cursor: pointer;
+    text-decoration: underline dotted;
+}
+.source_text_main {
+    color: #fff;
+}
+.bsn-nclex-meta {
+    color: #bfcad2;
+    font-size: 1.01rem;
+    font-weight: 400;
+    margin-top: 2px;
+}
+.bsn-nclex-link {
+    color: #7ed0ff;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+@media (max-width:980px) {
+    .bsn-program-wrap { 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 34px; 
+    }
+    .bsn-program-right { 
+        width: 100%; 
+        min-width: 320px; 
+    }
+    .bsn-program-section {
+    padding: 48px 20px;
+}
+.bsn-card-arrow{
+    display: none;
+}
+}

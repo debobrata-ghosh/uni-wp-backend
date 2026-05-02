@@ -31,7 +31,7 @@ if ($block['align']) {
 $css_class_string = implode(' ', $css_classes);
 ?>
 
-<section <?php if ($block_anchor): ?>id="<?php echo esc_attr($block_anchor); ?>"<?php endif; ?> 
+<section id="faq-sections" <?php if ($block_anchor): ?>id="<?php echo esc_attr($block_anchor); ?>"<?php endif; ?> 
          class="<?php echo esc_attr($css_class_string); ?>"
          role="region"
          aria-label="FAQ section">
